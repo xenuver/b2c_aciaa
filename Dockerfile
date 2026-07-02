@@ -31,5 +31,8 @@ USER root
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 USER www-data
 
-# Create storage symlink
-RUN php artisan storage:link
+# Create storage symlink without booting Laravel
+USER root
+RUN ln -sfn /var/www/html/storage/app/public /var/www/html/public/storage
+RUN chown -h www-data:www-data /var/www/html/public/storage
+USER www-data
