@@ -30,3 +30,6 @@ COPY --from=node_builder /app/public/build /var/www/html/public/build
 USER root
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 USER www-data
+
+# Create storage symlink
+RUN php artisan storage:link
