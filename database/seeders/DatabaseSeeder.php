@@ -15,9 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call Aciaa Product and Category Seeder
+        // Call Initial Data Seeder from aciaa3820_db.sql
         $this->call([
-            AciaaProductSeeder::class,
+            InitialDataSeeder::class,
         ]);
 
         // Keep testing user setup if not already exists
