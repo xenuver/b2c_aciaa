@@ -19,22 +19,18 @@ Lakukan konfigurasi berikut:
 
 1. **Domains**: Atur domain yang ingin digunakan untuk aplikasi Anda (misal: `https://app.domainanda.com`).
 2. **Environment Variables**:
-   Masuk ke tab **Environment Variables** dan tambahkan variabel yang dibutuhkan (sesuai dengan isi `.env.example`). Sangat penting untuk mengisi:
-   - `APP_KEY`: Generate key laravel (bisa di-generate secara lokal dengan `php artisan key:generate --show` lalu paste di sini).
-   - `APP_URL`: URL dari domain yang diatur sebelumnya.
-   - `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`: Sesuaikan dengan kredensial database Anda (bisa dibuat menggunakan service Database di Coolify).
+   Masuk ke tab **Environment Variables**. Karena database sudah terpaket langsung di dalam container (otomatis), Anda **HANYA PERLU** mengisi dua variabel ini:
+   - `APP_KEY`: Paste key yang Anda miliki (contoh: `base64:Dl6ZlxdYINPEn74Zn8whHJIz/Z9wSBb6+7d8eTXoe60=`).
+   - `APP_URL`: URL dari domain Anda (contoh: `http://yc0k9wk73ta8yze5bo2chncv.43.157.223.77.sslip.io`).
+   
+   *(Anda tidak perlu lagi mengisi DB_HOST dkk secara manual!)*
 
-## 4. Setup Database (Jika Belum Ada)
-1. Di Coolify, buat resource baru dan pilih **Database** (MySQL / PostgreSQL sesuai yang digunakan).
-2. Setelah database berjalan, ambil informasi koneksi (Host, Port, User, Password, Database Name).
-3. Karena database berada di jaringan Coolify yang sama, Anda bisa menggunakan nama service database (atau internal IP) sebagai `DB_HOST`.
-
-## 5. Deploy
+## 4. Deploy
 1. Kembali ke resource Docker Compose aplikasi Anda.
 2. Klik tombol **Deploy**.
 3. Tunggu proses build selesai. Coolify akan menggunakan `Dockerfile` yang telah dibuat untuk membangun *image* secara multi-stage (Node.js untuk assets, Composer untuk dependencies, dan Nginx+PHP-FPM untuk runtime).
 
-## 6. Pasca-Deployment (Migrasi Database)
+## 5. Pasca-Deployment (Migrasi Database)
 Setelah aplikasi berhasil di-deploy:
 1. Buka tab **Terminal** pada resource aplikasi Anda di Coolify.
 2. Jalankan perintah migrasi:
