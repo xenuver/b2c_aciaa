@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+use App\Models\User;
+
+class NotificationSetting extends Model
+{
+
+    use HasFactory;
+
+    protected $fillable = [
+        'user_id', 'email_order_update', 'email_promotion', 'push_order_update', 'push_promotion'
+    ];
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+}
