@@ -354,7 +354,7 @@
 
                     <!-- Search bar for products page -->
                     <div class="products-search-bar">
-                        <form action="{{ route('products.index') }}" method="GET" class="products-search-form">
+                        <form @submit.prevent="fetchProducts()" class="products-search-form">
                             <!-- Retain other filters like category, min_price, max_price, sort -->
                             @foreach(request()->except(['search', 'page']) as $key => $value)
                                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
@@ -394,7 +394,7 @@
 
                 <!-- Promo Products Section -->
                 @if(isset($promoProducts) && $promoProducts->count() > 0)
-                <div class="promo-section mb-5">
+                <div class="promo-section mb-5" x-show="!isSearching" x-transition>
                     <div class="promo-section-header">
                         <div class="promo-badge">
                             <i data-lucide="flame"></i>
@@ -462,7 +462,7 @@
 
                 <!-- Rekomendasi Untuk Anda Section -->
                 @if(isset($recommendations) && $recommendations->count() > 0)
-                <div class="promo-section mb-5 recommendations-section" style="background: linear-gradient(135deg, #fef8f6 0%, #fff 100%); border: 1px solid rgba(212, 165, 165, 0.2);">
+                <div class="promo-section mb-5 recommendations-section" x-show="!isSearching" x-transition style="background: linear-gradient(135deg, #fef8f6 0%, #fff 100%); border: 1px solid rgba(212, 165, 165, 0.2);">
                     <div class="promo-section-header text-start mb-4" style="text-align: left !important; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
                         <div class="promo-badge mb-2" style="background: linear-gradient(135deg, #d4a5a5, #b5838d); color: #fff; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                             <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
@@ -1722,6 +1722,14 @@ function productFilter() {
         sort: '{{ request("sort", "terbaru") }}',
         loading: false,
 
+        get isSearching() {
+            const hasSearch = this.search.trim() !== '';
+            const hasCategory = this.category !== '';
+            const hasMin = this.minPrice !== '' && parseInt(this.minPrice) > 0;
+            const hasMax = this.maxPrice !== '' && parseInt(this.maxPrice) < 1000000;
+            return hasSearch || hasCategory || hasMin || hasMax;
+        },
+
         // Debounce timer handle (shared across all watches)
         _debounceTimer: null,
 
@@ -1846,7 +1854,12 @@ function productFilter() {
             
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('search')) {
-                productsSearchInput.closest('form').submit();
+                const searchForm = productsSearchInput.closest('form');
+                if (searchForm.hasAttribute('action')) {
+                    searchForm.submit();
+                } else {
+                    // It's AJAX, let Alpine handle it because we just cleared the input and it's x-modeled
+                }
             }
         });
     }

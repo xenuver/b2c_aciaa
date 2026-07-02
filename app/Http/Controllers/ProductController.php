@@ -57,13 +57,18 @@ class ProductController extends Controller
                 $query->orderBy('created_at', 'desc');
         }
         
-        // Produk promo di atas
-        $promoProducts = Product::where('is_active', 1)
-            ->where(function($q) {
-                $q->where('is_promo', 1)->orWhereNotNull('discount_price');
-            })
-            ->limit(4)
-            ->get();
+        $isSearching = $request->filled('search') || $request->filled('category') || $request->filled('min_price') || $request->filled('max_price');
+        
+        // Produk promo di atas (hanya tampil jika tidak sedang mencari/filter)
+        $promoProducts = collect();
+        if (!$isSearching) {
+            $promoProducts = Product::where('is_active', 1)
+                ->where(function($q) {
+                    $q->where('is_promo', 1)->orWhereNotNull('discount_price');
+                })
+                ->limit(4)
+                ->get();
+        }
             
         $products = $query->paginate(12);
         
@@ -80,37 +85,39 @@ class ProductController extends Controller
         $recommendations = collect();
         $recoSubtitle = 'Produk terbaru dari koleksi kami';
 
-        if (auth()->check()) {
-            // Ambil semua produk dari wishlist user
-            $recommendations = Product::where('is_active', 1)
-                ->whereHas('wishlists', function($q) {
-                    $q->where('user_id', auth()->id());
-                })
-                ->limit(8)
-                ->get();
-            
-            if ($recommendations->isNotEmpty()) {
-                $recoSubtitle = 'Berdasarkan produk favorit yang Anda simpan';
-            }
-        }
-
-        // Jika guest atau wishlist kosong, cari produk terfavorit (paling banyak dibeli: sold_count > 0)
-        if ($recommendations->isEmpty()) {
-            $recommendations = Product::where('is_active', 1)
-                ->where('sold_count', '>', 0)
-                ->orderBy('sold_count', 'desc')
-                ->limit(8)
-                ->get();
-            
-            if ($recommendations->isNotEmpty()) {
-                $recoSubtitle = 'Produk paling populer dan disukai';
-            } else {
-                // Jika belum ada data (sold_count semuanya 0), tampilkan produk terbaru
+        if (!$isSearching) {
+            if (auth()->check()) {
+                // Ambil semua produk dari wishlist user
                 $recommendations = Product::where('is_active', 1)
-                    ->orderBy('created_at', 'desc')
+                    ->whereHas('wishlists', function($q) {
+                        $q->where('user_id', auth()->id());
+                    })
                     ->limit(8)
                     ->get();
-                $recoSubtitle = 'Produk terbaru dari koleksi kami';
+                
+                if ($recommendations->isNotEmpty()) {
+                    $recoSubtitle = 'Berdasarkan produk favorit yang Anda simpan';
+                }
+            }
+
+            // Jika guest atau wishlist kosong, cari produk terfavorit (paling banyak dibeli: sold_count > 0)
+            if ($recommendations->isEmpty()) {
+                $recommendations = Product::where('is_active', 1)
+                    ->where('sold_count', '>', 0)
+                    ->orderBy('sold_count', 'desc')
+                    ->limit(8)
+                    ->get();
+                
+                if ($recommendations->isNotEmpty()) {
+                    $recoSubtitle = 'Produk paling populer dan disukai';
+                } else {
+                    // Jika belum ada data (sold_count semuanya 0), tampilkan produk terbaru
+                    $recommendations = Product::where('is_active', 1)
+                        ->orderBy('created_at', 'desc')
+                        ->limit(8)
+                        ->get();
+                    $recoSubtitle = 'Produk terbaru dari koleksi kami';
+                }
             }
         }
         
