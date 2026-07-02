@@ -20,12 +20,14 @@ class DatabaseSeeder extends Seeder
             InitialDataSeeder::class,
         ]);
 
-        // Keep testing user setup if not already exists
+        // Keep testing user setup if not already exists (commented out for production to avoid Faker error)
+        /*
         if (\App\Models\User::where('email', 'test@example.com')->doesntExist()) {
             User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
         }
+        */
     }
 }
