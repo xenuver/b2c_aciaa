@@ -20,6 +20,8 @@ class InitialDataSeeder extends Seeder
             return;
         }
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         $sqlContent = File::get($sqlPath);
         $lines = explode("\n", $sqlContent);
         
@@ -80,5 +82,7 @@ class InitialDataSeeder extends Seeder
                 }
             }
         }
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }
