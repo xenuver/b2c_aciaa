@@ -20,3 +20,10 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       
       # Other Coolify variables injected here
+    volumes:
+      - storage_data:/var/www/html/storage
+      - bootstrap_cache:/var/www/html/bootstrap/cache
+
+volumes:
+  storage_data:
+  bootstrap_cache:
