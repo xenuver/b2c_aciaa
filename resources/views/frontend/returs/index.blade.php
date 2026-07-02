@@ -326,12 +326,7 @@
 </div>
 
 <div class="rh-wrapper">
-    @if(session('success'))
-        <div class="rh-alert">
-            <i class="fas fa-check-circle"></i>
-            {{ session('success') }}
-        </div>
-    @endif
+
 
     <div class="rh-topbar">
         <div class="rh-count">

@@ -85,4 +85,48 @@ class WishlistController extends Controller
         
         return response()->json(['count' => $count]);
     }
+
+    /**
+     * Toggle wishlist via AJAX
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajaxToggle(Request $request)
+    {
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'product_id' => 'required|exists:products,id'
+        ]);
+        
+        $productId = $request->product_id;
+        
+        $wishlist = Wishlist::where('user_id', Auth::id())
+            ->where('product_id', $productId)
+            ->first();
+        
+        if ($wishlist) {
+            // Hapus dari wishlist
+            $wishlist->delete();
+            $inWishlist = false;
+            $message = 'Produk dihapus dari wishlist';
+        } else {
+            // Tambah ke wishlist
+            Wishlist::create([
+                'user_id' => Auth::id(),
+                'product_id' => $productId
+            ]);
+            $inWishlist = true;
+            $message = 'Produk ditambahkan ke wishlist';
+        }
+
+        return response()->json([
+            'success' => true,
+            'inWishlist' => $inWishlist,
+            'message' => $message
+        ]);
+    }
 }

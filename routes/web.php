@@ -26,6 +26,7 @@ Route::post('/vouchers/claim/{id}', [HomeController::class, 'claimVoucher'])->na
 // Halaman Produk
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/ajax', [ProductController::class, 'ajaxIndex'])->name('products.ajax');
     Route::get('/{slug}', [ProductController::class, 'show'])->name('products.show');
  // Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 });
@@ -37,6 +38,10 @@ Route::middleware(['auth'])->prefix('cart')->group(function () {
     Route::put('/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/{id}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/count', [CartController::class, 'getCount'])->name('cart.count'); // Added for navbar badge
+    
+    // AJAX routes
+    Route::put('/{cartItem}/ajax', [CartController::class, 'ajaxUpdate'])->name('cart.ajax.update');
+    Route::delete('/{cartItem}/ajax', [CartController::class, 'ajaxRemove'])->name('cart.ajax.remove');
 });
 
 // Direct Checkout (Beli Langsung dari Detail Produk)
@@ -56,6 +61,9 @@ Route::middleware(['auth'])->prefix('api')->group(function () {
     Route::delete('/addresses/{id}', [CheckoutController::class, 'deleteAddress'])->name('api.addresses.delete');
     Route::post('/shipping-cost', [CheckoutController::class, 'getShippingCost'])->name('api.shipping-cost');
 });
+
+// Live Search API (publik, tanpa auth)
+Route::get('/api/search/live', [ProductController::class, 'liveSearch'])->middleware('web')->name('api.search.live');
 
 // Midtrans payment notification (webhook)
 Route::post('/midtrans/notification', [MidtransController::class, 'notification'])->name('midtrans.notification');
@@ -113,6 +121,9 @@ Route::middleware(['auth'])->prefix('wishlist')->group(function () {
     Route::post('/toggle/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::delete('/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::get('/count', [WishlistController::class, 'getCount'])->name('wishlist.count');
+    
+    // AJAX routes
+    Route::post('/ajax', [WishlistController::class, 'ajaxToggle'])->name('wishlist.ajax.toggle');
 });
 
 // Check Auth Status (untuk frontend)

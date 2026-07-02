@@ -399,12 +399,7 @@
 </div>
 
 <div class="retur-wrapper">
-    @if(session('error'))
-        <div class="retur-alert-danger">
-            <i class="fas fa-exclamation-circle"></i>
-            <span>{{ session('error') }}</span>
-        </div>
-    @endif
+
 
     @if($errors->any())
         <div class="retur-alert-danger">

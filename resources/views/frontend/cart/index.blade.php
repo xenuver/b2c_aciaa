@@ -320,13 +320,8 @@
     </div>
 </div>
 
-<div class="cart-wrapper">
-    @if(session('success'))
-        <div class="cart-alert">
-            <i class="fas fa-check-circle"></i>
-            {{ session('success') }}
-        </div>
-    @endif
+<div class="cart-wrapper" x-data="cartManager()">
+
 
     @if($cartItems->count() > 0)
         <div class="row g-4">
@@ -337,7 +332,7 @@
                 </div>
 
                 @foreach($cartItems as $item)
-                <div class="cart-card">
+                <div class="cart-card" id="cart-item-{{ $item->id }}">
                     <div class="cart-item">
                         <img src="{{ asset('storage/' . ($item->product->image ?? 'default.jpg')) }}"
                              alt="{{ $item->product->name }}"
@@ -350,28 +345,29 @@
                             <div class="cart-item-price">Rp {{ number_format($item->price, 0, ',', '.') }}</div>
                         </div>
 
-                        <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex align-items-center gap-3" id="cartForm{{ $item->id }}">
-                            @csrf
-                            @method('PUT')
+                        <div class="d-flex align-items-center gap-3">
                             <div class="qty-stepper">
-                                <button type="button" class="qty-btn" onclick="changeQty({{ $item->id }}, -1)">−</button>
-                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" class="qty-val" id="qty{{ $item->id }}" onchange="document.getElementById('cartForm{{ $item->id }}').submit()">
-                                <button type="button" class="qty-btn" onclick="changeQty({{ $item->id }}, 1)">+</button>
+                                <button type="button" class="qty-btn" @click="updateQty({{ $item->id }}, -1)" :disabled="isUpdating" aria-label="Kurangi kuantitas {{ $item->product->name }}">−</button>
+                                <input type="number" value="{{ $item->quantity }}" min="1" class="qty-val" id="qty{{ $item->id }}" @change="changeQty({{ $item->id }}, $event.target.value)" :disabled="isUpdating" aria-label="Kuantitas {{ $item->product->name }}">
+                                <button type="button" class="qty-btn" @click="updateQty({{ $item->id }}, 1)" :disabled="isUpdating" aria-label="Tambah kuantitas {{ $item->product->name }}">+</button>
                             </div>
-                        </form>
+                        </div>
 
                         <div class="cart-item-subtotal d-none d-md-block">
                             <div class="label">Subtotal</div>
-                            <div class="value">Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</div>
+                            <div class="value" id="subtotal{{ $item->id }}">Rp {{ number_format($item->quantity * $item->price, 0, ',', '.') }}</div>
                         </div>
 
-                        <form action="{{ route('cart.remove', $item->id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-remove" onclick="return confirm('Hapus produk ini dari keranjang?')" title="Hapus">
+                        <div x-data="{ confirming: false }" class="d-flex align-items-center" style="min-width: 120px; justify-content: flex-end;">
+                            <button x-show="!confirming" @click="confirming = true" type="button" class="btn-remove" title="Hapus" aria-label="Hapus {{ $item->product->name }} dari keranjang">
                                 <i class="fas fa-trash-alt" style="font-size:0.85rem;"></i>
                             </button>
-                        </form>
+                            <div x-show="confirming" style="display:none;" class="d-flex align-items-center gap-1">
+                                <span style="font-size: 0.75rem; color: #dc2626; margin-right: 4px;">Hapus?</span>
+                                <button type="button" @click="removeItem({{ $item->id }})" class="btn btn-sm btn-danger" style="padding: 2px 6px; font-size:0.75rem; border-radius: 6px;">Ya</button>
+                                <button type="button" @click="confirming = false" class="btn btn-sm btn-light" style="padding: 2px 6px; font-size:0.75rem; border-radius: 6px;">Batal</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endforeach
@@ -386,7 +382,7 @@
 
                     <div class="summary-row">
                         <span>Subtotal ({{ $cartItems->count() }} produk)</span>
-                        <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
+                        <span id="cart-total-top">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
                     <div class="summary-row">
                         <span>Estimasi Ongkir</span>
@@ -395,7 +391,7 @@
 
                     <div class="summary-row total">
                         <span>Total</span>
-                        <span class="summary-val">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                        <span class="summary-val" id="cart-total">Rp {{ number_format($total, 0, ',', '.') }}</span>
                     </div>
 
                     <a href="{{ route('checkout.index') }}" class="btn-checkout">
@@ -423,14 +419,74 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-function changeQty(id, delta) {
-    const input = document.getElementById('qty' + id);
-    let val = parseInt(input.value) || 1;
-    val += delta;
-    if (val < 1) val = 1;
-    input.value = val;
-    document.getElementById('cartForm' + id).submit();
+function cartManager() {
+    return {
+        isUpdating: false,
+        updateQty(id, delta) {
+            if (this.isUpdating) return;
+            const input = document.getElementById('qty' + id);
+            let val = parseInt(input.value) || 1;
+            val += delta;
+            if (val < 1) val = 1;
+            input.value = val;
+            
+            this.sendUpdate(id, val);
+        },
+        changeQty(id, val) {
+            let quantity = parseInt(val) || 1;
+            if (quantity < 1) quantity = 1;
+            document.getElementById('qty' + id).value = quantity;
+            this.sendUpdate(id, quantity);
+        },
+        sendUpdate(id, quantity) {
+            this.isUpdating = true;
+            axios.put(`/cart/${id}/ajax`, { quantity: quantity })
+                .then(res => {
+                    if(res.data.success) {
+                        document.getElementById('subtotal' + id).innerText = 'Rp ' + this.formatNumber(res.data.subtotal);
+                        document.getElementById('cart-total').innerText = 'Rp ' + this.formatNumber(res.data.cart_total);
+                        document.getElementById('cart-total-top').innerText = 'Rp ' + this.formatNumber(res.data.cart_total);
+                        window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'success', message: res.data.message } }));
+                        window.dispatchEvent(new CustomEvent('cart-updated', { detail: res.data.cart_count }));
+                    }
+                })
+                .catch(err => {
+                    window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: 'Gagal memperbarui keranjang' } }));
+                })
+                .finally(() => {
+                    this.isUpdating = false;
+                });
+        },
+        removeItem(id) {
+            if(this.isUpdating) return;
+            this.isUpdating = true;
+            axios.delete(`/cart/${id}/ajax`)
+                .then(res => {
+                    if(res.data.success) {
+                        document.getElementById('cart-item-' + id).remove();
+                        document.getElementById('cart-total').innerText = 'Rp ' + this.formatNumber(res.data.cart_total);
+                        document.getElementById('cart-total-top').innerText = 'Rp ' + this.formatNumber(res.data.cart_total);
+                        window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'success', message: res.data.message } }));
+                        window.dispatchEvent(new CustomEvent('cart-updated', { detail: res.data.cart_count }));
+                        
+                        if(res.data.cart_count == 0) {
+                            window.location.reload();
+                        }
+                    }
+                })
+                .catch(err => {
+                    window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: 'Gagal menghapus produk' } }));
+                })
+                .finally(() => {
+                    this.isUpdating = false;
+                });
+        },
+        formatNumber(num) {
+            return new Intl.NumberFormat('id-ID').format(num);
+        }
+    }
 }
 </script>
 @endpush

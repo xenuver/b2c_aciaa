@@ -202,16 +202,7 @@
 @section('content')
 <div class="profile-page">
     <div class="container">
-        @if (session('status') === 'profile-updated')
-            <div class="alert alert-success rounded-4 border-0 shadow-sm">
-                <i class="fas fa-check-circle me-2"></i> Profil berhasil diperbarui.
-            </div>
-        @endif
-        @if (session('status') === 'password-updated')
-            <div class="alert alert-success rounded-4 border-0 shadow-sm">
-                <i class="fas fa-check-circle me-2"></i> Password berhasil diperbarui.
-            </div>
-        @endif
+
 
         <div class="profile-hero mb-4">
             <div class="profile-hero-inner">

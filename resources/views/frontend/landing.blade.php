@@ -72,7 +72,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 mb-5 mb-lg-0">
                     <div class="manifesto-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800" alt="Elegant Style" class="img-fluid manifesto-single-img">
+                        <img src="{{ asset('images/manifesto.jpg') }}" onerror="this.src='{{ asset('storage/default.jpg') }}'" alt="Elegant Style" class="img-fluid manifesto-single-img">
                     </div>
                 </div>
                 <div class="col-lg-6 offset-lg-1">
@@ -166,15 +166,60 @@
     {{-- Testimonials Section --}}
     <div class="landing-testimonials">
         <div class="container">
-            <div class="testimonial-single-wrapper text-center">
+            <div class="section-header text-center mb-5">
                 <span class="section-tag text-center">Client Voices</span>
-                <i class="fas fa-quote-left quote-large-icon my-4"></i>
-                <blockquote class="testimonial-quote">
-                    "Bahan pakaian dari Aciaa benar-benar premium, jahitan yang sangat rapi, serta potongan yang modern. Pakaiannya sangat menunjang penampilan profesional saya sehari-hari."
-                </blockquote>
-                <div class="testimonial-author-info mt-4">
-                    <span class="author-name">— Gev</span>
-                    <span class="author-title">Creative Director & Customer</span>
+                <i class="fas fa-quote-left quote-large-icon my-2 d-block mx-auto"></i>
+            </div>
+            
+            <div id="testimonialCarousel" class="carousel slide testimonial-single-wrapper text-center mx-auto" data-bs-ride="carousel" data-bs-interval="4000">
+                <div class="carousel-inner">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <blockquote class="testimonial-quote">
+                            "Bahan pakaian dari Aciaa benar-benar premium, jahitan yang sangat rapi, serta potongan yang modern. Pakaiannya sangat menunjang penampilan profesional saya sehari-hari."
+                        </blockquote>
+                        <div class="testimonial-author-info mt-4">
+                            <span class="author-name">— Gev</span>
+                            <span class="author-title">Creative Director & Customer</span>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <blockquote class="testimonial-quote">
+                            "Saya sangat menyukai desain minimalis dan elegan dari setiap koleksi. Sangat nyaman dipakai seharian tanpa membuat gerah. Definitely my go-to store!"
+                        </blockquote>
+                        <div class="testimonial-author-info mt-4">
+                            <span class="author-name">— Sarah M.</span>
+                            <span class="author-title">Entrepreneur</span>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <blockquote class="testimonial-quote">
+                            "Pelayanan yang cepat dan packaging yang mewah. Setiap membuka paket dari Aciaa selalu memberikan pengalaman yang menyenangkan. Kualitas tak pernah mengecewakan."
+                        </blockquote>
+                        <div class="testimonial-author-info mt-4">
+                            <span class="author-name">— Dian P.</span>
+                            <span class="author-title">Fashion Enthusiast</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Controls for Carousel -->
+                <button class="carousel-control-prev d-none d-md-flex" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="width: 50px; left: -50px;">
+                    <i class="fas fa-chevron-left text-dark fs-4"></i>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next d-none d-md-flex" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" style="width: 50px; right: -50px;">
+                    <i class="fas fa-chevron-right text-dark fs-4"></i>
+                    <span class="visually-hidden">Next</span>
+                </button>
+                
+                <!-- Indicators for Carousel -->
+                <div class="carousel-indicators" style="position: static; margin-top: 2rem;">
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active bg-dark" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1" class="bg-dark" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="2" class="bg-dark" aria-label="Slide 3"></button>
                 </div>
             </div>
         </div>
@@ -191,7 +236,7 @@
             <div class="row g-4">
                 <div class="col-md-6">
                     <div class="lookbook-banner-card">
-                        <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800" alt="Lookbook 1" class="lookbook-img">
+                        <img src="{{ asset('images/lookbook1.jpg') }}" onerror="this.src='{{ asset('storage/default.jpg') }}'" alt="Lookbook 1" class="lookbook-img">
                         <div class="lookbook-overlay"></div>
                         <div class="lookbook-content">
                             <span class="lookbook-tag">Minimalist Silhouette</span>
@@ -202,7 +247,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="lookbook-banner-card">
-                        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800" alt="Lookbook 2" class="lookbook-img">
+                        <img src="{{ asset('images/lookbook2.jpg') }}" onerror="this.src='{{ asset('storage/default.jpg') }}'" alt="Lookbook 2" class="lookbook-img">
                         <div class="lookbook-overlay"></div>
                         <div class="lookbook-content">
                             <span class="lookbook-tag">Urban Essentials</span>
@@ -390,7 +435,9 @@
 .btn-primary-custom {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 1rem 2.25rem;
+    min-height: 44px;
     background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
     color: white !important;
     text-decoration: none;
@@ -410,7 +457,9 @@
 .btn-secondary-custom {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 1rem 2.25rem;
+    min-height: 44px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -522,6 +571,31 @@
     .carousel-ctrl-prev,
     .carousel-ctrl-next {
         display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-title-custom {
+        font-size: 1.8rem;
+    }
+    .carousel-desc-custom {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    .btn-primary-custom, .btn-secondary-custom {
+        font-size: 14px;
+        padding: 0.75rem 1.5rem;
+        width: 100%;
+        min-height: 44px;
+    }
+    .manifesto-title {
+        font-size: 2rem;
+    }
+    .section-title {
+        font-size: 1.8rem;
+    }
+    .testimonial-quote {
+        font-size: 1.25rem;
     }
 }
 

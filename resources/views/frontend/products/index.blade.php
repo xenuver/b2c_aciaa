@@ -13,9 +13,172 @@
             </ol>
         </nav>
 
+        <!-- Bootstrap 5 Offcanvas Filter (Mobile) + Main Layout -->
+        <div x-data="productFilter()">
+        <!-- Bootstrap 5 Offcanvas Filter (Mobile) -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+            <div class="offcanvas-header" style="border-bottom: 1px solid #eee;">
+                <h5 class="offcanvas-title" id="filterOffcanvasLabel" style="font-weight: 600; color: #1a1a1a;">
+                    <i data-lucide="sliders-horizontal" style="width:18px;height:18px;margin-right:8px;vertical-align:middle;"></i>
+                    Filters
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Tutup filter"></button>
+            </div>
+            <div class="offcanvas-body" style="padding: 1.25rem;">
+                <div class="filter-sidebar" style="box-shadow:none; padding:0; border-radius:0; position:static;">
+                    <div class="filter-header" style="margin-bottom:1rem;">
+                        <button class="filter-reset" id="resetFiltersOffcanvasBtn">
+                            <i data-lucide="rotate-ccw"></i>
+                            <span>Reset All</span>
+                        </button>
+                    </div>
+
+                    <!-- Filter Kategori -->
+                    <div class="filter-section">
+                        <h4 class="filter-section-title">
+                            <i data-lucide="grid"></i>
+                            Categories
+                        </h4>
+                        <div class="category-list">
+                            <a href="{{ route('products.index') }}" 
+                               class="category-link {{ !request('category') ? 'active' : '' }}"
+                               :class="{ 'active': category === '', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) { category = ''; $dispatch('close-offcanvas') }">
+                                <span>All Products</span>
+                                <span class="category-count">{{ $allProductsCount ?? 0 }}</span>
+                            </a>
+                            @foreach($categories as $category)
+                            <a href="{{ route('products.index', ['category' => $category->slug]) }}" 
+                               class="category-link {{ request('category') == $category->slug ? 'active' : '' }}"
+                               :class="{ 'active': category === '{{ $category->slug }}', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) { category = '{{ $category->slug }}'; $dispatch('close-offcanvas') }">
+                                <span>{{ $category->name }}</span>
+                                <span class="category-count">{{ $category->products_count ?? 0 }}</span>
+                            </a>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Filter Harga dengan Slider -->
+                    <div class="filter-section">
+                        <h4 class="filter-section-title">
+                            <i data-lucide="dollar-sign"></i>
+                            Price Range
+                        </h4>
+                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterFormOffcanvas">
+                            @foreach(request()->except(['min_price', 'max_price', 'page']) as $key => $value)
+                                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                            @endforeach
+                            
+                            <div class="price-range-container">
+                                <div class="price-inputs">
+                                    <div class="price-input-group">
+                                        <label>Min</label>
+                                        <input type="number" name="min_price" id="minPriceOffcanvas" class="price-input" placeholder="0" value="{{ request('min_price') }}" x-model="minPrice" :disabled="loading">
+                                    </div>
+                                    <span class="price-separator">—</span>
+                                    <div class="price-input-group">
+                                        <label>Max</label>
+                                        <input type="number" name="max_price" id="maxPriceOffcanvas" class="price-input" placeholder="1.000.000" value="{{ request('max_price') }}" x-model="maxPrice" :disabled="loading">
+                                    </div>
+                                </div>
+                                <div class="price-slider-container">
+                                    <div class="price-track"></div>
+                                    <div class="price-range"></div>
+                                    <input type="range" id="minSliderOffcanvas" min="0" max="1000000" step="10000" value="{{ request('min_price', 0) }}" :disabled="loading">
+                                    <input type="range" id="maxSliderOffcanvas" min="0" max="1000000" step="10000" value="{{ request('max_price', 1000000) }}" :disabled="loading">
+                                </div>
+                            </div>
+                            <button type="submit" class="filter-apply-btn" :disabled="loading" :class="{ 'filter-btn-loading': loading }">
+                                <span x-show="!loading">Apply Filter</span>
+                                <span x-show="loading" style="display:none;">
+                                    <svg class="filter-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="31.4 31.4" style="transform-origin:center;animation:filter-spin 0.8s linear infinite;"/>
+                                    </svg>
+                                    Loading...
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Sorting -->
+                    <div class="filter-section">
+                        <h4 class="filter-section-title">
+                            <i data-lucide="arrow-up-down"></i>
+                            Sort By
+                        </h4>
+                        <div class="sorting-options">
+                            <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'), ['sort' => 'terbaru'])) }}" 
+                               class="sort-option {{ request('sort') == 'terbaru' || !request('sort') ? 'active' : '' }}"
+                               :class="{ 'active': sort === 'terbaru' || sort === '', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) { sort = 'terbaru'; $dispatch('close-offcanvas') }">
+                                <i data-lucide="zap"></i>
+                                <span>Newest</span>
+                            </a>
+                            <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'), ['sort' => 'termurah'])) }}" 
+                               class="sort-option {{ request('sort') == 'termurah' ? 'active' : '' }}"
+                               :class="{ 'active': sort === 'termurah', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) { sort = 'termurah'; $dispatch('close-offcanvas') }">
+                                <i data-lucide="arrow-up"></i>
+                                <span>Price: Low to High</span>
+                            </a>
+                            <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'), ['sort' => 'termahal'])) }}" 
+                               class="sort-option {{ request('sort') == 'termahal' ? 'active' : '' }}"
+                               :class="{ 'active': sort === 'termahal', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) { sort = 'termahal'; $dispatch('close-offcanvas') }">
+                                <i data-lucide="arrow-down"></i>
+                                <span>Price: High to Low</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Active Filters -->
+                    @if(request('category') || request('min_price') || request('max_price') || request('sort'))
+                    <div class="filter-section active-filters">
+                        <h4 class="filter-section-title">
+                            <i data-lucide="filter"></i>
+                            Active Filters
+                        </h4>
+                        <div class="active-filters-list">
+                            @if(request('category'))
+                                <span class="filter-tag">
+                                    Category: {{ \App\Models\Category::where('slug', request('category'))->first()->name ?? request('category') }}
+                                    <a href="{{ route('products.index', array_merge(request()->except('category', 'page'))) }}" class="remove-filter">×</a>
+                                </span>
+                            @endif
+                            @if(request('min_price') || request('max_price'))
+                                <span class="filter-tag">
+                                    Price: {{ request('min_price') ? 'Rp ' . number_format(request('min_price'), 0, ',', '.') : '0' }} - {{ request('max_price') ? 'Rp ' . number_format(request('max_price'), 0, ',', '.') : '∞' }}
+                                    <a href="{{ route('products.index', array_merge(request()->except(['min_price', 'max_price', 'page']))) }}" class="remove-filter">×</a>
+                                </span>
+                            @endif
+                            @if(request('sort'))
+                                <span class="filter-tag">
+                                    Sort: {{ request('sort') == 'terbaru' ? 'Newest' : (request('sort') == 'termurah' ? 'Price: Low to High' : 'Price: High to Low') }}
+                                    <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'))) }}" class="remove-filter">×</a>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <!-- /Offcanvas Filter -->
+
         <div class="row g-4">
-            <!-- Sidebar Filter - Modern & Elegant -->
-            <div class="col-lg-3">
+            <!-- Sidebar Filter - Modern & Elegant (hidden on mobile) -->
+            <div class="col-lg-3 d-none d-lg-block">
                 <div class="filter-sidebar">
                     <div class="filter-header">
                         <h3 class="filter-title">Filters</h3>
@@ -32,12 +195,22 @@
                             Categories
                         </h4>
                         <div class="category-list">
-                            <a href="{{ route('products.index') }}" class="category-link {{ !request('category') ? 'active' : '' }}">
+                            <a href="{{ route('products.index') }}" 
+                               class="category-link {{ !request('category') ? 'active' : '' }}"
+                               :class="{ 'active': category === '', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) category = ''">
                                 <span>All Products</span>
                                 <span class="category-count">{{ $allProductsCount ?? 0 }}</span>
                             </a>
                             @foreach($categories as $category)
-                            <a href="{{ route('products.index', ['category' => $category->slug]) }}" class="category-link {{ request('category') == $category->slug ? 'active' : '' }}">
+                            <a href="{{ route('products.index', ['category' => $category->slug]) }}" 
+                               class="category-link {{ request('category') == $category->slug ? 'active' : '' }}"
+                               :class="{ 'active': category === '{{ $category->slug }}', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) category = '{{ $category->slug }}'">
                                 <span>{{ $category->name }}</span>
                                 <span class="category-count">{{ $category->products_count ?? 0 }}</span>
                             </a>
@@ -60,22 +233,30 @@
                                 <div class="price-inputs">
                                     <div class="price-input-group">
                                         <label>Min</label>
-                                        <input type="number" name="min_price" id="minPrice" class="price-input" placeholder="0" value="{{ request('min_price') }}">
+                                        <input type="number" name="min_price" id="minPrice" class="price-input" placeholder="0" value="{{ request('min_price') }}" x-model="minPrice" :disabled="loading">
                                     </div>
                                     <span class="price-separator">—</span>
                                     <div class="price-input-group">
                                         <label>Max</label>
-                                        <input type="number" name="max_price" id="maxPrice" class="price-input" placeholder="1.000.000" value="{{ request('max_price') }}">
+                                        <input type="number" name="max_price" id="maxPrice" class="price-input" placeholder="1.000.000" value="{{ request('max_price') }}" x-model="maxPrice" :disabled="loading">
                                     </div>
                                 </div>
                                 <div class="price-slider-container">
                                     <div class="price-track"></div>
                                     <div class="price-range"></div>
-                                    <input type="range" id="minSlider" min="0" max="1000000" step="10000" value="{{ request('min_price', 0) }}">
-                                    <input type="range" id="maxSlider" min="0" max="1000000" step="10000" value="{{ request('max_price', 1000000) }}">
+                                    <input type="range" id="minSlider" min="0" max="1000000" step="10000" value="{{ request('min_price', 0) }}" :disabled="loading">
+                                    <input type="range" id="maxSlider" min="0" max="1000000" step="10000" value="{{ request('max_price', 1000000) }}" :disabled="loading">
                                 </div>
                             </div>
-                            <button type="submit" class="filter-apply-btn">Apply Filter</button>
+                            <button type="submit" class="filter-apply-btn" :disabled="loading" :class="{ 'filter-btn-loading': loading }">
+                                <span x-show="!loading">Apply Filter</span>
+                                <span x-show="loading" style="display:none;">
+                                    <svg class="filter-spinner" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="31.4 31.4" style="transform-origin:center;animation:filter-spin 0.8s linear infinite;"/>
+                                    </svg>
+                                    Loading...
+                                </span>
+                            </button>
                         </form>
                     </div>
 
@@ -87,17 +268,29 @@
                         </h4>
                         <div class="sorting-options">
                             <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'), ['sort' => 'terbaru'])) }}" 
-                               class="sort-option {{ request('sort') == 'terbaru' || !request('sort') ? 'active' : '' }}">
+                               class="sort-option {{ request('sort') == 'terbaru' || !request('sort') ? 'active' : '' }}"
+                               :class="{ 'active': sort === 'terbaru' || sort === '', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) sort = 'terbaru'">
                                 <i data-lucide="zap"></i>
                                 <span>Newest</span>
                             </a>
                             <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'), ['sort' => 'termurah'])) }}" 
-                               class="sort-option {{ request('sort') == 'termurah' ? 'active' : '' }}">
+                               class="sort-option {{ request('sort') == 'termurah' ? 'active' : '' }}"
+                               :class="{ 'active': sort === 'termurah', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) sort = 'termurah'">
                                 <i data-lucide="arrow-up"></i>
                                 <span>Price: Low to High</span>
                             </a>
                             <a href="{{ route('products.index', array_merge(request()->except('sort', 'page'), ['sort' => 'termahal'])) }}" 
-                               class="sort-option {{ request('sort') == 'termahal' ? 'active' : '' }}">
+                               class="sort-option {{ request('sort') == 'termahal' ? 'active' : '' }}"
+                               :class="{ 'active': sort === 'termahal', 'filter-disabled': loading }"
+                               :aria-disabled="loading"
+                               :tabindex="loading ? -1 : 0"
+                               @click.prevent="if (!loading) sort = 'termahal'">
                                 <i data-lucide="arrow-down"></i>
                                 <span>Price: High to Low</span>
                             </a>
@@ -140,9 +333,23 @@
             <div class="col-lg-9">
                 <!-- Products Header -->
                 <div class="products-header">
+                    <!-- Mobile Filter Toggle Button -->
+                    <button class="btn btn-filter-mobile d-block d-lg-none"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#filterOffcanvas"
+                            aria-controls="filterOffcanvas"
+                            aria-label="Buka filter produk">
+                        <i data-lucide="sliders-horizontal"></i>
+                        <span>Filter</span>
+                        @if(request('category') || request('min_price') || request('max_price') || request('sort'))
+                            <span class="filter-active-dot"></span>
+                        @endif
+                    </button>
+
                     <div class="products-count">
                         <i data-lucide="shopping-bag"></i>
-                        <span>{{ $products->total() }} Products</span>
+                        <span id="productCount">{{ $products->total() }} Products</span>
                     </div>
 
                     <!-- Search bar for products page -->
@@ -160,14 +367,17 @@
                                        id="productsSearchInput" 
                                        class="products-search-input" 
                                        placeholder="Cari produk..." 
-                                       value="{{ request('search') }}">
+                                       value="{{ request('search') }}"
+                                       x-model="search"
+                                       :disabled="loading"
+                                       :class="{ 'input-loading': loading }">
                                 <button type="button" 
                                         id="clearProductsSearchBtn" 
                                         class="clear-products-search-btn" 
                                         style="display: {{ request('search') ? 'flex' : 'none' }};">
                                     <i data-lucide="x"></i>
                                 </button>
-                                <button type="submit" class="products-search-btn">Cari</button>
+                                <button type="submit" class="products-search-btn" :disabled="loading">Cari</button>
                             </div>
                         </form>
                     </div>
@@ -191,7 +401,8 @@
                             <span>Flash Sale</span>
                         </div>
                         <h2 class="promo-section-title">Hot Deals</h2>
-                        <div class="promo-timer" id="promoTimer">
+                        @if(isset($flashSaleEnd) && \Carbon\Carbon::parse($flashSaleEnd)->isFuture())
+                        <div class="promo-timer" id="promoTimer" data-end="{{ \Carbon\Carbon::parse($flashSaleEnd)->toIso8601String() }}">
                             <div class="timer-block">
                                 <span class="timer-value" id="promoHours">00</span>
                                 <span class="timer-label">Hours</span>
@@ -207,8 +418,9 @@
                                 <span class="timer-label">Secs</span>
                             </div>
                         </div>
+                        @endif
                     </div>
-                    <div class="product-grid" id="productGrid">
+                    <div class="product-grid" id="promoProductGrid">
                         @foreach($promoProducts as $product)
                         <div class="product-card promo-card" data-product-id="{{ $product->id }}">
                             <div class="product-image-wrapper">
@@ -217,8 +429,13 @@
                                     <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                         <i data-lucide="eye"></i>
                                     </button>
-                                    <button class="action-btn wishlist {{ $product->isInWishlist() ? 'active' : '' }}" data-product="{{ $product->id }}">
-                                        <i data-lucide="heart"></i>
+                                    <button class="action-btn wishlist"
+                                        x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                        :class="{ 'active': inWishlist }"
+                                        @click.prevent="toggle({{ $product->id }})"
+                                        :disabled="isProcessing"
+                                        type="button">
+                                        <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
                                     </button>
                                 </div>
                                 <div class="product-badges">
@@ -254,7 +471,7 @@
                         <h2 class="promo-section-title" style="font-size: 1.8rem; font-weight: 600; margin: 0; color: #1a1a1a;">Rekomendasi Untuk Anda</h2>
                         <p class="section-subtitle text-muted" style="margin: 0; font-size: 0.9rem;">{{ $recoSubtitle }}</p>
                     </div>
-                    <div class="product-grid" id="productGrid">
+                    <div class="product-grid" id="recommendationsProductGrid">
                         @foreach($recommendations as $product)
                         <div class="product-card" data-product-id="{{ $product->id }}">
                             <div class="product-image-wrapper">
@@ -263,8 +480,13 @@
                                     <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                         <i data-lucide="eye"></i>
                                     </button>
-                                    <button class="action-btn wishlist {{ $product->isInWishlist() ? 'active' : '' }}" data-product="{{ $product->id }}">
-                                        <i data-lucide="heart"></i>
+                                    <button class="action-btn wishlist"
+                                        x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                        :class="{ 'active': inWishlist }"
+                                        @click.prevent="toggle({{ $product->id }})"
+                                        :disabled="isProcessing"
+                                        type="button">
+                                        <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
                                     </button>
                                 </div>
                                 @if($product->discount_price)
@@ -298,17 +520,28 @@
                         <div class="section-divider"></div>
                     </div>
                     
+                    {{-- Skeleton loader: tampil saat AJAX loading --}}
+                    <div x-show="loading" x-cloak>
+                        <x-skeleton-loader :count="8" />
+                    </div>
+
+                    {{-- Product grid: tampil saat tidak loading --}}
+                    <div x-show="!loading">
                     <div class="product-grid" id="productGrid">
-                        @forelse($products as $product)
-                        <div class="product-card" data-product-id="{{ $product->id }}">
+                        @forelse($products as $product)                        <div class="product-card" data-product-id="{{ $product->id }}">
                             <div class="product-image-wrapper">
                                 <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
                                 <div class="product-actions">
                                     <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                         <i data-lucide="eye"></i>
                                     </button>
-                                    <button class="action-btn wishlist {{ $product->isInWishlist() ? 'active' : '' }}" data-product="{{ $product->id }}">
-                                        <i data-lucide="heart"></i>
+                                    <button class="action-btn wishlist"
+                                        x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                        :class="{ 'active': inWishlist }"
+                                        @click.prevent="toggle({{ $product->id }})"
+                                        :disabled="isProcessing"
+                                        type="button">
+                                        <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
                                     </button>
                                 </div>
                                 @if($product->discount_price)
@@ -338,17 +571,19 @@
                             <a href="{{ route('products.index') }}" class="empty-state-btn">Clear Filters</a>
                         </div>
                         @endforelse
-                    </div>
+                    </div>{{-- end product-grid --}}
+                    </div>{{-- end x-show="!loading" --}}
  
-                    <!-- Pagination -->
-                    @if($products->hasPages())
-                    <div class="pagination-wrapper">
-                        {{ $products->withQueryString()->links() }}
+                    <!-- Pagination — always rendered so AJAX can update it -->
+                    <div class="pagination-wrapper" id="paginationArea" @if(!$products->hasPages()) style="display:none;" @endif>
+                        @if($products->hasPages())
+                            {{ $products->withQueryString()->links() }}
+                        @endif
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
+        </div>{{-- end x-data="productFilter()" wrapper --}}
     </div>
 </div>
 
@@ -680,6 +915,52 @@
     border-bottom: 1px solid #e0e0e0;
     flex-wrap: wrap;
     gap: 12px;
+}
+
+/* Mobile Filter Toggle Button */
+.btn-filter-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 1rem;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    min-height: 44px;
+}
+
+.btn-filter-mobile:hover,
+.btn-filter-mobile:focus {
+    background: #333;
+    color: #fff;
+    outline: 2px solid #d4a5a5;
+    outline-offset: 2px;
+}
+
+.btn-filter-mobile:active {
+    transform: scale(0.97);
+}
+
+.btn-filter-mobile i {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.filter-active-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #d4a5a5;
+    border-radius: 50%;
+    margin-left: 2px;
+    flex-shrink: 0;
 }
 
 .products-count {
@@ -1224,6 +1505,29 @@
     }
 }
 
+@media (max-width: 576px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .product-card {
+        margin-bottom: 0;
+    }
+    
+    .product-info {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .product-title {
+        font-size: 0.85rem;
+    }
+    
+    .price-current, .price-sale {
+        font-size: 0.9rem;
+    }
+}
+
 /* Wishlist Active State */
 .action-btn.wishlist.active {
     background: #fce4ec;
@@ -1232,6 +1536,60 @@
 .action-btn.wishlist.active svg {
     fill: #d4a5a5 !important;
     stroke: #d4a5a5 !important;
+}
+
+/* ===== Loading State: Filter Disabled ===== */
+[x-cloak] { display: none !important; }
+
+.filter-disabled {
+    opacity: 0.45;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
+
+.filter-apply-btn:disabled,
+.products-search-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.filter-apply-btn:disabled:hover {
+    background: #1a1a1a;
+    transform: none;
+}
+
+.filter-btn-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.filter-spinner {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+@keyframes filter-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.price-input:disabled,
+.price-slider-container input[type="range"]:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.products-search-input:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.input-loading {
+    background-color: #f5f5f5 !important;
 }
 
 /* Login Required Modal Style */
@@ -1352,6 +1710,121 @@
 </style>
 
 <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+// productFilter() Alpine.js component — Task 3.4
+// $watch on all 5 filter properties with 400ms debounce → Axios GET /products/ajax
+function productFilter() {
+    return {
+        search: '{{ request("search", "") }}',
+        category: '{{ request("category", "") }}',
+        minPrice: '{{ request("min_price", "") }}',
+        maxPrice: '{{ request("max_price", "") }}',
+        sort: '{{ request("sort", "terbaru") }}',
+        loading: false,
+
+        // Debounce timer handle (shared across all watches)
+        _debounceTimer: null,
+
+        init() {
+            // Watch each filter property independently — each triggers a debounced fetch
+            this.$watch('search',   () => this._debouncedFetch());
+            this.$watch('category', () => this._debouncedFetch());
+            this.$watch('minPrice', () => this._debouncedFetch());
+            this.$watch('maxPrice', () => this._debouncedFetch());
+            this.$watch('sort',     () => this._debouncedFetch());
+
+            // Expose clearFilters to global scope so injected empty-state button can call it
+            window._clearProductFilters = () => this.clearFilters();
+        },
+
+        _debouncedFetch() {
+            clearTimeout(this._debounceTimer);
+            this._debounceTimer = setTimeout(() => {
+                this.fetchProducts();
+            }, 400);
+        },
+
+        clearFilters() {
+            this.search    = '';
+            this.category  = '';
+            this.minPrice  = '';
+            this.maxPrice  = '';
+            this.sort      = 'terbaru';
+        },
+
+        fetchProducts() {
+            this.loading = true;
+
+            axios.get('/products/ajax', {
+                params: {
+                    search:    this.search,
+                    category:  this.category,
+                    min_price: this.minPrice,
+                    max_price: this.maxPrice,
+                    sort:      this.sort,
+                    page:      1,
+                }
+            })
+            .then(response => {
+                const data = response.data;
+
+                // Inject rendered product cards into #productGrid
+                const productGrid = document.getElementById('productGrid');
+                if (productGrid) {
+                    if (data.total === 0) {
+                        // Show friendly empty state when no results found
+                        productGrid.innerHTML = `
+                            <div class="empty-state" style="grid-column: 1 / -1; width: 100%;">
+                                <i data-lucide="search-x"></i>
+                                <h3>Produk tidak ditemukan</h3>
+                                <p>Coba ubah kata kunci pencarian atau hapus filter yang aktif.</p>
+                                <button
+                                    type="button"
+                                    class="empty-state-btn"
+                                    style="border: none; cursor: pointer;"
+                                    onclick="window._clearProductFilters && window._clearProductFilters()">
+                                    Clear Filters
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        productGrid.innerHTML = data.html;
+                    }
+                }
+
+                // Update product count text in #productCount
+                const productCount = document.getElementById('productCount');
+                if (productCount) {
+                    productCount.textContent = data.total + ' Products';
+                }
+
+                // Update or hide #paginationArea
+                const paginationArea = document.getElementById('paginationArea');
+                if (paginationArea) {
+                    if (data.pagination) {
+                        paginationArea.innerHTML = data.pagination;
+                        paginationArea.style.display = '';
+                    } else {
+                        paginationArea.innerHTML = '';
+                        paginationArea.style.display = 'none';
+                    }
+                }
+
+                // Re-initialize Lucide icons for newly injected HTML
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            })
+            .catch(error => {
+                console.error('productFilter fetchProducts error:', error);
+            })
+            .finally(() => {
+                this.loading = false;
+            });
+        },
+    };
+}
+</script>
 <script>
 (function() {
     // Initialize Lucide icons
@@ -1594,104 +2067,7 @@
         overlay.addEventListener('click', closeModal);
     }
 
-    // Wishlist functionality (Real AJAX)
-    const wishlistBtns = document.querySelectorAll('.wishlist');
-    wishlistBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const productId = btn.getAttribute('data-product');
-            if (!productId) return;
-            
-            // Cek status autentikasi terlebih dahulu
-            fetch('/check-auth')
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.logged_in) {
-                        showLoginModal(productId);
-                        return;
-                    }
-                    
-                    // POST to wishlist toggle route
-                    fetch(`/wishlist/toggle/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        // Toggle class active untuk semua tombol produk ini di halaman
-                        const targetBtns = document.querySelectorAll(`.wishlist[data-product="${productId}"]`);
-                        
-                        targetBtns.forEach(targetBtn => {
-                            const icon = targetBtn.querySelector('i') || targetBtn.querySelector('svg');
-                            
-                            if (result.status === 'added') {
-                                targetBtn.classList.add('active');
-                                if (icon) {
-                                    icon.classList.add('fill-current');
-                                    icon.classList.add('text-danger');
-                                }
-                            } else {
-                                targetBtn.classList.remove('active');
-                                if (icon) {
-                                    icon.classList.remove('fill-current');
-                                    icon.classList.remove('text-danger');
-                                }
-                            }
-                        });
-                        
-                        // Animate clicked button
-                        btn.style.transform = 'scale(1.25)';
-                        setTimeout(() => {
-                            btn.style.transform = 'scale(1)';
-                        }, 200);
-                        
-                        // Update badge wishlist count in navbar
-                        const wishBadge = document.getElementById('wishlistCount');
-                        const mobileWishBadge = document.getElementById('mobileWishlistCount');
-                        
-                        if (wishBadge) {
-                            if (result.count > 0) {
-                                wishBadge.textContent = result.count;
-                                wishBadge.style.display = 'inline-flex';
-                            } else {
-                                wishBadge.style.display = 'none';
-                            }
-                        }
-                        
-                        if (mobileWishBadge) {
-                            if (result.count > 0) {
-                                mobileWishBadge.textContent = result.count;
-                                mobileWishBadge.style.display = 'inline-block';
-                            } else {
-                                mobileWishBadge.style.display = 'none';
-                            }
-                        }
-                        
-                        // Show toast notification
-                        const toast = document.createElement('div');
-                        toast.className = 'custom-toast';
-                        toast.innerHTML = result.status === 'added' ? '❤️ Ditambahkan ke wishlist!' : '💔 Dihapus dari wishlist';
-                        document.body.appendChild(toast);
-                        
-                        setTimeout(() => {
-                            toast.style.opacity = '0';
-                            setTimeout(() => toast.remove(), 300);
-                        }, 2000);
-                    })
-                    .catch(err => {
-                        console.error('Wishlist AJAX Error:', err);
-                    });
-                })
-                .catch(() => {
-                    showLoginModal(productId);
-                });
-        });
-    });
+
     
     // View toggle (Grid/List)
     const viewBtns = document.querySelectorAll('.view-btn');
@@ -1847,6 +2223,51 @@
         }
     `;
     document.head.appendChild(style);
+
+    // Offcanvas Reset Filters button
+    const resetOffcanvasBtn = document.getElementById('resetFiltersOffcanvasBtn');
+    if (resetOffcanvasBtn) {
+        resetOffcanvasBtn.addEventListener('click', function() {
+            window.location.href = '{{ route("products.index") }}';
+        });
+    }
+
+    // Close offcanvas when a category/sort link inside it fires the 'close-offcanvas' event
+    // (dispatched via Alpine.js @click.prevent="... $dispatch('close-offcanvas')")
+    document.addEventListener('close-offcanvas', function() {
+        const offcanvasEl = document.getElementById('filterOffcanvas');
+        if (offcanvasEl && typeof bootstrap !== 'undefined') {
+            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+            if (bsOffcanvas) {
+                bsOffcanvas.hide();
+            }
+        }
+    });
+
+    // Sync offcanvas price sliders with the main sidebar sliders (if both exist)
+    const minSliderOC = document.getElementById('minSliderOffcanvas');
+    const maxSliderOC = document.getElementById('maxSliderOffcanvas');
+    const minPriceOC  = document.getElementById('minPriceOffcanvas');
+    const maxPriceOC  = document.getElementById('maxPriceOffcanvas');
+
+    if (minSliderOC && maxSliderOC) {
+        function updatePriceRangeOC() {
+            let min = parseInt(minSliderOC.value);
+            let max = parseInt(maxSliderOC.value);
+            if (min > max) { [min, max] = [max, min]; }
+            if (minPriceOC) minPriceOC.value = min;
+            if (maxPriceOC) maxPriceOC.value = max;
+        }
+        minSliderOC.addEventListener('input', function() {
+            if (parseInt(this.value) > parseInt(maxSliderOC.value)) maxSliderOC.value = this.value;
+            updatePriceRangeOC();
+        });
+        maxSliderOC.addEventListener('input', function() {
+            if (parseInt(this.value) < parseInt(minSliderOC.value)) minSliderOC.value = this.value;
+            updatePriceRangeOC();
+        });
+        updatePriceRangeOC();
+    }
 })();
 </script>
 @endsection

@@ -336,12 +336,7 @@
 </div>
 
 <div class="wish-wrapper">
-    @if(session('success'))
-        <div class="wish-alert">
-            <i class="fas fa-check-circle"></i>
-            {{ session('success') }}
-        </div>
-    @endif
+
 
 
     @if($wishlists->count() > 0)
@@ -349,44 +344,119 @@
 
         <div class="row g-3">
             @foreach($wishlists as $wishlist)
+            @php
+                $product = $wishlist->product;
+                $avgRating = $product->ratings_avg_rating ?? $product->average_rating ?? 0;
+                $avgRating = round((float) $avgRating, 1);
+                $fullStars = floor($avgRating);
+                $halfStar = ($avgRating - $fullStars) >= 0.5;
+                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                $categoryName = $product->category->name ?? '';
+                $discountPct = ($product->discount_price && $product->price > 0)
+                                ? round((1 - $product->discount_price / $product->price) * 100)
+                                : 0;
+            @endphp
             <div class="col-xl-3 col-lg-4 col-md-4 col-6 wish-card-col" id="wishlist-card-{{ $wishlist->id }}">
-                <div class="wish-card">
-                    <div class="wish-card-img-wrap">
-                        <button class="wish-remove-btn" onclick="removeWishlist({{ $wishlist->id }})" title="Hapus dari wishlist">
-                            <i class="fas fa-times"></i>
-                        </button>
+                <div class="product-card" data-product-id="{{ $product->id }}">
+                    {{-- Gambar Produk --}}
+                    <div class="product-image-wrapper">
+                        <a href="{{ route('products.show', $product->slug ?? $product->id) }}" class="d-block" aria-label="Lihat detail {{ $product->name }}">
+                            <img
+                                src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}"
+                                alt="{{ $product->name }}"
+                                class="product-image"
+                                onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';"
+                                loading="lazy"
+                            >
+                        </a>
 
-                        @if($wishlist->product->discount_price)
-                            @php
-                                $discount = round((($wishlist->product->price - $wishlist->product->discount_price) / $wishlist->product->price) * 100);
-                            @endphp
-                            <div class="wish-discount-badge">-{{ $discount }}%</div>
+                        {{-- Overlay Actions --}}
+                        <div class="product-actions">
+                            {{-- Quick View --}}
+                            <button
+                                class="action-btn quick-view"
+                                data-product="{{ $product->slug }}"
+                                aria-label="Lihat cepat {{ $product->name }}"
+                                type="button"
+                            >
+                                <i data-lucide="eye"></i>
+                            </button>
+
+                            {{-- Remove Wishlist --}}
+                            <button
+                                class="action-btn wishlist active"
+                                onclick="removeWishlist({{ $wishlist->id }})"
+                                title="Hapus dari wishlist"
+                                type="button"
+                                style="color: #e74c3c;"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        {{-- Badges --}}
+                        @if($product->discount_price && $discountPct > 0)
+                            <div class="product-badges">
+                                <span class="badge sale-badge">-{{ $discountPct }}%</span>
+                            </div>
                         @endif
 
-                        <a href="{{ route('products.show', $wishlist->product->slug ?? $wishlist->product->id) }}">
-                            <img src="{{ asset('storage/' . ($wishlist->product->image ?? 'default.jpg')) }}"
-                                 alt="{{ $wishlist->product->name }}">
-                        </a>
+                        @if($product->stock <= 0)
+                            <div class="product-badges" style="top: auto; bottom: 10px;">
+                                <span class="badge" style="background: #6c757d; color:#fff; font-size:0.7rem;">Habis</span>
+                            </div>
+                        @endif
                     </div>
 
-                    <div class="wish-card-body">
-                        <a href="{{ route('products.show', $wishlist->product->slug ?? $wishlist->product->id) }}" style="text-decoration:none;">
-                            <h6 class="wish-card-name">{{ $wishlist->product->name }}</h6>
-                        </a>
+                    {{-- Info Produk --}}
+                    <div class="product-info">
+                        {{-- Kategori --}}
+                        @if($categoryName)
+                            <span class="product-category" style="display: block; font-size: 0.7rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #b5838d; margin-bottom: 0.25rem;">{{ $categoryName }}</span>
+                        @endif
 
-                        <div class="wish-card-price-wrap">
-                            @if($wishlist->product->discount_price)
-                                <span class="wish-card-price">Rp {{ number_format($wishlist->product->discount_price, 0, ',', '.') }}</span>
-                                <span class="wish-card-price-old">Rp {{ number_format($wishlist->product->price, 0, ',', '.') }}</span>
+                        {{-- Nama Produk --}}
+                        <h3 class="product-title">
+                            <a href="{{ route('products.show', $product->slug ?? $product->id) }}" class="product-title-link" style="color: inherit; text-decoration: none; transition: color 0.2s;" aria-label="{{ $product->name }}">
+                                {{ Str::limit($product->name, 40) }}
+                            </a>
+                        </h3>
+
+                        {{-- Rating Bintang --}}
+                        @if($avgRating > 0)
+                            <div class="product-rating" aria-label="Rating {{ $avgRating }} dari 5 bintang" style="display: flex; align-items: center; gap: 2px; margin-bottom: 0.4rem;">
+                                @for($i = 0; $i < $fullStars; $i++)
+                                    <i class="fas fa-star rating-star" style="font-size: 0.75rem; color: #f4b942;"></i>
+                                @endfor
+                                @if($halfStar)
+                                    <i class="fas fa-star-half-alt rating-star" style="font-size: 0.75rem; color: #f4b942;"></i>
+                                @endif
+                                @for($i = 0; $i < $emptyStars; $i++)
+                                    <i class="far fa-star rating-star rating-star--empty" style="font-size: 0.75rem; color: #d0d0d0;"></i>
+                                @endfor
+                                <span class="rating-value" style="font-size: 0.75rem; color: #888; margin-left: 4px; line-height: 1;">{{ number_format($avgRating, 1) }}</span>
+                            </div>
+                        @else
+                            <div class="product-rating product-rating--empty" aria-label="Belum ada rating" style="display: flex; align-items: center; gap: 2px; margin-bottom: 0.4rem; opacity: 0.35;">
+                                @for($i = 0; $i < 5; $i++)
+                                    <i class="far fa-star rating-star rating-star--empty" style="font-size: 0.75rem; color: #d0d0d0;"></i>
+                                @endfor
+                            </div>
+                        @endif
+
+                        {{-- Harga --}}
+                        <div class="product-price">
+                            @if($product->discount_price)
+                                <span class="price-original">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                <span class="price-sale">Rp {{ number_format($product->discount_price, 0, ',', '.') }}</span>
                             @else
-                                <span class="wish-card-price">Rp {{ number_format($wishlist->product->price, 0, ',', '.') }}</span>
+                                <span class="price-current">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                             @endif
                         </div>
-                    </div>
 
-                    <div class="wish-card-footer">
-                        <a href="{{ route('products.show', $wishlist->product->slug ?? $wishlist->product->id) }}" class="btn-view-product">
-                            <i class="fas fa-eye"></i> Lihat Produk
+                        {{-- Link Detail --}}
+                        <a href="{{ route('products.show', $product->slug ?? $product->id) }}" class="product-link" aria-label="Lihat detail produk {{ $product->name }}">
+                            View Details →
                         </a>
                     </div>
                 </div>

@@ -24,10 +24,24 @@ class TransactionController extends Controller
             }
         }
 
-        $transactions = Transaction::with('details.product')
+        $query = Transaction::with('details.product')
             ->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->orderBy('created_at', 'desc');
+
+        if (request()->filled('search')) {
+            $search = request()->search;
+            $query->where('invoice_number', 'like', "%{$search}%");
+        }
+        
+        if (request()->filled('status') && request()->status !== 'all') {
+            $query->where('status', request()->status);
+        }
+
+        $transactions = $query->paginate(10);
+        
+        if (request()->ajax()) {
+            return view('frontend.transactions.partials.list', compact('transactions'))->render();
+        }
         
         return view('frontend.transactions.index', compact('transactions'));
     }

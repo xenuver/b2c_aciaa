@@ -170,12 +170,7 @@
 <div class="container my-5">
     <h2 class="mb-4 fw-bold text-gray-800"><i class="fas fa-shopping-bag text-primary me-2"></i>Checkout - Beli Langsung</h2>
     
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-triangle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+
     
     <div class="row">
         <div class="col-md-7">
@@ -477,7 +472,7 @@
                     </div>
                 </div>
                 
-                <form id="addAddressForm">
+                <form id="addAddressForm" x-data="addressValidator">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Label Alamat *</label>
@@ -489,7 +484,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Nomor Telepon *</label>
-                            <input type="text" name="phone" class="form-control rounded-3" placeholder="Contoh: 08123456789" required>
+                            <input type="text" name="phone" x-model="phone" class="form-control rounded-3" placeholder="Contoh: 08123456789" required>
+                            <div class="text-danger small mt-1" x-show="phoneError" x-text="phoneError" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Kode Pos</label>
@@ -506,13 +502,13 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Kota/Kabupaten *</label>
+                            <label class="form-label fw-bold small text-muted">Kota/Kabupaten * <i class="fas fa-spinner fa-spin ms-1 text-primary d-none" id="citySpinner"></i></label>
                             <select id="selectCity" name="city_id" class="form-select rounded-3" required disabled>
                                 <option value="" disabled selected>Pilih Kota/Kabupaten</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Kecamatan</label>
+                            <label class="form-label fw-bold small text-muted">Kecamatan <i class="fas fa-spinner fa-spin ms-1 text-primary d-none" id="subdistrictSpinner"></i></label>
                             <select id="selectSubdistrict" name="subdistrict_id" class="form-select rounded-3" disabled>
                                 <option value="" disabled selected>Pilih Kecamatan</option>
                             </select>
@@ -520,7 +516,8 @@
 
                         <div class="col-12">
                             <label class="form-label fw-bold small text-muted">Alamat Lengkap *</label>
-                            <textarea name="address" class="form-control rounded-3" rows="3" placeholder="Masukkan detail jalan, RT/RW, nomor rumah, atau patokan" required></textarea>
+                            <textarea name="address" x-model="address" class="form-control rounded-3" rows="3" placeholder="Masukkan detail jalan, RT/RW, nomor rumah, atau patokan" required></textarea>
+                            <div class="text-danger small mt-1" x-show="addressError" x-text="addressError" style="display: none;"></div>
                         </div>
 
                         <div class="col-12">
@@ -560,7 +557,7 @@
                     </div>
                 </div>
 
-                <form id="editAddressForm">
+                <form id="editAddressForm" x-data="addressValidator">
                     <input type="hidden" id="editAddressId">
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -573,7 +570,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Nomor Telepon *</label>
-                            <input type="text" id="editPhone" class="form-control rounded-3" required>
+                            <input type="text" id="editPhone" x-model="phone" class="form-control rounded-3" required>
+                            <div class="text-danger small mt-1" x-show="phoneError" x-text="phoneError" style="display: none;"></div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small text-muted">Kode Pos</label>
@@ -590,13 +588,13 @@
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Kota/Kabupaten *</label>
+                            <label class="form-label fw-bold small text-muted">Kota/Kabupaten * <i class="fas fa-spinner fa-spin ms-1 text-primary d-none" id="editCitySpinner"></i></label>
                             <select id="editCity" class="form-select rounded-3" required disabled>
                                 <option value="" disabled selected>Pilih Kota/Kabupaten</option>
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label fw-bold small text-muted">Kecamatan</label>
+                            <label class="form-label fw-bold small text-muted">Kecamatan <i class="fas fa-spinner fa-spin ms-1 text-primary d-none" id="editSubdistrictSpinner"></i></label>
                             <select id="editSubdistrict" class="form-select rounded-3" disabled>
                                 <option value="" disabled selected>Pilih Kecamatan</option>
                             </select>
@@ -604,7 +602,8 @@
 
                         <div class="col-12">
                             <label class="form-label fw-bold small text-muted">Alamat Lengkap *</label>
-                            <textarea id="editAddressText" class="form-control rounded-3" rows="3" required></textarea>
+                            <textarea id="editAddressText" x-model="address" class="form-control rounded-3" rows="3" required></textarea>
+                            <div class="text-danger small mt-1" x-show="addressError" x-text="addressError" style="display: none;"></div>
                         </div>
 
                         <div class="col-12">
@@ -636,6 +635,33 @@
 
 @push('scripts')
 <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('addressValidator', () => ({
+            phone: '',
+            address: '',
+            
+            get phoneError() {
+                if (!this.phone) return '';
+                if (!/^(08|62|\+62)/.test(this.phone)) {
+                    return 'Nomor telepon harus diawali dengan 08, 62, atau +62';
+                }
+                const digits = this.phone.replace(/\D/g, '');
+                if (digits.length < 10 || digits.length > 15) {
+                    return 'Nomor telepon harus terdiri dari 10-15 digit';
+                }
+                return '';
+            },
+            
+            get addressError() {
+                if (!this.address) return '';
+                if (this.address.length < 10) {
+                    return 'Alamat harus minimal 10 karakter';
+                }
+                return '';
+            }
+        }));
+    });
+
     let selectedAddressId = null;
     let selectedCityId = null;
     let selectedSubdistrictId = null;
@@ -678,7 +704,9 @@
             citiesFetchController = new AbortController();
             const fetchToken = ++citiesFetchToken;
 
-            document.getElementById('modalLoading').classList.remove('d-none');
+            const isEdit = this.id === 'editProvince';
+            const spinnerId = isEdit ? 'editCitySpinner' : 'citySpinner';
+            document.getElementById(spinnerId).classList.remove('d-none');
             
             fetch(`/api/cities/${provinceId}`, { signal: citiesFetchController.signal })
                 .then(res => res.json())
@@ -701,7 +729,7 @@
                 })
                 .finally(() => {
                     if (fetchToken === citiesFetchToken) {
-                        document.getElementById('modalLoading').classList.add('d-none');
+                        document.getElementById(spinnerId).classList.add('d-none');
                     }
                 });
         });
@@ -730,7 +758,9 @@
             subdistrictsFetchController = new AbortController();
             const fetchToken = ++subdistrictsFetchToken;
 
-            document.getElementById('modalLoading').classList.remove('d-none');
+            const isEdit = this.id === 'editCity';
+            const spinnerId = isEdit ? 'editSubdistrictSpinner' : 'subdistrictSpinner';
+            document.getElementById(spinnerId).classList.remove('d-none');
 
             fetch(`/api/subdistricts/${cityId}`, { signal: subdistrictsFetchController.signal })
                 .then(res => res.json())
@@ -761,7 +791,7 @@
                 })
                 .finally(() => {
                     if (fetchToken === subdistrictsFetchToken) {
-                        document.getElementById('modalLoading').classList.add('d-none');
+                        document.getElementById(spinnerId).classList.add('d-none');
                     }
                 });
         });

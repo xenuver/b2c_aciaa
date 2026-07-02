@@ -57,6 +57,13 @@ class CartController extends Controller
                 'price' => $price
             ]);
         }
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Produk ditambahkan ke keranjang',
+                'cart_count' => $cart->items()->sum('quantity')
+            ]);
+        }
         
         return redirect()->route('cart.index')->with('success', 'Produk ditambahkan ke keranjang');
     }
@@ -113,5 +120,75 @@ class CartController extends Controller
         $count = CartItem::where('cart_id', $cart->id)->sum('quantity');
         
         return response()->json(['count' => $count]);
+    }
+
+    /**
+     * Update cart item quantity via AJAX
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\CartItem $cartItem
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajaxUpdate(Request $request, CartItem $cartItem)
+    {
+        // Check ownership
+        if ($cartItem->cart->user_id !== Auth::id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'quantity' => 'required|integer|min:1'
+        ]);
+        
+        $cartItem->quantity = $request->quantity;
+        $cartItem->save();
+        
+        $cart = $cartItem->cart;
+        $cartItems = $cart->items()->get();
+        $cart_total = $cartItems->sum(function($item) {
+            return $item->quantity * $item->price;
+        });
+        
+        $cart_count = $cartItems->sum('quantity');
+        $subtotal = $cartItem->quantity * $cartItem->price;
+        
+        return response()->json([
+            'success' => true,
+            'subtotal' => $subtotal,
+            'cart_total' => $cart_total,
+            'cart_count' => $cart_count,
+            'message' => 'Keranjang diperbarui'
+        ]);
+    }
+
+    /**
+     * Remove cart item via AJAX
+     * 
+     * @param \App\Models\CartItem $cartItem
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function ajaxRemove(CartItem $cartItem)
+    {
+        // Check ownership
+        if ($cartItem->cart->user_id !== Auth::id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+        
+        $cart = $cartItem->cart;
+        $cartItem->delete();
+        
+        $cartItems = $cart->items()->get();
+        $cart_total = $cartItems->sum(function($item) {
+            return $item->quantity * $item->price;
+        });
+        
+        $cart_count = $cartItems->sum('quantity');
+        
+        return response()->json([
+            'success' => true,
+            'cart_total' => $cart_total,
+            'cart_count' => $cart_count,
+            'message' => 'Produk dihapus dari keranjang'
+        ]);
     }
 }

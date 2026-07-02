@@ -22,5 +22,11 @@ class AppServiceProvider extends ServiceProvider
     {
         /*URL::forceScheme('https');*/
 
-    }
+        \Illuminate\Support\Facades\View::composer('layouts.navigation', function ($view) {
+            $unreadCount = 0;
+            if (\Illuminate\Support\Facades\Auth::check()) {
+                $unreadCount = \Illuminate\Support\Facades\Auth::user()->unreadNotifications->count();
+            }
+            $view->with('unreadCount', $unreadCount);
+        });
 }

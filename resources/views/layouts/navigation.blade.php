@@ -1,4 +1,4 @@
-<nav x-data="{ open: false, searchOpen: false }" class="fashion-navbar {{ request()->routeIs('home') ? 'navbar-home-transparent' : 'navbar-solid' }}" id="appNavbar">
+<nav x-data="{ open: false, searchOpen: false }" @close-mobile-search.window="searchOpen = false" class="fashion-navbar {{ request()->routeIs('home') ? 'navbar-home-transparent' : 'navbar-solid' }}" id="appNavbar">
     <div class="navbar-container">
         <div class="navbar-main">
             <!-- Logo -->
@@ -36,6 +36,107 @@
                 @endauth
             </div>
 
+            <!-- Live Search Bar -->
+            <div x-data="{
+                    query: '',
+                    results: [],
+                    open: false,
+                    loading: false,
+                    search() {
+                        if (this.query.length < 2) {
+                            this.results = [];
+                            this.open = false;
+                            return;
+                        }
+                        this.loading = true;
+                        axios.get('/api/search/live', { params: { q: this.query } })
+                            .then(response => {
+                                this.results = response.data.products || [];
+                                this.open = true;
+                            })
+                            .catch(() => {
+                                this.results = [];
+                            })
+                            .finally(() => {
+                                this.loading = false;
+                            });
+                    },
+                    close() {
+                        this.open = false;
+                        this.results = [];
+                    },
+                    goToFullSearch() {
+                        if (this.query.trim().length > 0) {
+                            window.location.href = '/products?search=' + encodeURIComponent(this.query);
+                        }
+                    },
+                    formatPrice(price) {
+                        return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+                    }
+                }"
+                @click.outside="close()"
+                class="navbar-live-search">
+
+                <div class="live-search-input-wrapper">
+                    <!-- Search icon -->
+                    <svg class="live-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+
+                    <input
+                        type="text"
+                        x-model="query"
+                        @input.debounce.300ms="search()"
+                        @keydown.enter.prevent="goToFullSearch()"
+                        @keydown.escape="close()"
+                        @focus="query.length >= 2 && search()"
+                        placeholder="Cari produk..."
+                        class="live-search-input"
+                        aria-label="Cari produk"
+                        autocomplete="off"
+                    />
+
+                    <!-- Loading spinner -->
+                    <div x-show="loading" class="live-search-spinner" x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spin-icon"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    </div>
+
+                    <!-- Clear button -->
+                    <button
+                        x-show="query.length > 0 && !loading"
+                        @click="query = ''; close();"
+                        class="live-search-clear"
+                        type="button"
+                        aria-label="Hapus pencarian"
+                        x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+
+                <!-- Dropdown Results -->
+                <div x-show="open && results.length > 0" x-cloak class="live-search-dropdown" @click.stop>
+                    <template x-for="product in results" :key="product.id">
+                        <a :href="product.url" class="live-search-result-item">
+                            <img :src="product.image" :alt="product.name" class="live-search-result-img"
+                                 onerror="this.src='/images/default.jpg'">
+                            <div class="live-search-result-info">
+                                <p class="live-search-result-name" x-text="product.name"></p>
+                                <span class="live-search-result-price" x-text="product.discount_price ? formatPrice(product.discount_price) : formatPrice(product.price)"></span>
+                            </div>
+                        </a>
+                    </template>
+                    <a href="#" @click.prevent="goToFullSearch()" class="live-search-view-all">
+                        Lihat semua hasil untuk "<span x-text="query"></span>"
+                    </a>
+                </div>
+
+                <!-- Empty State -->
+                <div x-show="open && query.length >= 2 && results.length === 0 && !loading" x-cloak class="live-search-empty">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#ccc;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <span>Produk tidak ditemukan</span>
+                </div>
+            </div>
+
             <!-- Right Section -->
             <div class="navbar-right">
 
@@ -55,14 +156,9 @@
                         <div class="user-dropdown" x-data="{ 
                             open: false, 
                             notifications: [], 
-                            unreadCount: 0, 
+                            unreadCount: {{ isset($unreadCount) ? $unreadCount : 0 }}, 
                             loading: false,
                             init() {
-                                fetch('{{ route('notifications.unread-count') }}')
-                                    .then(res => res.json())
-                                    .then(data => {
-                                        this.unreadCount = data.unread_count;
-                                    });
                             },
                             fetchNotifications() {
                                 this.loading = true;
@@ -182,8 +278,19 @@
                     </div>
                 @endauth
 
+                <!-- Mobile Search Toggle Button (only visible on mobile) -->
+                <button @click="searchOpen = !searchOpen; if(searchOpen) $nextTick(() => { const el = document.querySelector('[x-ref=mobileSearchInput]'); if(el) el.focus(); })" 
+                        class="mobile-search-btn search-toggle" 
+                        type="button"
+                        aria-label="Cari produk"
+                        :aria-expanded="searchOpen">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </button>
+
                 <!-- Mobile Menu Button (Hamburger) -->
-                <button @click="open = !open" class="mobile-menu-btn">
+                <button @click="open = !open" class="mobile-menu-btn" aria-label="Buka menu navigasi">
                     <svg x-show="!open" class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -197,7 +304,113 @@
             </div>
         </div>
 
+        <!-- Mobile Full-Width Search Bar (only visible on mobile when toggled) -->
+        <div x-show="searchOpen"
+             x-cloak
+             x-transition
+             class="mobile-search-bar-wrapper"
+             x-data="{
+                 query: '',
+                 results: [],
+                 open: false,
+                 loading: false,
+                 search() {
+                     if (this.query.length < 2) {
+                         this.results = [];
+                         this.open = false;
+                         return;
+                     }
+                     this.loading = true;
+                     axios.get('/api/search/live', { params: { q: this.query } })
+                         .then(response => {
+                             this.results = response.data.products || [];
+                             this.open = true;
+                         })
+                         .catch(() => {
+                             this.results = [];
+                         })
+                         .finally(() => {
+                             this.loading = false;
+                         });
+                 },
+                 close() {
+                     this.open = false;
+                     this.results = [];
+                 },
+                 goToFullSearch() {
+                     if (this.query.trim().length > 0) {
+                         window.location.href = '/products?search=' + encodeURIComponent(this.query);
+                     }
+                 },
+                 formatPrice(price) {
+                     return 'Rp ' + parseInt(price).toLocaleString('id-ID');
+                 }
+             }"
+             @click.outside="close()">
 
+            <div class="mobile-search-inner">
+                <div class="live-search-input-wrapper" style="width: 100%;">
+                    <!-- Search icon -->
+                    <svg class="live-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+
+                    <input
+                        type="text"
+                        x-model="query"
+                        @input.debounce.300ms="search()"
+                        @keydown.enter.prevent="goToFullSearch()"
+                        @keydown.escape="close(); $dispatch('close-mobile-search')"
+                        @focus="query.length >= 2 && search()"
+                        x-ref="mobileSearchInput"
+                        placeholder="Cari produk..."
+                        class="live-search-input"
+                        aria-label="Cari produk di mobile"
+                        autocomplete="off"
+                        style="border-radius: 12px;"
+                    />
+
+                    <!-- Loading spinner -->
+                    <div x-show="loading" class="live-search-spinner" x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="spin-icon"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    </div>
+
+                    <!-- Clear button -->
+                    <button
+                        x-show="query.length > 0 && !loading"
+                        @click="query = ''; close();"
+                        class="live-search-clear"
+                        type="button"
+                        aria-label="Hapus pencarian"
+                        x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>
+
+                <!-- Dropdown Results (mobile) -->
+                <div x-show="open && results.length > 0" x-cloak class="live-search-dropdown mobile-search-dropdown" @click.stop>
+                    <template x-for="product in results" :key="product.id">
+                        <a :href="product.url" class="live-search-result-item">
+                            <img :src="product.image" :alt="product.name" class="live-search-result-img"
+                                 onerror="this.src='/images/default.jpg'">
+                            <div class="live-search-result-info">
+                                <p class="live-search-result-name" x-text="product.name"></p>
+                                <span class="live-search-result-price" x-text="product.discount_price ? formatPrice(product.discount_price) : formatPrice(product.price)"></span>
+                            </div>
+                        </a>
+                    </template>
+                    <a href="#" @click.prevent="goToFullSearch()" class="live-search-view-all">
+                        Lihat semua hasil untuk "<span x-text="query"></span>"
+                    </a>
+                </div>
+
+                <!-- Empty State (mobile) -->
+                <div x-show="open && query.length >= 2 && results.length === 0 && !loading" x-cloak class="live-search-empty mobile-search-empty">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#ccc;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                    <span>Produk tidak ditemukan</span>
+                </div>
+            </div>
+        </div>
 
     <!-- Mobile Menu -->
     <div x-show="open" x-cloak class="mobile-menu" @click.away="open = false">
@@ -231,7 +444,7 @@
                     </a>
                     <a href="{{ route('notifications.index') }}" class="mobile-nav-link" @click="open = false">
                         <span>🔔</span> Notifikasi
-                        <span class="mobile-badge" id="mobileNotificationCount" style="display: none;">0</span>
+                        <span class="mobile-badge" id="mobileNotificationCount" style="{{ (isset($unreadCount) && $unreadCount > 0) ? '' : 'display: none;' }}">{{ $unreadCount ?? 0 }}</span>
                     </a>
                 @endif
             @endauth
@@ -859,6 +1072,288 @@
         font-size: 0.8rem;
     }
 }
+
+/* ========== LIVE SEARCH NAVBAR ========== */
+.navbar-live-search {
+    position: relative;
+    flex: 1;
+    max-width: 380px;
+    min-width: 200px;
+}
+
+.live-search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.live-search-icon {
+    position: absolute;
+    left: 0.875rem;
+    color: #aaa;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.live-search-input {
+    width: 100%;
+    padding: 0.5rem 2.5rem 0.5rem 2.375rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    outline: none;
+    background: #f9f9f9;
+    color: #1a1a1a;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.live-search-input:focus {
+    border-color: #d4a5a5;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(212, 165, 165, 0.15);
+}
+
+.live-search-input::placeholder {
+    color: #bbb;
+}
+
+.live-search-spinner {
+    position: absolute;
+    right: 0.875rem;
+    display: flex;
+    align-items: center;
+    color: #d4a5a5;
+}
+
+.spin-icon {
+    animation: live-search-spin 0.7s linear infinite;
+}
+
+@keyframes live-search-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.live-search-clear {
+    position: absolute;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem;
+    display: flex;
+    align-items: center;
+    color: #aaa;
+    border-radius: 50%;
+    transition: color 0.15s, background 0.15s;
+}
+
+.live-search-clear:hover {
+    color: #d4a5a5;
+    background: #fef6f5;
+}
+
+.live-search-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f0;
+    z-index: 1050;
+    overflow: hidden;
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+.live-search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    text-decoration: none;
+    color: #1a1a1a;
+    transition: background 0.15s;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.live-search-result-item:last-of-type {
+    border-bottom: none;
+}
+
+.live-search-result-item:hover {
+    background: #fef6f5;
+}
+
+.live-search-result-img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background: #f5f5f5;
+}
+
+.live-search-result-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.live-search-result-name {
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin: 0 0 0.15rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #1a1a1a;
+}
+
+.live-search-result-price {
+    font-size: 0.78rem;
+    color: #d4a5a5;
+    font-weight: 600;
+}
+
+.live-search-view-all {
+    display: block;
+    text-align: center;
+    padding: 0.6rem 1rem;
+    font-size: 0.78rem;
+    color: #d4a5a5;
+    font-weight: 600;
+    text-decoration: none;
+    background: #fef6f5;
+    border-top: 1px solid #f0e8e8;
+    transition: background 0.15s;
+}
+
+.live-search-view-all:hover {
+    background: #fde8e8;
+    color: #b5838d;
+}
+
+.live-search-empty {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f0;
+    z-index: 1050;
+    padding: 1.25rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: #aaa;
+}
+
+/* Hide live search on mobile (handled by task 2.5) */
+@media (max-width: 768px) {
+    .navbar-live-search {
+        display: none;
+    }
+}
+
+/* ========== MOBILE SEARCH TOGGLE (Task 2.5) ========== */
+
+/* Mobile search toggle button — hidden on desktop */
+.mobile-search-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-search-btn {
+        display: flex;
+    }
+}
+
+/* Full-width mobile search bar — rendered below .navbar-main */
+.mobile-search-bar-wrapper {
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid #f0f0f0;
+    padding: 0.625rem 1rem 0.75rem;
+    position: relative;
+}
+
+/* On desktop, always hide the mobile search bar regardless of Alpine state */
+@media (min-width: 769px) {
+    .mobile-search-bar-wrapper {
+        display: none !important;
+    }
+}
+
+.mobile-search-inner {
+    position: relative;
+    width: 100%;
+}
+
+/* Reposition dropdown & empty state relative to .mobile-search-inner */
+.mobile-search-dropdown,
+.mobile-search-empty {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 1060;
+}
+
+/* On transparent navbar, keep white background for mobile search bar */
+.fashion-navbar.navbar-home-transparent .mobile-search-bar-wrapper {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile search icon color when navbar is transparent (before scroll) */
+.fashion-navbar.navbar-home-transparent .mobile-search-btn svg {
+    color: rgba(255, 255, 255, 0.9);
+    transition: color 0.3s ease;
+}
+
+.fashion-navbar.navbar-home-transparent.scrolled .mobile-search-btn svg {
+    color: #4a4a4a;
+}
+
+/* ========== END MOBILE SEARCH TOGGLE ========== */
+
+/* Transparent navbar override for live search */
+.fashion-navbar.navbar-home-transparent .live-search-input {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.fashion-navbar.navbar-home-transparent .live-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.fashion-navbar.navbar-home-transparent .live-search-icon {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.fashion-navbar.navbar-home-transparent.scrolled .live-search-input {
+    background: #f9f9f9;
+    border-color: #e5e7eb;
+    color: #1a1a1a;
+}
+
+.fashion-navbar.navbar-home-transparent.scrolled .live-search-input::placeholder {
+    color: #bbb;
+}
+
+.fashion-navbar.navbar-home-transparent.scrolled .live-search-icon {
+    color: #aaa;
+}
+
+/* ========== END LIVE SEARCH NAVBAR ========== */
 
 /* Custom Notifications Dropdown styles */
 .text-truncate-2 {

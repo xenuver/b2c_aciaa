@@ -144,7 +144,8 @@
                 <p class="promo-banner-desc">Dapatkan produk terbaik dengan harga spesial sebelum waktu habis!</p>
                 
                 <!-- Countdown Timer -->
-                <div class="countdown-timer" id="homepageCountdownTimer">
+                @if(isset($flashSaleEnd) && \Carbon\Carbon::parse($flashSaleEnd)->isFuture())
+                <div class="countdown-timer" id="homepageCountdownTimer" data-end="{{ \Carbon\Carbon::parse($flashSaleEnd)->toIso8601String() }}">
                     <div class="timer-item">
                         <span class="timer-number" id="homeHours">00</span>
                         <span class="timer-label">Jam</span>
@@ -160,6 +161,7 @@
                         <span class="timer-label">Detik</span>
                     </div>
                 </div>
+                @endif
             </div>
             
             <!-- Carousel / Slider untuk produk promo -->
@@ -181,9 +183,9 @@
                                         <span class="promo-slide-sale">Rp {{ number_format($product->discount_price ?? $product->price * 0.7, 0, ',', '.') }}</span>
                                     </div>
                                     <div class="promo-slide-buttons">
-                                        <button class="promo-slide-buy" data-product-id="{{ $product->id }}" data-product-slug="{{ $product->slug }}">
+                                        <a href="{{ route('products.show', $product->slug) }}" class="promo-slide-buy text-decoration-none" style="display: inline-flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-bolt"></i> Beli Sekarang
-                                        </button>
+                                        </a>
                                         <button class="promo-slide-detail" data-product-slug="{{ $product->slug }}">
                                             <i class="fas fa-eye"></i> Detail
                                         </button>
@@ -225,8 +227,13 @@
                             <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn wishlist-toggle-btn" data-product-id="{{ $product->id }}">
-                                <i class="{{ $product->isInWishlist() ? 'fas' : 'far' }} fa-heart"></i>
+                            <button class="action-btn wishlist"
+                                x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                :class="{ 'active': inWishlist }"
+                                @click.prevent="toggle({{ $product->id }})"
+                                :disabled="isProcessing"
+                                type="button">
+                                <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
                             </button>
                         </div>
                         <span class="product-badge new">New</span>
@@ -274,8 +281,13 @@
                             <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="action-btn wishlist-toggle-btn" data-product-id="{{ $product->id }}">
-                                <i class="{{ $product->isInWishlist() ? 'fas' : 'far' }} fa-heart"></i>
+                            <button class="action-btn wishlist"
+                                x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                :class="{ 'active': inWishlist }"
+                                @click.prevent="toggle({{ $product->id }})"
+                                :disabled="isProcessing"
+                                type="button">
+                                <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
                             </button>
                         </div>
                         @if($product->discount_price)
@@ -1728,7 +1740,15 @@
     
     // ========== COUNTDOWN TIMER ==========
     function startCountdown() {
-        const targetTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+        const timerEl = document.getElementById('homepageCountdownTimer') || document.getElementById('countdownTimer');
+        if (!timerEl) return;
+        
+        let targetTime;
+        if (timerEl.dataset.end) {
+            targetTime = new Date(timerEl.dataset.end).getTime();
+        } else {
+            targetTime = new Date().getTime() + (24 * 60 * 60 * 1000);
+        }
         
         function updateTimer() {
             const now = new Date().getTime();
@@ -1738,19 +1758,17 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
-            const homeHours = document.getElementById('homeHours');
-            const homeMinutes = document.getElementById('homeMinutes');
-            const homeSeconds = document.getElementById('homeSeconds');
+            const homeHours = document.getElementById('homeHours') || document.getElementById('promoHours');
+            const homeMinutes = document.getElementById('homeMinutes') || document.getElementById('promoMinutes');
+            const homeSeconds = document.getElementById('homeSeconds') || document.getElementById('promoSeconds');
             
-            if (homeHours) homeHours.textContent = String(hours).padStart(2, '0');
-            if (homeMinutes) homeMinutes.textContent = String(minutes).padStart(2, '0');
-            if (homeSeconds) homeSeconds.textContent = String(seconds).padStart(2, '0');
+            if (homeHours) homeHours.textContent = String(Math.max(0, hours)).padStart(2, '0');
+            if (homeMinutes) homeMinutes.textContent = String(Math.max(0, minutes)).padStart(2, '0');
+            if (homeSeconds) homeSeconds.textContent = String(Math.max(0, seconds)).padStart(2, '0');
             
             if (distance < 0) {
                 clearInterval(timerInterval);
-                if (homeHours) homeHours.textContent = '00';
-                if (homeMinutes) homeMinutes.textContent = '00';
-                if (homeSeconds) homeSeconds.textContent = '00';
+                if (timerEl) timerEl.style.display = 'none';
             }
         }
         
@@ -1758,9 +1776,7 @@
         const timerInterval = setInterval(updateTimer, 1000);
     }
     
-    if (document.getElementById('homepageCountdownTimer') || document.getElementById('countdownTimer')) {
-        startCountdown();
-    }
+    startCountdown();
     
     // ========== QUICK VIEW ==========
     const quickViewBtns = document.querySelectorAll('.quick-view');
@@ -1811,76 +1827,7 @@
         });
     });
     
-    // ========== WISHLIST TOGGLE (AJAX) ==========
-    document.querySelectorAll('.wishlist-toggle-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const productId = btn.dataset.productId;
-            if (!productId) return;
 
-            // Check if user is logged in first
-            fetch('/check-auth')
-                .then(res => res.json())
-                .then(data => {
-                    if (!data.logged_in) {
-                        showLoginModal(null, productId);
-                        return;
-                    }
-
-                    // Toggle wishlist via AJAX
-                    fetch(`/wishlist/toggle/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        const icon = btn.querySelector('i');
-                        if (result.status === 'added') {
-                            icon.classList.remove('far');
-                            icon.classList.add('fas');
-                            btn.classList.add('is-wishlisted');
-                        } else {
-                            icon.classList.remove('fas');
-                            icon.classList.add('far');
-                            btn.classList.remove('is-wishlisted');
-                        }
-
-                        // Animate button
-                        btn.style.transform = 'scale(1.3)';
-                        setTimeout(() => { btn.style.transform = 'scale(1)'; }, 250);
-
-                        // Show toast
-                        const toast = document.createElement('div');
-                        toast.className = 'custom-toast';
-                        toast.innerHTML = result.status === 'added'
-                            ? '❤️ Ditambahkan ke Wishlist!'
-                            : '💔 Dihapus dari Wishlist';
-                        document.body.appendChild(toast);
-                        setTimeout(() => {
-                            toast.style.opacity = '0';
-                            setTimeout(() => toast.remove(), 300);
-                        }, 2000);
-
-                        // Update wishlist count badge in navbar if exists
-                        const wishCountEl = document.querySelector('.wishlist-count');
-                        if (wishCountEl && result.count !== undefined) {
-                            wishCountEl.textContent = result.count;
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Wishlist toggle error:', err);
-                    });
-                })
-                .catch(() => {
-                    showLoginModal(null, productId);
-                });
-        });
-    });
     
     // ========== INTERSECTION OBSERVER ==========
     const fadeElements = document.querySelectorAll('.product-card, .category-card, .featured-item, .promo-slide');

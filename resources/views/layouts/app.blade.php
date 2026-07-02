@@ -52,10 +52,49 @@
 
     @include('components.whatsapp-button')
 
+    <!-- Toast Container (Global) -->
+    <x-toast />
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     
+    <!-- Global Alpine Functions -->
+    <script>
+        function wishlistToggle(initialState = false) {
+            return {
+                inWishlist: initialState,
+                isProcessing: false,
+                toggle(productId) {
+                    if (this.isProcessing) return;
+                    this.isProcessing = true;
+                    
+                    axios.post('/wishlist/ajax', { product_id: productId })
+                        .then(res => {
+                            if (res.data.success) {
+                                this.inWishlist = res.data.inWishlist;
+                                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'success', message: res.data.message } }));
+                                this.$dispatch('wishlist-toggled', { productId: productId, inWishlist: res.data.inWishlist });
+                                
+                                // Optional: trigger event to update wishlist badge count
+                                window.dispatchEvent(new Event('update-wishlist-count'));
+                            }
+                        })
+                        .catch(err => {
+                            if (err.response && err.response.status === 401) {
+                                window.location.href = '/login';
+                            } else {
+                                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: 'Gagal memperbarui wishlist' } }));
+                            }
+                        })
+                        .finally(() => {
+                            this.isProcessing = false;
+                        });
+                }
+            }
+        }
+    </script>
+
     @stack('scripts')
 
     @auth
@@ -69,5 +108,32 @@
         });
     </script>
     @endauth
+
+    {{-- Convert session flash messages to toast notifications --}}
+    @if(session('success') || session('error') || session('warning') || session('info') || session('status'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('success')), type: 'success' } }));
+            @endif
+            @if(session('error'))
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('error')), type: 'error' } }));
+            @endif
+            @if(session('warning'))
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('warning')), type: 'error' } }));
+            @endif
+            @if(session('info'))
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('info')), type: 'success' } }));
+            @endif
+            @if(session('status') === 'profile-updated')
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: 'Profil berhasil diperbarui.', type: 'success' } }));
+            @elseif(session('status') === 'password-updated')
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: 'Password berhasil diperbarui.', type: 'success' } }));
+            @elseif(session('status'))
+            window.dispatchEvent(new CustomEvent('toast', { detail: { message: @json(session('status')), type: 'success' } }));
+            @endif
+        });
+    </script>
+    @endif
 </body>
 </html>

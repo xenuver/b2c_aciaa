@@ -172,12 +172,7 @@
                         </div>
                     </div>
 
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 p-3 mb-4" role="alert" style="background-color: #fef2f2; color: #991b1b;">
-                            <i class="fas fa-exclamation-circle me-2"></i> {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
+                
 
                     @if($errors->any())
                         <div class="alert alert-danger rounded-4 border-0 p-3 mb-4" style="background-color: #fef2f2; color: #991b1b;">
@@ -228,7 +223,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach($rating->images as $image)
                                 <div class="position-relative">
-                                    <img src="{{ asset('storage/' . $image) }}" class="preview-img-card">
+                                    <img src="{{ asset('storage/' . $image) }}" class="preview-img-card" alt="Foto ulasan {{ $product->name }}">
                                 </div>
                                 @endforeach
                             </div>
@@ -384,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 previewContainer.style.position = 'relative';
                 previewContainer.style.display = 'inline-block';
                 previewContainer.innerHTML = `
-                    <img src="${e.target.result}" class="preview-img-card">
+                    <img src="${e.target.result}" class="preview-img-card" alt="Preview foto ulasan">
                     <span class="remove-img-badge" data-index="${index}">&times;</span>
                 `;
                 imagePreview.appendChild(previewContainer);

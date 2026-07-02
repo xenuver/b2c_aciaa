@@ -161,12 +161,7 @@
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 p-3 mb-4 shadow-sm" role="alert" style="background-color: #f0fff4; color: #155724;">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+
 
     @if($ratings->count() > 0)
         <div class="row g-4">
@@ -212,7 +207,7 @@
                             <div class="d-flex gap-2 mb-3">
                                 @foreach($rating->images as $img)
                                 <a href="{{ asset('storage/' . $img) }}" target="_blank">
-                                    <img src="{{ asset('storage/' . $img) }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--pd-border);">
+                                    <img src="{{ asset('storage/' . $img) }}" alt="Foto ulasan {{ $rating->product->name }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--pd-border);">
                                 </a>
                                 @endforeach
                             </div>

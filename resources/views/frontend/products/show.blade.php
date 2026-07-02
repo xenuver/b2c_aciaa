@@ -854,10 +854,10 @@
     <div class="row g-5">
         <!-- Left Column: Image Showcase -->
         <div class="col-lg-6">
-            <div class="pd-gallery-container">
+            <div class="pd-gallery-container" x-data="{ mainImage: '{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}' }">
                 <!-- Floating Promos and Badges -->
                 @if($diskonPercent > 0)
-                    <span class="pd-floating-badge">✨ Hemat {{ $diskonPercent }}%</span>
+                    <span class="pd-floating-badge">-{{ $diskonPercent }}%</span>
                 @elseif($populerBadge)
                     <span class="pd-floating-badge">🔥 Populer</span>
                 @else
@@ -867,7 +867,7 @@
                 <!-- Main Card Preview -->
                 <div class="pd-image-wrapper">
                     <div class="pd-zoom-wrapper">
-                        <img id="mainProductImg" src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" class="pd-img img-fluid" alt="{{ $product->name }}">
+                        <img id="mainProductImg" :src="mainImage" src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" class="pd-img img-fluid" alt="{{ $product->name }}">
                     </div>
                 </div>
 
@@ -875,14 +875,14 @@
                 @if(count($gallery) > 0)
                     <div class="pd-thumbnails">
                         <!-- Main image thumbnail -->
-                        <button class="pd-thumb-btn active" data-large="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}">
-                            <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="Main Preview">
+                        <button type="button" class="pd-thumb-btn" :class="{ 'active': mainImage === '{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}' }" @click="mainImage = '{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}'">
+                            <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="Thumbnail {{ $product->name }} Utama">
                         </button>
                         
                         <!-- Extra thumbnails -->
                         @foreach($gallery as $gImg)
-                            <button class="pd-thumb-btn" data-large="{{ asset('storage/' . $gImg) }}">
-                                <img src="{{ asset('storage/' . $gImg) }}" alt="Gallery Image">
+                            <button type="button" class="pd-thumb-btn" :class="{ 'active': mainImage === '{{ asset('storage/' . $gImg) }}' }" @click="mainImage = '{{ asset('storage/' . $gImg) }}'">
+                                <img src="{{ asset('storage/' . $gImg) }}" alt="Thumbnail {{ $product->name }} {{ $loop->iteration }}">
                             </button>
                         @endforeach
                     </div>
@@ -999,55 +999,61 @@
                     @endif
                 </div>
 
-                <!-- Interactive Qty widget (only if in stock) -->
-                @if($product->stock > 0)
-                    <div class="mb-4">
-                        <div class="qty-label">Pilih Jumlah</div>
-                        <div class="qty-widget">
-                            <button type="button" class="qty-btn" id="qtyMinus"><i class="fas fa-minus"></i></button>
-                            <input type="text" class="qty-num" id="productQty" value="1" readonly>
-                            <button type="button" class="qty-btn" id="qtyPlus"><i class="fas fa-plus"></i></button>
+                <!-- Interactive Qty widget and Actions via Alpine.js -->
+                <div x-data="productActions({{ $product->id }}, {{ $product->stock }})">
+                    @if($product->stock > 0)
+                        <div class="mb-4">
+                            <div class="qty-label">Pilih Jumlah</div>
+                            <div class="qty-widget">
+                                <button type="button" class="qty-btn" @click="if(quantity > 1) quantity--" aria-label="Kurangi jumlah"><i class="fas fa-minus"></i></button>
+                                <input type="text" class="qty-num" x-model="quantity" readonly aria-label="Kuantitas produk">
+                                <button type="button" class="qty-btn" @click="if(quantity < maxStock) quantity++" aria-label="Tambah jumlah"><i class="fas fa-plus"></i></button>
+                            </div>
                         </div>
-                    </div>
-                @endif
-            </div>
+                    @endif
 
-            <!-- Checkout and Shopping Forms Section -->
-            <div class="d-flex gap-3 flex-wrap align-items-center mt-3 pt-3 border-top">
-                @if($product->stock > 0)
-                    <!-- Form Tambah Keranjang -->
-                    <form action="{{ route('cart.add') }}" method="POST" class="m-0 flex-grow-1 flex-md-grow-0">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="quantity" id="cartQuantity" value="1">
-                        <button type="submit" class="btn btn-pd-cart btn-lg w-100 py-3 px-4">
-                            <i class="fas fa-shopping-cart"></i> Tambah Keranjang
-                        </button>
-                    </form>
-                    
-                    <!-- Form Beli Langsung -->
-                    <form action="{{ route('checkout.direct', $product->id) }}" method="POST" class="m-0 flex-grow-1 flex-md-grow-0">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="quantity" id="buyNowQuantity" value="1">
-                        <button type="submit" class="btn btn-pd-buy btn-lg w-100 py-3 px-4">
-                            <i class="fas fa-bolt"></i> Beli Sekarang
-                        </button>
-                    </form>
-                    
-                    <!-- Wishlist Toggle (AJAX) -->
-                    <button type="button" class="btn btn-pd-wish btn-lg {{ $product->isInWishlist() ? 'active' : '' }}" id="pdWishlistBtn" data-product-id="{{ $product->id }}" title="{{ $product->isInWishlist() ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist' }}">
-                        <i class="{{ $product->isInWishlist() ? 'fas text-danger' : 'far' }} fa-heart fa-lg" id="pdWishlistIcon"></i>
-                    </button>
-                    
-                    <!-- Share Button -->
-                    <button type="button" class="btn btn-pd-share btn-lg" id="btnShareProduct" title="Bagikan Produk">
-                        <i class="fas fa-share-alt fa-lg"></i>
-                    </button>
-                @else
-                    <button class="btn btn-secondary btn-lg rounded-pill w-100 py-3" disabled><i class="fas fa-exclamation-circle me-2"></i> Stok Habis Sementara</button>
-                @endif
-            </div>
+                    <!-- Checkout and Shopping Forms Section -->
+                    <div class="d-flex gap-3 flex-wrap align-items-center mt-3 pt-3 border-top">
+                        @if($product->stock > 0)
+                            <!-- Form Tambah Keranjang -->
+                            <form @submit.prevent="addToCart" class="m-0 flex-grow-1 flex-md-grow-0">
+                                <button type="submit" class="btn btn-pd-cart btn-lg w-100 py-3 px-4" :disabled="loadingCart">
+                                    <i class="fas fa-shopping-cart" x-show="!loadingCart"></i>
+                                    <i class="fas fa-spinner fa-spin" x-show="loadingCart" style="display: none;"></i> 
+                                    <span x-text="loadingCart ? 'Menambahkan...' : 'Tambah Keranjang'"></span>
+                                </button>
+                            </form>
+                            
+                            <!-- Form Beli Langsung -->
+                            <form action="{{ route('checkout.direct', $product->id) }}" method="POST" class="m-0 flex-grow-1 flex-md-grow-0" @submit="loadingBuy = true">
+                                @csrf
+                                <input type="hidden" name="quantity" :value="quantity">
+                                <button type="submit" class="btn btn-pd-buy btn-lg w-100 py-3 px-4" :disabled="loadingBuy">
+                                    <i class="fas fa-bolt" x-show="!loadingBuy"></i>
+                                    <i class="fas fa-spinner fa-spin" x-show="loadingBuy" style="display: none;"></i>
+                                    <span x-text="loadingBuy ? 'Memproses...' : 'Beli Sekarang'"></span>
+                                </button>
+                            </form>
+                            
+                            <!-- Wishlist Toggle (AJAX) -->
+                            <button type="button" class="btn btn-pd-wish btn-lg" 
+                                    x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                    :class="{ 'active': inWishlist }"
+                                    @click.prevent="toggle({{ $product->id }})"
+                                    :disabled="isProcessing"
+                                    :title="inWishlist ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'">
+                                <i :class="inWishlist ? 'fas text-danger' : 'far'" class="fa-heart fa-lg"></i>
+                            </button>
+                            
+                            <!-- Share Button -->
+                            <button type="button" class="btn btn-pd-share btn-lg" id="btnShareProduct" title="Bagikan Produk" aria-label="Bagikan produk {{ $product->name }}">
+                                <i class="fas fa-share-alt fa-lg"></i>
+                            </button>
+                        @else
+                            <button class="btn btn-secondary btn-lg rounded-pill w-100 py-3" disabled><i class="fas fa-exclamation-circle me-2"></i> Stok Habis Sementara</button>
+                        @endif
+                    </div>
+                </div>
 
             <!-- Accordion Details and Specs -->
             <div class="pd-accordion" id="productDetailAccordion">
@@ -1112,6 +1118,93 @@
                                 <li><strong>Gratis Ongkir:</strong> Dapatkan voucher free shipping di menu voucher checkout (jika memenuhi minimum transaksi).</li>
                                 <li><strong>Kebijakan Retur:</strong> Pengembalian barang maksimal 30 hari sejak barang diterima jika terdapat cacat pabrik atau ketidaksesuaian pesanan (wajib video unboxing).</li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews / Ulasan -->
+                <div class="pd-accordion-item">
+                    <button class="pd-accordion-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviews" aria-expanded="false" aria-controls="collapseReviews">
+                        <span><i class="fas fa-star text-muted me-2"></i> Ulasan Pelanggan</span>
+                        <i class="fas fa-chevron-down arrow-icon"></i>
+                    </button>
+                    <div id="collapseReviews" class="collapse" data-bs-parent="#productDetailAccordion">
+                        <div class="pd-accordion-content pt-3">
+                            <div class="row align-items-center mb-4">
+                                <div class="col-md-4 text-center border-end">
+                                    <div class="review-score-big">4.8</div>
+                                    <div class="text-warning my-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <div class="review-count-small">Berdasarkan 24 Ulasan</div>
+                                </div>
+                                <div class="col-md-8 ps-md-4 mt-4 mt-md-0">
+                                    <div class="rating-bar-container">
+                                        <span class="rating-bar-star-num">5</span> <i class="fas fa-star text-warning"></i>
+                                        <div class="rating-bar-track ms-2"><div class="rating-bar-fill" style="width: 85%;"></div></div>
+                                        <span class="rating-bar-percent">85%</span>
+                                    </div>
+                                    <div class="rating-bar-container">
+                                        <span class="rating-bar-star-num">4</span> <i class="fas fa-star text-warning"></i>
+                                        <div class="rating-bar-track ms-2"><div class="rating-bar-fill" style="width: 10%;"></div></div>
+                                        <span class="rating-bar-percent">10%</span>
+                                    </div>
+                                    <div class="rating-bar-container">
+                                        <span class="rating-bar-star-num">3</span> <i class="fas fa-star text-warning"></i>
+                                        <div class="rating-bar-track ms-2"><div class="rating-bar-fill" style="width: 5%;"></div></div>
+                                        <span class="rating-bar-percent">5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr class="my-4 text-muted opacity-25">
+                            
+                            <!-- Dummy Reviews -->
+                            <div class="review-list">
+                                <div class="review-card p-3 mb-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="review-avatar-circle">AD</div>
+                                            <div>
+                                                <div class="review-user-name">Amanda D. <span class="review-verified-badge ms-2"><i class="fas fa-check-circle"></i> Verified Buyer</span></div>
+                                                <div class="text-warning" style="font-size: 0.75rem;">
+                                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="review-date-text">2 Hari yang lalu</span>
+                                    </div>
+                                    <p class="review-comment mb-0 mt-2">Bahan sangat premium dan jahitannya rapi banget. Dipakai seharian tetap nyaman dan nggak gerah. Warnanya juga sesuai dengan ekspektasi, bahkan lebih bagus aslinya. Worth every penny!</p>
+                                </div>
+
+                                <div class="review-card p-3 mb-3">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="review-avatar-circle">SB</div>
+                                            <div>
+                                                <div class="review-user-name">Sarah B. <span class="review-verified-badge ms-2"><i class="fas fa-check-circle"></i> Verified Buyer</span></div>
+                                                <div class="text-warning" style="font-size: 0.75rem;">
+                                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="review-date-text">1 Minggu yang lalu</span>
+                                    </div>
+                                    <p class="review-comment mb-0 mt-2">Ukurannya pas banget di badan, modelnya elegan dan gampang di-mix and match. Pengirimannya juga cepet banget. Puas belanja di sini, bakal order lagi next time.</p>
+                                </div>
+                            </div>
+
+                            @if($canReview)
+                            <div class="text-center mt-4">
+                                <a href="#" class="btn-write-review">
+                                    <i class="fas fa-pen"></i> Tulis Ulasan Anda
+                                </a>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -1245,36 +1338,12 @@
             </div>
 
             <!-- Right Side: Reviews List Feed -->
-            <div class="col-lg-8">
-                <div class="row g-3">
+            <div class="col-lg-8" x-data="reviewsLoader({{ $product->id }}, {{ $reviews->currentPage() }}, {{ $reviews->hasMorePages() ? 'true' : 'false' }})">
+                <div class="row g-3" id="reviewsListArea">
                     @forelse($reviews as $review)
-                        <div class="col-12">
-                            <div class="card review-card p-4">
-                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <!-- User Avatar initials -->
-                                        <div class="review-avatar-circle">
-                                            {{ substr($review->user->name ?? 'A', 0, 1) }}
-                                        </div>
-                                        <div>
-                                            <div class="review-user-name">{{ $review->user->name }}</div>
-                                            <div class="d-flex align-items-center gap-2 mt-1">
-                                                <div class="text-warning small">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        <i class="fas fa-star {{ $i <= $review->rating ? '' : 'opacity-25' }}"></i>
-                                                    @endfor
-                                                </div>
-                                                <span class="review-verified-badge"><i class="fas fa-check-double text-success"></i> Pembeli Terverifikasi</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="review-date-text"><i class="far fa-clock me-1 text-muted"></i> {{ $review->created_at->diffForHumans() }}</span>
-                                </div>
-                                <p class="review-comment mb-0">{{ $review->review }}</p>
-                            </div>
-                        </div>
+                        @include('components.review-card', ['review' => $review])
                     @empty
-                        <div class="col-12">
+                        <div class="col-12" id="emptyReviewsState">
                             <div class="card border border-dashed rounded-4 p-5 text-center text-muted bg-light">
                                 <div class="mb-3">
                                     <i class="far fa-comment-dots fa-3x opacity-25"></i>
@@ -1293,6 +1362,13 @@
                         </div>
                     @endforelse
                 </div>
+                
+                <div class="text-center mt-4" x-show="hasMore">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" @click="loadMore" :disabled="loadingReviews">
+                        <span x-show="!loadingReviews">Muat Lebih Banyak Ulasan</span>
+                        <span x-show="loadingReviews" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i> Memuat...</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1301,39 +1377,79 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // 1. Quantity Widget controls
-    const qtyInput = document.getElementById('productQty');
-    const btnMinus = document.getElementById('qtyMinus');
-    const btnPlus = document.getElementById('qtyPlus');
-    const cartQtyInput = document.getElementById('cartQuantity');
-    const buyNowQtyInput = document.getElementById('buyNowQuantity');
-    const maxStock = parseInt("{{ $product->stock }}", 10) || 0;
+    // Alpine Components Data
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('productActions', (productId, maxStock) => ({
+            quantity: 1,
+            maxStock: maxStock,
+            loadingCart: false,
+            loadingBuy: false,
+            productId: productId,
+            
+            addToCart() {
+                this.loadingCart = true;
+                axios.post('{{ route('cart.add') }}', {
+                    product_id: this.productId,
+                    quantity: this.quantity
+                }).then(response => {
+                    this.loadingCart = false;
+                    if (response.data.success) {
+                        const toast = document.createElement('div');
+                        toast.className = 'pd-toast';
+                        toast.innerHTML = '<i class="fas fa-check-circle text-success me-2"></i> Produk ditambahkan ke keranjang!';
+                        document.body.appendChild(toast);
+                        setTimeout(() => toast.classList.add('show'), 50);
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                            setTimeout(() => toast.remove(), 400);
+                        }, 2500);
+                        
+                        // Update cart badge if function exists (from layout)
+                        if (typeof updateCartBadge === 'function') {
+                            updateCartBadge(response.data.cart_count);
+                        }
+                    }
+                }).catch(error => {
+                    this.loadingCart = false;
+                    console.error('Error adding to cart:', error);
+                    alert('Gagal menambahkan ke keranjang. Silakan coba lagi.');
+                });
+            }
+        }));
 
-    function updateQty(val) {
-        let current = parseInt(qtyInput.value, 10) || 1;
-        current += val;
-        
-        if (current < 1) current = 1;
-        if (current > maxStock) current = maxStock;
-        
-        qtyInput.value = current;
-        if (cartQtyInput) cartQtyInput.value = current;
-        if (buyNowQtyInput) buyNowQtyInput.value = current;
-    }
-
-    if (btnMinus && btnPlus && qtyInput) {
-        btnMinus.addEventListener('click', () => updateQty(-1));
-        btnPlus.addEventListener('click', () => updateQty(1));
-        
-        qtyInput.addEventListener('change', () => {
-            let current = parseInt(qtyInput.value, 10) || 1;
-            if (current < 1) current = 1;
-            if (current > maxStock) current = maxStock;
-            qtyInput.value = current;
-            if (cartQtyInput) cartQtyInput.value = current;
-            if (buyNowQtyInput) buyNowQtyInput.value = current;
-        });
-    }
+        Alpine.data('reviewsLoader', (productId, currentPage, initialHasMore) => ({
+            productId: productId,
+            currentPage: currentPage,
+            hasMore: initialHasMore,
+            loadingReviews: false,
+            
+            loadMore() {
+                if(this.loadingReviews || !this.hasMore) return;
+                
+                this.loadingReviews = true;
+                this.currentPage++;
+                
+                axios.get(`{{ url()->current() }}`, {
+                    params: {
+                        page: this.currentPage,
+                        load_reviews: 1
+                    },
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }).then(response => {
+                    this.loadingReviews = false;
+                    if(response.data.html) {
+                        document.getElementById('reviewsListArea').insertAdjacentHTML('beforeend', response.data.html);
+                    }
+                    this.hasMore = response.data.hasMore;
+                }).catch(error => {
+                    this.loadingReviews = false;
+                    console.error('Error loading reviews:', error);
+                });
+            }
+        }));
+    });
 
     // 2. Custom SKU Copy to Clipboard function
     const skuCopyBtn = document.getElementById('skuCopyBtn');
@@ -1393,88 +1509,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 5. Wishlist Toggle via AJAX
-    const pdWishBtn = document.getElementById('pdWishlistBtn');
-    if (pdWishBtn) {
-        pdWishBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const productId = this.dataset.productId;
 
-            // Cek status autentikasi
-            fetch('/check-auth')
-                .then(res => res.json())
-                .then(authData => {
-                    if (!authData.logged_in) {
-                        showPdLoginModal();
-                        return;
-                    }
-
-                    // Toggle wishlist via AJAX
-                    fetch(`/wishlist/toggle/${productId}`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        const icon = document.getElementById('pdWishlistIcon');
-                        if (data.status === 'added') {
-                            pdWishBtn.classList.add('active');
-                            pdWishBtn.title = 'Hapus dari Wishlist';
-                            if (icon) {
-                                icon.className = 'fas text-danger fa-heart fa-lg';
-                            }
-                        } else {
-                            pdWishBtn.classList.remove('active');
-                            pdWishBtn.title = 'Tambah ke Wishlist';
-                            if (icon) {
-                                icon.className = 'far fa-heart fa-lg';
-                            }
-                        }
-
-                        // Animate
-                        pdWishBtn.style.transform = 'scale(1.25)';
-                        setTimeout(() => { pdWishBtn.style.transform = ''; }, 250);
-
-                        // Update navbar badges
-                        const desktopBadge = document.getElementById('wishlistCount');
-                        const mobileBadge = document.getElementById('mobileWishlistCount');
-                        [desktopBadge, mobileBadge].forEach(badge => {
-                            if (badge) {
-                                if (data.count > 0) {
-                                    badge.textContent = data.count;
-                                    badge.style.display = 'inline-flex';
-                                } else {
-                                    badge.style.display = 'none';
-                                }
-                            }
-                        });
-
-                        // Show toast
-                        const toast = document.createElement('div');
-                        toast.className = 'pd-toast';
-                        toast.innerHTML = data.status === 'added'
-                            ? '<i class="fas fa-heart text-danger me-2"></i> Ditambahkan ke wishlist!'
-                            : '<i class="far fa-heart me-2"></i> Dihapus dari wishlist';
-                        document.body.appendChild(toast);
-                        setTimeout(() => toast.classList.add('show'), 50);
-                        setTimeout(() => {
-                            toast.classList.remove('show');
-                            setTimeout(() => toast.remove(), 400);
-                        }, 2500);
-                    })
-                    .catch(err => {
-                        console.error('Wishlist error:', err);
-                    });
-                })
-                .catch(() => {
-                    showPdLoginModal();
-                });
-        });
-    }
 
     // 6. Login Required Modal for Product Detail
     function showPdLoginModal() {
