@@ -29,4 +29,5 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with('unreadCount', $unreadCount);
         });
+    }
 }
