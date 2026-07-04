@@ -240,31 +240,3 @@ Route::middleware('auth')->group(function () {
 Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->middleware('auth')->name('redirect');
 
 require __DIR__.'/auth.php';
-
-Route::get('/debug-log', function () {
-    $logFile = storage_path('logs/laravel.log');
-    if (!file_exists($logFile)) {
-        return 'No log file found.';
-    }
-    $content = file_get_contents($logFile);
-    return response("<pre>" . htmlspecialchars(substr($content, -20000)) . "</pre>");
-});
-
-// Temporary route to fix broken storage symlink on production
-Route::get('/fix-storage', function () {
-    $publicStorage = public_path('storage');
-    
-    // Hapus file/folder jika sudah ada
-    if (\Illuminate\Support\Facades\File::exists($publicStorage)) {
-        if (is_link($publicStorage)) {
-            unlink($publicStorage);
-        } else {
-            \Illuminate\Support\Facades\File::deleteDirectory($publicStorage);
-        }
-    }
-    
-    // Buat ulang link
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-    
-    return 'Storage berhasil diperbaiki! Silakan kembali ke website dan hapus route ini nanti.';
-});
