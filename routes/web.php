@@ -240,3 +240,18 @@ Route::middleware('auth')->group(function () {
 Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->middleware('auth')->name('redirect');
 
 require __DIR__.'/auth.php';
+
+Route::get('/cek-storage', function () {
+    $path = storage_path('app/public/products');
+    $files = [];
+    if (is_dir($path)) {
+        $files = scandir($path);
+    }
+    
+    return [
+        'is_dir' => is_dir($path),
+        'files' => $files,
+        'symlink_exists' => is_link(public_path('storage')),
+        'public_storage_exists' => file_exists(public_path('storage')),
+    ];
+});
