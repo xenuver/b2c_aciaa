@@ -253,5 +253,8 @@ Route::get('/cek-storage', function () {
         'files' => $files,
         'symlink_exists' => is_link(public_path('storage')),
         'public_storage_exists' => file_exists(public_path('storage')),
+        'symlink_target' => is_link(public_path('storage')) ? readlink(public_path('storage')) : null,
+        'asset_url' => asset('storage/products/' . ($files[2] ?? 'test.png')),
+        'file_get_contents' => file_exists(public_path('storage/products/' . ($files[2] ?? 'test.png'))) ? 'exists' : 'missing',
     ];
 });
