@@ -5,19 +5,20 @@
 @push('styles')
 <style>
     :root{
-        --ck-pink: #d4a5a5;
-        --ck-pink-2: #b5838d;
-        --ck-soft: #fef6f5;
+        --ck-pink: var(--color-primary);
+        --ck-pink-2: var(--color-primary-light);
+        --ck-soft: var(--color-surface-alt);
         --ck-dark: #1a1a1a;
     }
 
     .order-card {
-        border: none;
+        border: 1px solid rgba(255,255,255,0.2);
         border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
         overflow: hidden;
         margin-bottom: 24px;
-        background: #ffffff;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
     }
     
     .order-card-header {
@@ -194,13 +195,14 @@
 
 @section('content')
 <div class="container my-5">
-    <!-- Header Page -->
-    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-3">
-        <div>
-            <h2 class="fw-bold text-gray-800 mb-1">Detail Transaksi</h2>
-            <p class="text-muted mb-0">Invoice: <strong class="text-dark">{{ $transaction->invoice_number }}</strong></p>
+    <!-- Hero Banner -->
+    <div class="tx-hero mb-4 rounded-4 px-4 py-4 d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="position: absolute; top: -30px; right: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+        <div style="position: relative; z-index: 2;">
+            <h2 class="fw-bold text-white mb-1" style="font-family: var(--font-heading, 'Cormorant', serif);"><i class="fas fa-file-invoice me-2" style="color: var(--color-primary);"></i>Detail Transaksi</h2>
+            <p class="text-white-50 mb-0">Invoice: <strong class="text-white">{{ $transaction->invoice_number }}</strong></p>
         </div>
-        <a href="{{ route('transactions.index') }}" class="btn-outline-pink">
+        <a href="{{ route('transactions.index') }}" class="btn-outline-pink bg-transparent position-relative" style="z-index: 2;">
             <i class="fas fa-arrow-left"></i> Kembali ke Riwayat
         </a>
     </div>

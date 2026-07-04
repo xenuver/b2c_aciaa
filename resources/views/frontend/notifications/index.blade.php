@@ -5,14 +5,14 @@
 @push('styles')
 <style>
     :root {
-        --ck-pink: #d4a5a5;
-        --ck-pink-2: #b5838d;
-        --ck-soft: #fef6f5;
+        --ck-pink: var(--color-primary);
+        --ck-pink-2: var(--color-primary-light);
+        --ck-soft: var(--color-surface-alt);
         --ck-dark: #1a1a1a;
     }
 
     .notification-page {
-        font-family: 'Poppins', 'Inter', sans-serif;
+        font-family: 'Montserrat', 'Montserrat', sans-serif;
     }
 
     .notification-card {
@@ -25,8 +25,8 @@
     }
 
     .notification-card-header {
-        background: linear-gradient(135deg, rgba(212,165,165,0.08), rgba(254,246,245,0.4));
-        border-bottom: 1px solid rgba(212,165,165,0.15);
+        background: linear-gradient(135deg, rgba(194,24,91,0.08), rgba(254,246,245,0.4));
+        border-bottom: 1px solid rgba(194,24,91,0.15);
         padding: 20px 24px;
     }
 
@@ -47,7 +47,7 @@
         background: linear-gradient(135deg, var(--ck-pink), var(--ck-pink-2));
         color: white;
         border-color: transparent;
-        box-shadow: 0 4px 12px rgba(181, 131, 141, 0.25);
+        box-shadow: 0 4px 12px rgba(233, 30, 140, 0.25);
     }
 
     .filter-btn:hover:not(.active) {
@@ -73,7 +73,7 @@
     
     .btn-pink:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(181, 131, 141, 0.25);
+        box-shadow: 0 4px 12px rgba(233, 30, 140, 0.25);
         color: white;
     }
 
@@ -123,7 +123,7 @@
     }
 
     .icon-shipping {
-        background-color: rgba(212, 165, 165, 0.15);
+        background-color: rgba(194, 24, 91, 0.15);
         color: var(--ck-pink-2);
     }
 
@@ -171,7 +171,7 @@
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--ck-soft), rgba(212,165,165,0.2));
+        background: linear-gradient(135deg, var(--ck-soft), rgba(194,24,91,0.2));
         display: inline-flex;
         align-items: center;
         justify-content: center;

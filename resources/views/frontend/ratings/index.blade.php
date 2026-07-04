@@ -5,19 +5,19 @@
 @section('content')
 <style>
     :root {
-        --pd-pink: #d4a5a5;
-        --pd-pink-2: #b5838d;
-        --pd-soft: #fef6f5;
+        --pd-pink: var(--color-primary);
+        --pd-pink-2: var(--color-primary-light);
+        --pd-soft: var(--color-surface-alt);
         --pd-dark: #111111;
         --pd-border: #ede6e4;
         --pd-success: #38a169;
         --pd-warning: #eab308;
-        --pd-shadow-soft: 0 10px 30px rgba(212, 165, 165, 0.08);
-        --pd-shadow-hover: 0 15px 40px rgba(212, 165, 165, 0.15);
+        --pd-shadow-soft: 0 10px 30px rgba(194, 24, 91, 0.08);
+        --pd-shadow-hover: 0 15px 40px rgba(194, 24, 91, 0.15);
     }
 
     .rating-page-container {
-        font-family: 'Poppins', 'Inter', sans-serif;
+        font-family: 'Montserrat', 'Montserrat', sans-serif;
         color: var(--pd-dark);
     }
 
@@ -76,7 +76,7 @@
     .btn-action-edit {
         background: var(--pd-soft);
         color: var(--pd-pink-2);
-        border: 1px solid rgba(181, 131, 141, 0.2);
+        border: 1px solid rgba(233, 30, 140, 0.2);
         font-weight: 600;
         font-size: 0.8rem;
         padding: 8px 16px;

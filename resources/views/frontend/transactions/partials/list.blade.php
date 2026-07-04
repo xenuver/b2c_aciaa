@@ -1,7 +1,9 @@
 @if($transactions->count() > 0)
-    <div class="transaction-list">
+    <div class="transaction-list timeline-layout" style="border-left: 2px dashed rgba(194,24,91,0.2); padding-left: 30px; margin-left: 15px; position: relative;">
         @foreach($transactions as $transaction)
-            <div class="order-item-card">
+            <div class="order-item-card position-relative" style="box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
+                <!-- Timeline Dot -->
+                <div style="position: absolute; left: -37px; top: 20px; width: 12px; height: 12px; border-radius: 50%; background: var(--color-primary); border: 2px solid #fff; box-shadow: 0 0 0 3px rgba(194,24,91,0.2);"></div>
                 <!-- Card Header -->
                 <div class="order-card-header">
                     <div class="d-flex align-items-center gap-2">
@@ -76,7 +78,7 @@
                             <a href="{{ route('transactions.show', $transaction->id) }}?pay=1" class="btn-detail py-2 px-3">
                                 <i class="fas fa-credit-card me-1"></i> Lanjutkan Pembayaran
                             </a>
-                            <a href="{{ route('transactions.show', $transaction->id) }}" class="btn-outline-pink py-1.5 px-3" style="font-size: 0.85rem;">
+                            <a href="{{ route('transactions.show', $transaction->id) }}" class="btn btn-outline-primary rounded-pill py-1.5 px-3" style="font-size: 0.85rem; border-color: var(--color-primary); color: var(--color-primary);">
                                 Detail
                             </a>
                         @else
@@ -96,10 +98,10 @@
     </div>
 @else
     <div class="empty-state">
-        <i class="fas fa-receipt fa-4x mb-3 text-muted" style="color: var(--ck-pink) !important; opacity: 0.5;"></i>
-        <h4 class="fw-bold mb-2">Belum Ada Transaksi</h4>
+        <i class="fas fa-receipt fa-4x mb-3 text-muted" style="color: var(--color-primary) !important; opacity: 0.5;"></i>
+        <h4 class="fw-bold mb-2" style="font-family: var(--font-heading, 'Cormorant', serif);">Belum Ada Transaksi</h4>
         <p class="text-muted small">Transaksi tidak ditemukan dengan kata kunci atau filter tersebut.</p>
-        <a href="{{ route('products.index') }}" class="btn-shop">
+        <a href="{{ route('products.index') }}" class="btn-shop" style="background: linear-gradient(135deg, #111 0%, #333 100%); border: none;">
             Mulai Belanja Sekarang
         </a>
     </div>

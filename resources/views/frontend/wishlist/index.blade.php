@@ -7,7 +7,7 @@
 <style>
 /* ─── Wishlist Premium Theme ─── */
 .wish-hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
     padding: 2.5rem 0 3rem;
     position: relative;
     overflow: hidden;
@@ -19,27 +19,27 @@
     left: -15%;
     width: 450px;
     height: 450px;
-    background: radial-gradient(circle, rgba(207,126,126,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(194,24,91,0.15) 0%, transparent 70%);
     border-radius: 50%;
 }
 .wish-hero h1 {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     font-size: 1.75rem;
     font-weight: 800;
     color: #fff;
     margin: 0;
     letter-spacing: -0.5px;
 }
-.wish-hero h1 i { color: #cf7e7e; margin-right: 10px; }
+.wish-hero h1 i { color: var(--color-primary); margin-right: 10px; }
 .wish-hero .breadcrumb-text {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.55);
     margin-top: 6px;
 }
-.wish-hero .breadcrumb-text a { color: #cf7e7e; text-decoration: none; }
+.wish-hero .breadcrumb-text a { color: var(--color-primary); text-decoration: none; }
 
 .wish-wrapper {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     max-width: 1140px;
     margin: -2rem auto 3rem;
     padding: 0 1rem;
@@ -158,7 +158,7 @@
 .wish-card-price {
     font-weight: 800;
     font-size: 1.05rem;
-    color: #cf7e7e;
+    color: var(--color-primary);
 }
 .wish-card-price-old {
     font-size: 0.8rem;
@@ -177,13 +177,13 @@
     gap: 8px;
     width: 100%;
     padding: 10px 16px;
-    background: linear-gradient(135deg, #cf7e7e 0%, #b76e79 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     color: #fff;
     border: none;
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.82rem;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
@@ -191,7 +191,7 @@
 }
 .btn-view-product:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(207,126,126,0.35);
+    box-shadow: 0 4px 16px rgba(194,24,91,0.35);
     color: #fff;
 }
 .btn-view-product i { font-size: 0.9rem; }
@@ -202,7 +202,7 @@
     align-items: flex-start;
     gap: 16px;
     background: linear-gradient(135deg, #fef8f6 0%, #fef0ec 100%);
-    border: 1px solid rgba(207,126,126,0.2);
+    border: 1px solid rgba(194,24,91,0.2);
     border-radius: 16px;
     padding: 1.25rem 1.5rem;
     margin-bottom: 1.5rem;
@@ -213,7 +213,7 @@
     height: 44px;
     min-width: 44px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,7 +227,7 @@
     font-size: 0.9rem;
     color: #1a1a2e;
     margin-bottom: 4px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 .wish-personalization-text p {
     font-size: 0.8rem;
@@ -254,24 +254,24 @@
     justify-content: center;
     margin: 0 auto 1.5rem;
 }
-.wish-empty-icon i { font-size: 2.5rem; color: #cf7e7e; }
-.wish-empty h3 { font-weight: 800; color: #1a1a2e; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; }
+.wish-empty-icon i { font-size: 2.5rem; color: var(--color-primary); }
+.wish-empty h3 { font-weight: 800; color: #1a1a2e; margin-bottom: 0.5rem; font-family: var(--font-body, 'Montserrat', sans-serif); }
 .wish-empty p { color: #9ca3af; font-size: 0.9rem; margin-bottom: 1.5rem; }
 .btn-explore {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 28px;
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     color: #fff;
     border-radius: 12px;
     font-weight: 700;
     text-decoration: none;
     transition: all 0.2s;
-    font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 16px rgba(207,126,126,0.3);
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    box-shadow: 0 4px 16px rgba(194,24,91,0.3);
 }
-.btn-explore:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(207,126,126,0.4); color: #fff; }
+.btn-explore:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(194,24,91,0.4); color: #fff; }
 
 /* ─── Alert ─── */
 .wish-alert {
@@ -308,8 +308,8 @@
     color: #374151;
 }
 .wish-pagination .page-item.active .page-link {
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
-    border-color: #cf7e7e;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-color: var(--color-primary);
     color: #fff;
 }
 
@@ -412,7 +412,7 @@
                     <div class="product-info">
                         {{-- Kategori --}}
                         @if($categoryName)
-                            <span class="product-category" style="display: block; font-size: 0.7rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #b5838d; margin-bottom: 0.25rem;">{{ $categoryName }}</span>
+                            <span class="product-category" style="display: block; font-size: 0.7rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--color-primary-light); margin-bottom: 0.25rem;">{{ $categoryName }}</span>
                         @endif
 
                         {{-- Nama Produk --}}

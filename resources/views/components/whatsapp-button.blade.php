@@ -4,7 +4,7 @@
     $whatsappUrl = "https://wa.me/{$whatsappNumber}?text={$message}";
 @endphp
 
-<div x-data="{ open: false }" class="whatsapp-widget position-fixed bottom-0 end-0 m-4 z-3">
+<div x-data="{ open: false }" class="whatsapp-widget position-fixed bottom-0 end-0 m-4">
     <!-- Chat Popup Box -->
     <div x-show="open" 
          x-transition:enter="transition ease-out duration-300"
@@ -61,8 +61,8 @@
 
 <style>
 .whatsapp-widget {
-    z-index: 1030;
-    font-family: 'Inter', 'Poppins', sans-serif;
+    z-index: 1080;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 /* Floating Circular Button */
@@ -129,7 +129,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    z-index: 1040;
+    z-index: 1085;
 }
 
 /* Header */

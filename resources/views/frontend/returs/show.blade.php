@@ -7,7 +7,7 @@
 <style>
 /* ─── Retur Detail Premium Theme ─── */
 .rd-hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
     padding: 2.5rem 0 3rem;
     position: relative;
     overflow: hidden;
@@ -19,27 +19,27 @@
     left: -10%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(207,126,126,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(194,24,91,0.12) 0%, transparent 70%);
     border-radius: 50%;
 }
 .rd-hero h1 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.75rem;
     font-weight: 800;
     color: #fff;
     margin: 0;
     letter-spacing: -0.5px;
 }
-.rd-hero h1 i { color: #cf7e7e; margin-right: 10px; }
+.rd-hero h1 i { color: var(--color-primary); margin-right: 10px; }
 .rd-hero .breadcrumb-text {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.55);
     margin-top: 6px;
 }
-.rd-hero .breadcrumb-text a { color: #cf7e7e; text-decoration: none; }
+.rd-hero .breadcrumb-text a { color: var(--color-primary); text-decoration: none; }
 
 .rd-wrapper {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     max-width: 1140px;
     margin: -2rem auto 3rem;
     padding: 0 1rem;
@@ -61,7 +61,7 @@
     font-size: 0.82rem;
     text-decoration: none;
     transition: all 0.15s;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     margin-bottom: 1.25rem;
 }
 .btn-back:hover { background: #f9fafb; color: #1a1a2e; border-color: #d1d5db; }
@@ -149,11 +149,11 @@
     align-items: center;
     gap: 10px;
 }
-.rd-card-header i { color: #cf7e7e; font-size: 0.95rem; }
+.rd-card-header i { color: var(--color-primary); font-size: 0.95rem; }
 .rd-card-header h5 { margin: 0; font-weight: 700; font-size: 0.95rem; color: #fff; }
 
 .rd-card-header.alt {
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
 }
 .rd-card-header.alt i { color: #fff; }
 
@@ -218,7 +218,7 @@
     justify-content: center;
     flex-shrink: 0;
 }
-.pri-icon i { color: #cf7e7e; font-size: 0.85rem; }
+.pri-icon i { color: var(--color-primary); font-size: 0.85rem; }
 .pri-name {
     font-weight: 700;
     font-size: 0.88rem;
@@ -236,7 +236,7 @@
 .pri-refund {
     font-weight: 800;
     font-size: 0.95rem;
-    color: #cf7e7e;
+    color: var(--color-primary);
     white-space: nowrap;
 }
 
@@ -259,7 +259,7 @@
 .rd-total-row .total-value {
     font-weight: 800;
     font-size: 1.15rem;
-    color: #b76e79;
+    color: var(--color-primary-light);
 }
 
 /* ─── Photo Card ─── */
@@ -393,7 +393,7 @@
                 <div class="rd-card-body">
                     <div class="info-row">
                         <div class="ir-label">No. Retur</div>
-                        <div class="ir-value" style="font-family: monospace; color: #cf7e7e;">{{ $retur->retur_number }}</div>
+                        <div class="ir-value" style="font-family: monospace; color: var(--color-primary);">{{ $retur->retur_number }}</div>
                     </div>
                     <div class="info-row">
                         <div class="ir-label">Invoice</div>

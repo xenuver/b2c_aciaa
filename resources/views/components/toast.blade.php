@@ -61,7 +61,7 @@
                         ></i>
                     </span>
 
-                    <span class="toast-message fw-medium small" x-text="t.message"></span>
+                    <span class="toast-message fw-medium small" x-text="t.message" style="font-family: var(--font-body, 'Montserrat', sans-serif);"></span>
                 </div>
 
                 {{-- Close button --}}
@@ -88,26 +88,25 @@
 <style>
     /* =====================
        Toast Theme Colors
-       Uses store's pink/rose palette: #d4a5a5 (pink) / #b5838d (pink-2)
     ===================== */
     .toast--success {
         background: #fff;
-        border-left: 4px solid #b5838d !important;
+        border-left: 4px solid #16A34A !important;
     }
 
     .toast--error {
         background: #fff;
-        border-left: 4px solid #dc3545 !important;
+        border-left: 4px solid #DC2626 !important;
     }
 
     .toast-icon--success {
-        background: rgba(181, 131, 141, 0.15);
-        color: #b5838d;
+        background: rgba(22, 163, 74, 0.15);
+        color: #16A34A;
     }
 
     .toast-icon--error {
-        background: rgba(220, 53, 69, 0.12);
-        color: #dc3545;
+        background: rgba(220, 38, 38, 0.12);
+        color: #DC2626;
     }
 
     .toast-message {
@@ -122,13 +121,13 @@
 
     /* Progress bar animation */
     .toast-progress--success {
-        background: linear-gradient(90deg, #d4a5a5, #b5838d);
+        background: #16A34A;
         width: 100%;
         transform-origin: left;
     }
 
     .toast-progress--error {
-        background: #dc3545;
+        background: #DC2626;
         width: 100%;
         transform-origin: left;
     }

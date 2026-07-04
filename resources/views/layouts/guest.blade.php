@@ -7,8 +7,9 @@
 
     <title>{{ config('app.name', 'Aciaa') }} - @yield('title', 'Auth')</title>
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=poppins:300,400,500,600,700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,13 +18,16 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body style="font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;">
+<body style="font-family: var(--font-body);">
     <style>
         :root{
-            --pink:#d4a5a5;
-            --pink-2:#b5838d;
-            --soft:#fef6f5;
-            --dark:#1a1a1a;
+            --pink:#C2185B;
+            --pink-2:#E91E8C;
+            --soft:#FCE4EC;
+            --dark:#1A1A2E;
+            --bg:#FDF2F8;
+            --font-heading: 'Cormorant', Georgia, serif;
+            --font-body: 'Montserrat', system-ui, sans-serif;
         }
 
         *{
@@ -38,7 +42,7 @@
             align-items:center;
             justify-content:center;
             padding: 40px 16px;
-            background: #faf8f7;
+            background: var(--bg);
             position: relative;
             overflow: hidden;
         }
@@ -50,7 +54,7 @@
             width: 420px;
             height: 420px;
             border-radius: 50%;
-            background: rgba(212,165,165,0.12);
+            background: rgba(194, 24, 91, 0.12);
             top: -120px;
             right: -80px;
             pointer-events: none;
@@ -61,7 +65,7 @@
             width: 300px;
             height: 300px;
             border-radius: 50%;
-            background: rgba(181,131,141,0.08);
+            background: rgba(233, 30, 140, 0.08);
             bottom: -60px;
             left: -60px;
             pointer-events: none;
@@ -79,7 +83,7 @@
         }
 
         .auth-left{
-            background: linear-gradient(160deg, #fef6f5 0%, #f8eceb 100%);
+            background: linear-gradient(160deg, var(--color-surface-alt) 0%, #f8eceb 100%);
             border-right: 1px solid rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
@@ -128,8 +132,9 @@
             margin-top: 2.5rem;
         }
         .auth-welcome h2{
+            font-family: var(--font-heading);
             font-weight: 700;
-            font-size: 1.35rem;
+            font-size: 1.5rem;
             color: var(--dark);
             margin-bottom: 8px;
         }
@@ -191,7 +196,7 @@
         .auth-right input[type="password"]:focus,
         .auth-right input[type="text"]:focus{
             border-color: var(--pink);
-            box-shadow: 0 0 0 3px rgba(212,165,165,0.15);
+            box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.15);
             outline: none;
             background: #fff;
         }
@@ -230,7 +235,7 @@
         .auth-right .ms-3:hover,
         .auth-right .ms-4:hover{
             transform: translateY(-1px) !important;
-            box-shadow: 0 6px 20px rgba(181,131,141,0.3) !important;
+            box-shadow: 0 6px 20px rgba(194, 24, 91, 0.3) !important;
         }
 
         @media (max-width: 991px){

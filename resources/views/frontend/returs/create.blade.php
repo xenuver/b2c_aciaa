@@ -7,7 +7,7 @@
 <style>
 /* ─── Retur Form Premium Theme ─── */
 .retur-hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
     padding: 2.5rem 0 3rem;
     position: relative;
     overflow: hidden;
@@ -19,27 +19,27 @@
     right: -10%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(207,126,126,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(194,24,91,0.12) 0%, transparent 70%);
     border-radius: 50%;
 }
 .retur-hero h1 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.75rem;
     font-weight: 800;
     color: #fff;
     margin: 0;
     letter-spacing: -0.5px;
 }
-.retur-hero h1 i { color: #cf7e7e; margin-right: 10px; }
+.retur-hero h1 i { color: var(--color-primary); margin-right: 10px; }
 .retur-hero .breadcrumb-text {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.55);
     margin-top: 6px;
 }
-.retur-hero .breadcrumb-text a { color: #cf7e7e; text-decoration: none; }
+.retur-hero .breadcrumb-text a { color: var(--color-primary); text-decoration: none; }
 
 .retur-wrapper {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     max-width: 1140px;
     margin: -2rem auto 3rem;
     padding: 0 1rem;
@@ -80,7 +80,7 @@
     align-items: center;
     gap: 10px;
 }
-.retur-form-header i { color: #cf7e7e; font-size: 1.1rem; }
+.retur-form-header i { color: var(--color-primary); font-size: 1.1rem; }
 .retur-form-header h5 {
     margin: 0;
     font-weight: 700;
@@ -99,7 +99,7 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
-.rf-label .required { color: #cf7e7e; }
+.rf-label .required { color: var(--color-primary); }
 .rf-select,
 .rf-input,
 .rf-textarea {
@@ -108,7 +108,7 @@
     border: 1.5px solid #e5e7eb;
     border-radius: 10px;
     font-size: 0.88rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: #374151;
     background: #fafafa;
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
@@ -117,8 +117,8 @@
 .rf-select:focus,
 .rf-input:focus,
 .rf-textarea:focus {
-    border-color: #cf7e7e;
-    box-shadow: 0 0 0 3px rgba(207,126,126,0.1);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(194,24,91,0.1);
     background: #fff;
 }
 .rf-textarea { resize: vertical; min-height: 80px; }
@@ -140,9 +140,9 @@
 }
 .product-check-card:hover { border-color: #d1d5db; background: #f5f0ec; }
 .product-check-card.active {
-    border-color: #cf7e7e;
+    border-color: var(--color-primary);
     background: #fdf2f2;
-    box-shadow: 0 0 0 3px rgba(207,126,126,0.1);
+    box-shadow: 0 0 0 3px rgba(194,24,91,0.1);
 }
 
 .product-check-card .form-check {
@@ -161,8 +161,8 @@
     cursor: pointer;
 }
 .product-check-card .form-check-input:checked {
-    background-color: #cf7e7e;
-    border-color: #cf7e7e;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
 }
 .product-check-card .form-check-label {
     cursor: pointer;
@@ -176,7 +176,7 @@
 }
 .product-check-card .product-price {
     font-size: 0.8rem;
-    color: #cf7e7e;
+    color: var(--color-primary);
     font-weight: 600;
     margin-top: 2px;
 }
@@ -200,12 +200,12 @@
     border: 1.5px solid #e5e7eb;
     border-radius: 8px;
     font-size: 0.85rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     text-align: center;
     outline: none;
     transition: border-color 0.2s;
 }
-.qty-input-wrap input:focus { border-color: #cf7e7e; }
+.qty-input-wrap input:focus { border-color: var(--color-primary); }
 
 /* ─── File Upload ─── */
 .file-upload-zone {
@@ -219,10 +219,10 @@
     position: relative;
 }
 .file-upload-zone:hover {
-    border-color: #cf7e7e;
+    border-color: var(--color-primary);
     background: #fdf8f8;
 }
-.file-upload-zone i { font-size: 1.5rem; color: #cf7e7e; margin-bottom: 8px; display: block; }
+.file-upload-zone i { font-size: 1.5rem; color: var(--color-primary); margin-bottom: 8px; display: block; }
 .file-upload-zone .upload-text { font-size: 0.85rem; color: #6b7280; font-weight: 500; }
 .file-upload-zone .upload-hint { font-size: 0.75rem; color: #9ca3af; margin-top: 4px; }
 .file-upload-zone input[type="file"] {
@@ -274,7 +274,7 @@
 }
 .retur-guide-header {
     padding: 1.25rem 1.5rem;
-    background: linear-gradient(135deg, #cf7e7e 0%, #b76e79 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -291,7 +291,7 @@
     align-items: center;
     gap: 6px;
 }
-.retur-guide-body h6 i { color: #cf7e7e; font-size: 0.8rem; }
+.retur-guide-body h6 i { color: var(--color-primary); font-size: 0.8rem; }
 .retur-guide-body ul, .retur-guide-body ol {
     padding-left: 1.25rem;
     margin: 0 0 1.25rem;
@@ -327,7 +327,7 @@
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     color: #fff;
     display: flex;
     align-items: center;
@@ -350,18 +350,18 @@
     align-items: center;
     gap: 8px;
     padding: 12px 28px;
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     color: #fff;
     border: none;
     border-radius: 12px;
     font-weight: 700;
     font-size: 0.88rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: 0 4px 16px rgba(207,126,126,0.3);
+    box-shadow: 0 4px 16px rgba(194,24,91,0.3);
 }
-.btn-submit-retur:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(207,126,126,0.4); }
+.btn-submit-retur:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(194,24,91,0.4); }
 .btn-cancel-retur {
     display: inline-flex;
     align-items: center;
@@ -373,7 +373,7 @@
     border-radius: 12px;
     font-weight: 600;
     font-size: 0.88rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     cursor: pointer;
     transition: all 0.15s;
     text-decoration: none;

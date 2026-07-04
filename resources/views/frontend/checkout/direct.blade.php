@@ -5,9 +5,9 @@
 @push('styles')
 <style>
     :root{
-        --ck-pink: #d4a5a5;
-        --ck-pink-2: #b5838d;
-        --ck-soft: #fef6f5;
+        --ck-pink: var(--color-primary);
+        --ck-pink-2: var(--color-primary-light);
+        --ck-soft: var(--color-surface-alt);
         --ck-dark: #1a1a1a;
     }
 

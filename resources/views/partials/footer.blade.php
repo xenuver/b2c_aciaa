@@ -101,9 +101,9 @@
 <style>
 /* ========== FOOTER STYLES ========== */
 .site-footer {
-    background: #1a1a1a;
+    background: var(--color-text, #1a1a1a);
     color: #ccc;
-    font-family: 'Poppins', 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
 }
 
 .footer-top {
@@ -127,7 +127,7 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     font-weight: 700;
     font-size: 1.1rem;
     flex-shrink: 0;
@@ -168,15 +168,16 @@
 }
 
 .footer-social-link:hover {
-    background: #d4a5a5;
-    border-color: #d4a5a5;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     color: #fff;
     transform: translateY(-3px);
 }
 
 /* Footer Columns */
 .footer-col-title {
-    font-size: 1rem;
+    font-family: var(--font-heading, 'Cormorant', serif);
+    font-size: 1.15rem;
     font-weight: 600;
     color: #fff;
     margin-bottom: 1.25rem;
@@ -191,7 +192,7 @@
     left: 0;
     width: 30px;
     height: 2px;
-    background: #d4a5a5;
+    background: var(--color-primary);
 }
 
 .footer-links {
@@ -213,7 +214,7 @@
 }
 
 .footer-links a:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
     padding-left: 5px;
 }
 
@@ -234,7 +235,7 @@
 }
 
 .footer-contact-list li i {
-    color: #d4a5a5;
+    color: var(--color-primary);
     margin-top: 3px;
     width: 16px;
     text-align: center;
@@ -262,7 +263,7 @@
 }
 
 .footer-copyright strong {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .footer-payment-icons {

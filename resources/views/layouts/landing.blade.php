@@ -9,8 +9,9 @@
     <title>@yield('title', 'ACIAA — Premium Women\'s Fashion')</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=poppins:300,400,500,600,700|playfair-display:400,400i,600&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,8 +23,69 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     
     @stack('styles')
+    
+    <style>
+        :root {
+            /* Color Palette */
+            --color-primary: #C2185B;
+            --color-primary-light: #E91E8C;
+            --color-primary-soft: #FCE4EC;
+            --color-secondary: #F48FB1;
+            --color-gold: #CA8A04;
+            --color-gold-light: #FEF3C7;
+
+            /* Neutrals */
+            --color-text: #1A1A2E;
+            --color-text-secondary: #4A5568;
+            --color-text-muted: #9CA3AF;
+            --color-bg: #FDF2F8;
+            --color-surface: #FFFFFF;
+            --color-surface-alt: #FEF6F5;
+            --color-border: rgba(194, 24, 91, 0.12);
+            --color-border-light: rgba(0, 0, 0, 0.06);
+
+            /* Typography */
+            --font-heading: 'Cormorant', Georgia, serif;
+            --font-body: 'Montserrat', system-ui, sans-serif;
+
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 80px;
+
+            /* Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 9999px;
+
+            /* Shadow */
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,0.1);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,0.12);
+            --shadow-rose: 0 8px 24px rgba(194, 24, 91, 0.15);
+            --shadow-gold: 0 8px 24px rgba(202, 138, 4, 0.2);
+
+            /* Animation */
+            --ease-fluid: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-fast: 150ms;
+            --duration-base: 250ms;
+            --duration-medium: 350ms;
+            --duration-slow: 500ms;
+            --duration-hero: 800ms;
+        }
+    </style>
 </head>
-<body style="font-family: 'Poppins', 'Inter', system-ui, sans-serif; margin: 0; padding: 0;">
+<body style="font-family: var(--font-body); margin: 0; padding: 0; background-color: var(--color-bg); color: var(--color-text);">
 
     {{-- ========== LANDING TRANSPARENT NAVBAR ========== --}}
     <nav class="landing-navbar" id="landingNavbar">
@@ -197,7 +259,7 @@
         align-items: center;
         justify-content: center;
         color: #fff;
-        background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+        background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
         font-weight: 700;
         font-size: 1rem;
         flex-shrink: 0;
@@ -212,7 +274,7 @@
     }
 
     .landing-navbar.scrolled .landing-logo-text {
-        background: linear-gradient(135deg, #1a1a1a, #d4a5a5);
+        background: linear-gradient(135deg, #1a1a1a, var(--color-primary));
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
@@ -251,13 +313,13 @@
     }
 
     .landing-navbar.scrolled .landing-nav-link:hover {
-        color: #d4a5a5;
-        background: #fef6f5;
+        color: var(--color-primary);
+        background: var(--color-surface-alt);
     }
 
     .landing-navbar.scrolled .landing-nav-link.active {
-        color: #d4a5a5;
-        background: #fef6f5;
+        color: var(--color-primary);
+        background: var(--color-surface-alt);
     }
 
     /* Right Section */
@@ -279,10 +341,10 @@
     }
 
     .landing-nav-btn-solid:hover {
-        background: #d4a5a5;
+        background: var(--color-primary);
         color: #fff;
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(212, 165, 165, 0.4);
+        box-shadow: var(--shadow-rose);
     }
 
     .landing-navbar.scrolled .landing-nav-btn-solid {
@@ -291,7 +353,7 @@
     }
 
     .landing-navbar.scrolled .landing-nav-btn-solid:hover {
-        background: #d4a5a5;
+        background: var(--color-primary);
     }
 
     /* Outline Button */
@@ -322,9 +384,9 @@
     }
 
     .landing-navbar.scrolled .landing-nav-btn-outline:hover {
-        background: #fef6f5;
-        border-color: #d4a5a5;
-        color: #d4a5a5;
+        background: var(--color-surface-alt);
+        border-color: var(--color-primary);
+        color: var(--color-primary);
     }
 
     /* User Avatar */
@@ -342,7 +404,7 @@
         width: 34px;
         height: 34px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #d4a5a5, #b5838d);
+        background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
         display: flex;
         align-items: center;
         justify-content: center;
@@ -439,8 +501,8 @@
     }
 
     .landing-mobile-link:hover {
-        background: #fef6f5;
-        color: #d4a5a5;
+        background: var(--color-surface-alt);
+        color: var(--color-primary);
     }
 
     .landing-mobile-divider {

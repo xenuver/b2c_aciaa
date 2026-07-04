@@ -7,7 +7,7 @@
 <style>
 /* ─── Cart Premium Theme ─── */
 .cart-hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
     padding: 2.5rem 0 3rem;
     position: relative;
     overflow: hidden;
@@ -19,27 +19,27 @@
     right: -20%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(207,126,126,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(194,24,91,0.15) 0%, transparent 70%);
     border-radius: 50%;
 }
 .cart-hero h1 {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.75rem;
-    font-weight: 800;
+    font-family: var(--font-heading, 'Cormorant', serif);
+    font-size: 2rem;
+    font-weight: 400;
     color: #fff;
     margin: 0;
     letter-spacing: -0.5px;
 }
-.cart-hero h1 i { color: #cf7e7e; margin-right: 10px; }
+.cart-hero h1 i { color: var(--color-primary); margin-right: 10px; }
 .cart-hero .breadcrumb-text {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.55);
     margin-top: 6px;
 }
-.cart-hero .breadcrumb-text a { color: #cf7e7e; text-decoration: none; }
+.cart-hero .breadcrumb-text a { color: var(--color-primary); text-decoration: none; }
 
 .cart-wrapper {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     max-width: 1140px;
     margin: -2rem auto 3rem;
     padding: 0 1rem;
@@ -90,7 +90,7 @@
 .cart-item-price {
     font-weight: 800;
     font-size: 1.05rem;
-    color: #cf7e7e;
+    color: var(--color-primary);
 }
 
 /* ─── Quantity Stepper ─── */
@@ -116,7 +116,7 @@
     justify-content: center;
     transition: background 0.15s;
 }
-.qty-stepper .qty-btn:hover { background: #ebe6e1; }
+.qty-stepper .qty-btn:hover { background: var(--color-surface-alt); color: var(--color-primary); }
 .qty-stepper .qty-val {
     width: 44px;
     height: 36px;
@@ -159,10 +159,11 @@
 
 /* ─── Summary Card ─── */
 .summary-card {
-    background: #fff;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
     border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,0,0,0.04);
+    border: 1px solid rgba(255,255,255,0.2);
     padding: 1.5rem;
     position: sticky;
     top: 100px;
@@ -176,7 +177,7 @@
     align-items: center;
     gap: 8px;
 }
-.summary-title i { color: #cf7e7e; }
+.summary-title i { color: var(--color-primary); }
 
 .summary-row {
     display: flex;
@@ -193,7 +194,7 @@
     font-size: 1.1rem;
     color: #1a1a2e;
 }
-.summary-row.total .summary-val { color: #cf7e7e; }
+.summary-row.total .summary-val { color: var(--color-primary); }
 
 .btn-checkout {
     display: flex;
@@ -202,13 +203,13 @@
     gap: 8px;
     width: 100%;
     padding: 14px 24px;
-    background: linear-gradient(135deg, #cf7e7e 0%, #b76e79 100%);
+    background: linear-gradient(135deg, #C2185B 0%, #E91E8C 100%);
     color: #fff;
     border: none;
     border-radius: 12px;
     font-weight: 700;
     font-size: 0.95rem;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
@@ -221,6 +222,8 @@
     color: #fff;
 }
 .btn-continue {
+    border: 1.5px solid var(--color-primary);
+    color: var(--color-primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -228,12 +231,10 @@
     width: 100%;
     padding: 12px 24px;
     background: transparent;
-    color: #6b7280;
-    border: 1px solid #e5e7eb;
     border-radius: 12px;
     font-weight: 600;
     font-size: 0.85rem;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     cursor: pointer;
     transition: all 0.15s;
     text-decoration: none;
@@ -259,7 +260,7 @@
     justify-content: center;
     margin: 0 auto 1.5rem;
 }
-.cart-empty-icon i { font-size: 2.5rem; color: #cf7e7e; }
+.cart-empty-icon i { font-size: 2.5rem; color: var(--color-primary); }
 .cart-empty h3 { font-weight: 800; color: #1a1a2e; margin-bottom: 0.5rem; }
 .cart-empty p { color: #9ca3af; font-size: 0.9rem; margin-bottom: 1.5rem; }
 .btn-shop-now {
@@ -267,7 +268,7 @@
     align-items: center;
     gap: 8px;
     padding: 12px 28px;
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     color: #fff;
     border-radius: 12px;
     font-weight: 700;

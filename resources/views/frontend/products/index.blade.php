@@ -464,7 +464,7 @@
                 @if(isset($recommendations) && $recommendations->count() > 0)
                 <div class="promo-section mb-5 recommendations-section" x-show="!isSearching" x-transition style="background: linear-gradient(135deg, #fef8f6 0%, #fff 100%); border: 1px solid rgba(212, 165, 165, 0.2);">
                     <div class="promo-section-header text-start mb-4" style="text-align: left !important; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
-                        <div class="promo-badge mb-2" style="background: linear-gradient(135deg, #d4a5a5, #b5838d); color: #fff; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                        <div class="promo-badge mb-2" style="background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); color: #fff; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                             <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
                             <span>Rekomendasi</span>
                         </div>
@@ -590,7 +590,7 @@
 <style>
 /* Products Page Styles */
 .products-page {
-    font-family: 'Poppins', 'Inter', -apple-system, sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     background: #faf8f7;
     min-height: 100vh;
 }
@@ -613,7 +613,7 @@
 }
 
 .breadcrumb-item a:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .breadcrumb-item.active {
@@ -655,7 +655,7 @@
 .filter-reset {
     background: none;
     border: none;
-    color: #d4a5a5;
+    color: var(--color-primary);
     font-size: 0.8rem;
     cursor: pointer;
     display: flex;
@@ -665,7 +665,7 @@
 }
 
 .filter-reset:hover {
-    color: #b5838d;
+    color: var(--color-primary-light);
     transform: translateX(-2px);
 }
 
@@ -706,21 +706,33 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0;
+    padding: 0.6rem 1rem;
     color: #666;
     text-decoration: none;
     transition: all 0.3s;
     font-size: 0.9rem;
+    border: 1px solid #eee;
+    border-radius: 50px;
+    background: #fff;
+    margin-bottom: 0.3rem;
 }
 
 .category-link:hover {
-    color: #d4a5a5;
-    transform: translateX(5px);
+    color: var(--color-primary);
+    border-color: rgba(194,24,91,0.2);
+    background: var(--color-surface-alt);
+    transform: translateY(-2px);
 }
 
 .category-link.active {
-    color: #d4a5a5;
+    color: #fff;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
     font-weight: 500;
+}
+
+.category-link.active .category-count {
+    color: rgba(255,255,255,0.8);
 }
 
 .category-count {
@@ -761,7 +773,7 @@
 }
 
 .price-input:focus {
-    border-color: #d4a5a5;
+    border-color: var(--color-primary);
 }
 
 .price-separator {
@@ -792,7 +804,7 @@
     top: 50%;
     transform: translateY(-50%);
     height: 3px;
-    background: #d4a5a5;
+    background: var(--color-primary);
     border-radius: 3px;
 }
 
@@ -811,7 +823,7 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: #d4a5a5;
+    background: var(--color-primary);
     cursor: pointer;
     pointer-events: auto;
     border: 2px solid #fff;
@@ -836,7 +848,7 @@
 }
 
 .filter-apply-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     transform: translateY(-2px);
 }
 
@@ -866,12 +878,12 @@
 
 .sort-option:hover {
     background: #f8f8f8;
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .sort-option.active {
-    background: #fef6f5;
-    color: #d4a5a5;
+    background: var(--color-surface-alt);
+    color: var(--color-primary);
     font-weight: 500;
 }
 
@@ -886,7 +898,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #fef6f5;
+    background: var(--color-surface-alt);
     padding: 0.4rem 0.8rem;
     border-radius: 50px;
     font-size: 0.8rem;
@@ -894,7 +906,7 @@
 }
 
 .remove-filter {
-    color: #d4a5a5;
+    color: var(--color-primary);
     text-decoration: none;
     font-size: 1.2rem;
     line-height: 1;
@@ -902,7 +914,7 @@
 }
 
 .remove-filter:hover {
-    color: #b5838d;
+    color: var(--color-primary-light);
 }
 
 /* Products Header */
@@ -939,7 +951,7 @@
 .btn-filter-mobile:focus {
     background: #333;
     color: #fff;
-    outline: 2px solid #d4a5a5;
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
@@ -957,7 +969,7 @@
     display: inline-block;
     width: 8px;
     height: 8px;
-    background: #d4a5a5;
+    background: var(--color-primary);
     border-radius: 50%;
     margin-left: 2px;
     flex-shrink: 0;
@@ -1000,7 +1012,7 @@
 
 .products-search-wrapper:focus-within {
     background: #fff;
-    border-color: #d4a5a5;
+    border-color: var(--color-primary);
     box-shadow: 0 4px 16px rgba(212, 165, 165, 0.15);
 }
 
@@ -1015,7 +1027,7 @@
 }
 
 .products-search-wrapper:focus-within .products-search-icon {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .products-search-input {
@@ -1051,7 +1063,7 @@
 }
 
 .clear-products-search-btn:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .clear-products-search-btn i {
@@ -1073,7 +1085,7 @@
 }
 
 .products-search-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
 }
 
 .products-view-toggle {
@@ -1097,11 +1109,11 @@
 }
 
 .view-btn.active i {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .view-btn:hover i {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 /* Promo Section */
@@ -1121,7 +1133,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: #ff4444;
+    background: linear-gradient(135deg, #DC2626, #EF4444);
     color: #fff;
     padding: 0.4rem 1rem;
     border-radius: 50px;
@@ -1136,8 +1148,9 @@
 }
 
 .promo-section-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2rem;
-    font-weight: 300;
+    font-weight: 400;
     margin-bottom: 1rem;
     color: #1a1a1a;
 }
@@ -1162,7 +1175,7 @@
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    color: #ff4444;
+    color: var(--color-primary);
     line-height: 1;
 }
 
@@ -1176,7 +1189,7 @@
 .timer-colon {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #ff4444;
+    color: var(--color-primary);
 }
 
 /* Product Grid */
@@ -1252,7 +1265,7 @@
 }
 
 .action-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: #fff;
     transform: scale(1.1);
 }
@@ -1276,7 +1289,7 @@
 }
 
 .promo-badge-floating {
-    background: #ff4444;
+    background: linear-gradient(135deg, #DC2626, #EF4444);
     color: #fff;
 }
 
@@ -1312,7 +1325,7 @@
 .price-sale, .price-current {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .product-link {
@@ -1321,12 +1334,12 @@
     font-size: 0.8rem;
     color: #1a1a1a;
     text-decoration: none;
-    border-bottom: 1px solid #d4a5a5;
+    border-bottom: 1px solid var(--color-primary);
     transition: all 0.3s ease;
 }
 
 .product-link:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
     letter-spacing: 1px;
 }
 
@@ -1341,8 +1354,9 @@
 }
 
 .section-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2rem;
-    font-weight: 300;
+    font-weight: 400;
     margin-bottom: 0.5rem;
     color: #1a1a1a;
 }
@@ -1350,7 +1364,7 @@
 .section-divider {
     width: 60px;
     height: 2px;
-    background: linear-gradient(90deg, #d4a5a5, #b5838d);
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
     margin: 0.5rem auto 0;
 }
 
@@ -1363,7 +1377,7 @@
 .empty-state i {
     width: 80px;
     height: 80px;
-    color: #ccc;
+    color: var(--color-primary);
     margin-bottom: 1rem;
 }
 
@@ -1390,7 +1404,7 @@
 }
 
 .empty-state-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     transform: translateY(-2px);
 }
 
@@ -1422,13 +1436,13 @@
 }
 
 .pagination-wrapper .page-item.active .page-link {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: #fff;
 }
 
 .pagination-wrapper .page-item .page-link:hover {
     background: #f8f8f8;
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 /* List View */
@@ -1534,8 +1548,8 @@
 }
 
 .action-btn.wishlist.active svg {
-    fill: #d4a5a5 !important;
-    stroke: #d4a5a5 !important;
+    fill: var(--color-primary) !important;
+    stroke: var(--color-primary) !important;
 }
 
 /* ===== Loading State: Filter Disabled ===== */
@@ -1688,7 +1702,7 @@
 }
 
 .login-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: white;
 }
 
@@ -1698,7 +1712,7 @@
 }
 
 .register-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: white;
 }
 
@@ -2021,7 +2035,7 @@ function productFilter() {
             setTimeout(() => {
                 const modalBody = modal.querySelector('.modal-body');
                 modalBody.innerHTML = `
-                    <i data-lucide="sparkles" style="width: 48px; height: 48px; color: #d4a5a5; margin-bottom: 1rem;"></i>
+                    <i data-lucide="sparkles" style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 1rem;"></i>
                     <h3 style="margin-bottom: 0.5rem;">Quick View</h3>
                     <p style="color: #666; margin-bottom: 1.5rem;">Product details will appear here.<br>Click "View Details" for complete information.</p>
                     <a href="/products/${productSlug}" class="modal-view-btn">View Full Details →</a>
@@ -2045,7 +2059,7 @@ function productFilter() {
             <div class="login-modal-content">
                 <button class="login-modal-close">&times;</button>
                 <div class="login-modal-icon">
-                    <i data-lucide="heart" style="width: 48px; height: 48px; color: #d4a5a5;"></i>
+                    <i data-lucide="heart" style="width: 48px; height: 48px; color: var(--color-primary);"></i>
                 </div>
                 <h3>Login Dibutuhkan</h3>
                 <p>Silakan login atau daftar untuk menyimpan produk ke wishlist favorit Anda.</p>
@@ -2196,7 +2210,7 @@ function productFilter() {
         }
         
         .modal-view-btn:hover {
-            background: #d4a5a5;
+            background: var(--color-primary);
             transform: translateY(-2px);
         }
         

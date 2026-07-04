@@ -5,18 +5,18 @@
 @section('content')
 <style>
     :root {
-        --pd-pink: #d4a5a5;
-        --pd-pink-2: #b5838d;
-        --pd-soft: #fef6f5;
+        --pd-pink: var(--color-primary);
+        --pd-pink-2: var(--color-primary-light);
+        --pd-soft: var(--color-surface-alt);
         --pd-dark: #111111;
         --pd-border: #ede6e4;
         --pd-warning: #fbbf24;
-        --pd-shadow-soft: 0 10px 40px rgba(212, 165, 165, 0.08);
-        --pd-gradient: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+        --pd-shadow-soft: 0 10px 40px rgba(194, 24, 91, 0.08);
+        --pd-gradient: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     }
 
     .form-container {
-        font-family: 'Poppins', 'Inter', sans-serif;
+        font-family: 'Montserrat', 'Montserrat', sans-serif;
     }
 
     .premium-card {
@@ -38,7 +38,7 @@
         background: var(--pd-soft);
         border-radius: 16px;
         padding: 1.25rem;
-        border: 1px solid rgba(212, 165, 165, 0.15);
+        border: 1px solid rgba(194, 24, 91, 0.15);
     }
 
     .stars-input-container {
@@ -125,12 +125,12 @@
         padding: 12px 28px;
         border-radius: 50px;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 5px 15px rgba(181, 131, 141, 0.3);
+        box-shadow: 0 5px 15px rgba(233, 30, 140, 0.3);
     }
 
     .btn-submit-premium:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(181, 131, 141, 0.45);
+        box-shadow: 0 8px 25px rgba(233, 30, 140, 0.45);
         color: #ffffff;
     }
 

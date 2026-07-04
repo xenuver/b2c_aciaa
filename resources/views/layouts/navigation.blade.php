@@ -197,9 +197,8 @@
                             </button>
 
                             <div class="dropdown-panel notification-panel" x-show="open" @click.away="open = false" x-cloak style="width: 320px; max-height: 420px; overflow: hidden; display: flex; flex-direction: column; right: 0; left: auto;">
-                                <div class="d-flex justify-content-between align-items-center p-3 border-bottom" style="background: #fff;">
                                     <span class="fw-bold text-dark" style="font-size: 0.9rem;">Notifikasi</span>
-                                    <button x-show="unreadCount > 0" @click="markAllAsRead()" class="btn btn-link p-0 text-decoration-none" style="font-size: 0.75rem; color: #d4a5a5;">Tandai semua dibaca</button>
+                                    <button x-show="unreadCount > 0" @click="markAllAsRead()" class="btn btn-link p-0 text-decoration-none" style="font-size: 0.75rem; color: var(--color-primary);">Tandai semua dibaca</button>
                                 </div>
                                 
                                 <div class="notification-list" style="overflow-y: auto; max-height: 300px; flex: 1;">
@@ -218,7 +217,7 @@
                                     <template x-if="!loading && notifications.length > 0">
                                         <div class="d-flex flex-column">
                                             <template x-for="item in notifications" :key="item.id">
-                                                <a :href="'/notifications/' + item.id + '/read-redirect'" class="dropdown-item d-flex flex-column align-items-start border-bottom py-2 px-3 text-wrap" :style="item.is_read ? 'background: white;' : 'background: #fef6f5;'">
+                                                <a :href="'/notifications/' + item.id + '/read-redirect'" class="dropdown-item d-flex flex-column align-items-start border-bottom py-2 px-3 text-wrap" :style="item.is_read ? 'background: white;' : 'background: var(--color-surface-alt);'">
                                                     <div class="d-flex w-100 justify-content-between align-items-center mb-1">
                                                         <span class="fw-semibold text-dark" style="font-size: 0.82rem;" x-text="item.title"></span>
                                                         <span class="text-muted" style="font-size: 0.68rem;" x-text="item.time_ago"></span>
@@ -231,7 +230,7 @@
                                 </div>
                                 
                                 <div class="text-center p-2.5 border-top" style="background: #fff;">
-                                    <a href="{{ route('notifications.index') }}" class="text-decoration-none fw-semibold" style="font-size: 0.8rem; color: #d4a5a5;">Lihat Semua Notifikasi</a>
+                                    <a href="{{ route('notifications.index') }}" class="text-decoration-none fw-semibold" style="font-size: 0.8rem; color: var(--color-primary);">Lihat Semua Notifikasi</a>
                                 </div>
                             </div>
                         </div>
@@ -416,34 +415,34 @@
     <div x-show="open" x-cloak class="mobile-menu" @click.away="open = false">
         <div class="mobile-menu-inner">
             <a href="{{ route('home') }}" class="mobile-nav-link" @click="open = false">
-                <span>🏠</span> Beranda
+                <i data-lucide="home"></i> Beranda
             </a>
             <a href="{{ route('products.index') }}" class="mobile-nav-link" @click="open = false">
-                <span>🛍️</span> Belanja
+                <i data-lucide="shopping-bag"></i> Belanja
             </a>
             
             @auth
                 @if(Auth::user()->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}" class="mobile-nav-link" @click="open = false">
-                        <span>📊</span> Dashboard Admin
+                        <i data-lucide="layout-dashboard"></i> Dashboard Admin
                     </a>
                 @else
                     <a href="{{ route('cart.index') }}" class="mobile-nav-link" @click="open = false">
-                        <span>🛒</span> Keranjang
+                        <i data-lucide="shopping-cart"></i> Keranjang
                         <span class="mobile-badge" id="mobileCartCount">0</span>
                     </a>
                     <a href="{{ route('wishlist.index') }}" class="mobile-nav-link" @click="open = false">
-                        <span>❤️</span> Wishlist
+                        <i data-lucide="heart"></i> Wishlist
                         <span class="mobile-badge" id="mobileWishlistCount" style="display: none;">0</span>
                     </a>
                     <a href="{{ route('transactions.index') }}" class="mobile-nav-link" @click="open = false">
-                        <span>🕐</span> Riwayat
+                        <i data-lucide="clock"></i> Riwayat
                     </a>
                     <a href="{{ route('returs.index') }}" class="mobile-nav-link" @click="open = false">
-                        <span>↩️</span> Retur
+                        <i data-lucide="rotate-ccw"></i> Retur
                     </a>
                     <a href="{{ route('notifications.index') }}" class="mobile-nav-link" @click="open = false">
-                        <span>🔔</span> Notifikasi
+                        <i data-lucide="bell"></i> Notifikasi
                         <span class="mobile-badge" id="mobileNotificationCount" style="{{ (isset($unreadCount) && $unreadCount > 0) ? '' : 'display: none;' }}">{{ $unreadCount ?? 0 }}</span>
                     </a>
                 @endif
@@ -452,27 +451,27 @@
             @auth
                 <div class="mobile-divider"></div>
                 <div class="mobile-user-header">
-                    <div class="mobile-user-avatar">👤</div>
+                    <div class="mobile-user-avatar"><i data-lucide="user" style="width: 28px; height: 28px;"></i></div>
                     <div>
                         <div class="mobile-user-name">{{ Auth::user()->name }}</div>
                         <div class="mobile-user-email">{{ Auth::user()->email }}</div>
                     </div>
                 </div>
                 <a href="{{ route('profile.edit') }}" class="mobile-nav-link" @click="open = false">
-                    <span>👤</span> Profile
+                    <i data-lucide="user"></i> Profile
                 </a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="mobile-nav-link logout-mobile" @click="open = false">
-                        <span>🚪</span> Log Out
+                        <i data-lucide="log-out"></i> Log Out
                     </button>
                 </form>
             @else
                 <a href="{{ route('login') }}" class="mobile-nav-link" @click="open = false">
-                    <span>🔐</span> Login
+                    <i data-lucide="log-in"></i> Login
                 </a>
                 <a href="{{ route('register') }}" class="mobile-nav-link" @click="open = false">
-                    <span>📝</span> Register
+                    <i data-lucide="user-plus"></i> Register
                 </a>
             @endauth
         </div>
@@ -532,7 +531,7 @@
 }
 
 .fashion-navbar.navbar-home-transparent.scrolled .logo-text {
-    background: linear-gradient(135deg, #1a1a1a, #d4a5a5);
+    background: linear-gradient(135deg, #1a1a1a, var(--color-primary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -567,13 +566,13 @@
 }
 
 .fashion-navbar.navbar-home-transparent.scrolled .nav-link:hover {
-    color: #d4a5a5;
-    background: #fef6f5;
+    color: var(--color-primary);
+    background: var(--color-surface-alt);
 }
 
 .fashion-navbar.navbar-home-transparent.scrolled .nav-link.active {
-    color: #d4a5a5;
-    background: #fef6f5;
+    color: var(--color-primary);
+    background: var(--color-surface-alt);
 }
 
 /* Right icons & Dropdowns */
@@ -594,7 +593,7 @@
 
 .fashion-navbar.navbar-home-transparent.scrolled .search-toggle:hover,
 .fashion-navbar.navbar-home-transparent.scrolled .user-trigger:hover {
-    background: #fef6f5;
+    background: var(--color-surface-alt);
 }
 
 /* Auth Buttons */
@@ -669,7 +668,7 @@
 .logo-text {
     font-size: 1.1rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #1a1a1a, #d4a5a5);
+    background: linear-gradient(135deg, #1a1a1a, var(--color-primary));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -702,13 +701,13 @@
 }
 
 .nav-link:hover {
-    color: #d4a5a5;
-    background: #fef6f5;
+    color: var(--color-primary);
+    background: var(--color-surface-alt);
 }
 
 .nav-link.active {
-    color: #d4a5a5;
-    background: #fef6f5;
+    color: var(--color-primary);
+    background: var(--color-surface-alt);
 }
 
 /* Badges */
@@ -755,7 +754,7 @@
 }
 
 .search-toggle:hover {
-    background: #fef6f5;
+    background: var(--color-surface-alt);
 }
 
 /* User Dropdown */
@@ -777,13 +776,13 @@
 }
 
 .user-trigger:hover {
-    background: #fef6f5;
+    background: var(--color-surface-alt);
 }
 
 .user-avatar {
     width: 28px;
     height: 28px;
-    background: linear-gradient(135deg, #d4a5a5, #b5838d);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -816,9 +815,12 @@
     right: 0;
     margin-top: 0.5rem;
     width: 200px;
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
     overflow: hidden;
     z-index: 1000;
 }
@@ -845,8 +847,8 @@
 }
 
 .dropdown-item:hover {
-    background: #fef6f5;
-    color: #d4a5a5;
+    background: var(--color-surface-alt);
+    color: var(--color-primary);
 }
 
 .logout-item {
@@ -925,7 +927,7 @@
 }
 
 .search-input:focus {
-    border-color: #d4a5a5;
+    border-color: var(--color-primary);
 }
 
 .search-submit {
@@ -949,7 +951,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: white;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
     z-index: 999;
     overflow-y: auto;
     padding: 1rem;
@@ -974,7 +977,7 @@
 }
 
 .mobile-nav-link:hover {
-    background: #fef6f5;
+    background: var(--color-surface-alt);
 }
 
 .mobile-badge {
@@ -997,13 +1000,15 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.875rem 1rem;
-    background: #fef6f5;
+    background: var(--color-surface-alt);
     border-radius: 12px;
     margin-top: 0.5rem;
 }
 
 .mobile-user-avatar {
-    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    color: var(--color-primary);
 }
 
 .mobile-user-name {
@@ -1108,9 +1113,9 @@
 }
 
 .live-search-input:focus {
-    border-color: #d4a5a5;
+    border-color: var(--color-primary);
     background: #fff;
-    box-shadow: 0 0 0 3px rgba(212, 165, 165, 0.15);
+    box-shadow: 0 0 0 3px rgba(194, 24, 91, 0.15);
 }
 
 .live-search-input::placeholder {
@@ -1122,7 +1127,7 @@
     right: 0.875rem;
     display: flex;
     align-items: center;
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .spin-icon {
@@ -1149,8 +1154,8 @@
 }
 
 .live-search-clear:hover {
-    color: #d4a5a5;
-    background: #fef6f5;
+    color: var(--color-primary);
+    background: var(--color-surface-alt);
 }
 
 .live-search-dropdown {
@@ -1184,7 +1189,7 @@
 }
 
 .live-search-result-item:hover {
-    background: #fef6f5;
+    background: var(--color-surface-alt);
 }
 
 .live-search-result-img {
@@ -1213,7 +1218,7 @@
 
 .live-search-result-price {
     font-size: 0.78rem;
-    color: #d4a5a5;
+    color: var(--color-primary);
     font-weight: 600;
 }
 
@@ -1222,17 +1227,17 @@
     text-align: center;
     padding: 0.6rem 1rem;
     font-size: 0.78rem;
-    color: #d4a5a5;
+    color: var(--color-primary);
     font-weight: 600;
     text-decoration: none;
-    background: #fef6f5;
+    background: var(--color-surface-alt);
     border-top: 1px solid #f0e8e8;
     transition: background 0.15s;
 }
 
 .live-search-view-all:hover {
     background: #fde8e8;
-    color: #b5838d;
+    color: var(--color-primary-light);
 }
 
 .live-search-empty {
@@ -1369,11 +1374,11 @@
     background: #f1f1f1;
 }
 .notification-list::-webkit-scrollbar-thumb {
-    background: #d4a5a5;
+    background: var(--color-primary);
     border-radius: 2px;
 }
 .notification-list::-webkit-scrollbar-thumb:hover {
-    background: #b5838d;
+    background: var(--color-primary-light);
 }
 </style>
 

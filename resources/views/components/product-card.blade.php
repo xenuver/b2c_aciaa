@@ -33,7 +33,7 @@
 @endphp
 
 <div
-    class="product-card"
+    class="product-card-aciaa product-card"
     data-product-id="{{ $product->id }}"
     x-data="wishlistToggle({{ $isWishlisted ? 'true' : 'false' }})"
 >
@@ -156,7 +156,7 @@
     font-weight: 500;
     letter-spacing: 1px;
     text-transform: uppercase;
-    color: #b5838d;
+    color: var(--color-primary-light);
     margin-bottom: 0.25rem;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .product-title-link:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 /* Rating bintang */
@@ -209,12 +209,77 @@
 /* Ensure heart icon fills correctly */
 .action-btn.wishlist.active i,
 .action-btn.wishlist.active .fas {
-    color: #e74c3c;
+    color: var(--color-primary);
 }
 
 /* Prevent layout shift from category + rating lines */
 .product-info {
     display: flex;
     flex-direction: column;
+}
+
+/* Base card styling updates */
+.product-card-aciaa {
+    background: #fff;
+    border-radius: var(--radius-lg, 16px);
+    overflow: hidden;
+    border: 1px solid var(--color-border, rgba(194, 24, 91, 0.12));
+    transition: transform var(--duration-medium, 350ms) var(--ease-fluid, cubic-bezier(0.25, 0.46, 0.45, 0.94)), box-shadow var(--duration-medium, 350ms) var(--ease-fluid, cubic-bezier(0.25, 0.46, 0.45, 0.94)), border-color var(--duration-medium, 350ms);
+    cursor: pointer;
+}
+
+.product-card-aciaa:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg, 0 8px 32px rgba(0,0,0,0.1));
+    border-color: rgba(194, 24, 91, 0.2);
+}
+
+.product-card-aciaa .product-image-wrapper {
+    position: relative;
+    padding-top: 125%; /* 4:5 aspect ratio */
+    overflow: hidden;
+    background: #F9F5F4;
+}
+
+.product-card-aciaa .product-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.product-card-aciaa:hover .product-image {
+    transform: scale(1.06);
+}
+
+.product-card-aciaa .sale-badge {
+    background: linear-gradient(135deg, #DC2626, #EF4444);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-full, 9999px);
+}
+
+.product-card-aciaa .price-current {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-primary);
+}
+
+.product-card-aciaa .price-original {
+    font-size: 0.8rem;
+    color: var(--color-text-muted, #9CA3AF);
+    text-decoration: line-through;
+    margin-right: 6px;
+}
+
+.product-card-aciaa .price-sale {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--color-gold, #CA8A04);
 }
 </style>

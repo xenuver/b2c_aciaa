@@ -5,9 +5,9 @@
 @push('styles')
 <style>
     :root{
-        --pink: #d4a5a5;
-        --pink-2:#b5838d;
-        --soft:#fef6f5;
+        --pink: var(--color-primary);
+        --pink-2:var(--color-primary-light);
+        --soft:var(--color-surface-alt);
         --dark:#1a1a1a;
         --muted:#6b7280;
     }
@@ -16,12 +16,12 @@
         background: linear-gradient(135deg, #ffffff 0%, var(--soft) 55%, #ffffff 100%);
         padding: 40px 0 80px;
         min-height: calc(100vh - 64px);
-        font-family: 'Poppins','Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+        font-family: var(--font-body, 'Montserrat', sans-serif);
     }
 
     .profile-hero{
-        background: radial-gradient(1200px 300px at 20% 0%, rgba(212,165,165,0.28) 0%, rgba(212,165,165,0) 60%),
-                    radial-gradient(900px 300px at 90% 10%, rgba(181,131,141,0.20) 0%, rgba(181,131,141,0) 55%),
+        background: radial-gradient(1200px 300px at 20% 0%, rgba(194,24,91,0.15) 0%, rgba(194,24,91,0) 60%),
+                    radial-gradient(900px 300px at 90% 10%, rgba(233,30,140,0.1) 0%, rgba(233,30,140,0) 55%),
                     #fff;
         border: 1px solid rgba(0,0,0,0.06);
         border-radius: 24px;
@@ -47,7 +47,7 @@
         background: linear-gradient(135deg, var(--pink) 0%, var(--pink-2) 100%);
         font-weight: 700;
         letter-spacing: .5px;
-        box-shadow: 0 10px 25px rgba(212,165,165,0.35);
+        box-shadow: 0 10px 25px rgba(194,24,91,0.2);
         flex: 0 0 auto;
     }
 
@@ -89,7 +89,7 @@
 
     .section-head{
         padding: 16px 18px;
-        background: linear-gradient(135deg, rgba(212,165,165,0.18), rgba(254,246,245,1));
+        background: linear-gradient(135deg, rgba(194,24,91,0.05), #ffffff);
         border-bottom: 1px solid rgba(0,0,0,0.06);
         display:flex;
         align-items:center;
@@ -108,9 +108,9 @@
     }
 
     .badge-soft{
-        background: rgba(212,165,165,0.18);
+        background: rgba(194,24,91,0.08);
         color: var(--dark);
-        border: 1px solid rgba(212,165,165,0.35);
+        border: 1px solid rgba(194,24,91,0.2);
         border-radius: 999px;
         padding: 6px 10px;
         font-size: .75rem;
@@ -138,9 +138,9 @@
         border-radius: 999px;
         padding: 10px 16px;
         font-weight: 600;
-        border: 1px solid rgba(212,165,165,0.65);
+        border: 1px solid var(--color-primary);
         background: #fff;
-        color: var(--dark);
+        color: var(--color-primary);
         transition: all .15s ease;
     }
     .btn-outline-pink:hover{
@@ -150,8 +150,8 @@
     }
 
     .form-control:focus, .form-select:focus{
-        border-color: rgba(212,165,165,0.9);
-        box-shadow: 0 0 0 .25rem rgba(212,165,165,0.25);
+        border-color: rgba(194,24,91,0.5);
+        box-shadow: 0 0 0 .25rem rgba(194,24,91,0.15);
     }
 
     .address-card{
@@ -165,7 +165,7 @@
     .address-card:hover{
         transform: translateY(-2px);
         box-shadow: 0 16px 30px rgba(0,0,0,0.08);
-        border-color: rgba(212,165,165,0.55);
+        border-color: var(--color-primary);
     }
     .address-pill{
         display:inline-flex;
@@ -437,7 +437,7 @@
 <div class="modal fade" id="addAddressModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 overflow-hidden">
-            <div class="modal-header" style="background: linear-gradient(135deg, rgba(212,165,165,0.18), rgba(254,246,245,1));">
+            <div class="modal-header" style="background: linear-gradient(135deg, rgba(194,24,91,0.05), #ffffff);">
                 <h5 class="modal-title fw-bold"><i class="fas fa-plus me-2" style="color: var(--pink)"></i>Tambah Alamat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -521,7 +521,7 @@
 <div class="modal fade" id="editAddressModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 rounded-4 overflow-hidden">
-            <div class="modal-header" style="background: linear-gradient(135deg, rgba(212,165,165,0.18), rgba(254,246,245,1));">
+            <div class="modal-header" style="background: linear-gradient(135deg, rgba(194,24,91,0.05), #ffffff);">
                 <h5 class="modal-title fw-bold"><i class="fas fa-pen me-2" style="color: var(--pink)"></i>Edit Alamat</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

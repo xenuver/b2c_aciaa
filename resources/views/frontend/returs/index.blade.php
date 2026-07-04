@@ -7,7 +7,7 @@
 <style>
 /* ─── Retur History Premium Theme ─── */
 .rh-hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
     padding: 2.5rem 0 3rem;
     position: relative;
     overflow: hidden;
@@ -19,27 +19,27 @@
     right: -15%;
     width: 420px;
     height: 420px;
-    background: radial-gradient(circle, rgba(207,126,126,0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(194,24,91,0.15) 0%, transparent 70%);
     border-radius: 50%;
 }
 .rh-hero h1 {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.75rem;
     font-weight: 800;
     color: #fff;
     margin: 0;
     letter-spacing: -0.5px;
 }
-.rh-hero h1 i { color: #cf7e7e; margin-right: 10px; }
+.rh-hero h1 i { color: var(--color-primary); margin-right: 10px; }
 .rh-hero .breadcrumb-text {
     font-size: 0.85rem;
     color: rgba(255,255,255,0.55);
     margin-top: 6px;
 }
-.rh-hero .breadcrumb-text a { color: #cf7e7e; text-decoration: none; }
+.rh-hero .breadcrumb-text a { color: var(--color-primary); text-decoration: none; }
 
 .rh-wrapper {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     max-width: 1140px;
     margin: -2rem auto 3rem;
     padding: 0 1rem;
@@ -68,21 +68,21 @@
     align-items: center;
     gap: 8px;
     padding: 10px 22px;
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
     color: #fff;
     border: none;
     border-radius: 12px;
     font-weight: 700;
     font-size: 0.85rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
-    box-shadow: 0 4px 16px rgba(207,126,126,0.3);
+    box-shadow: 0 4px 16px rgba(194,24,91,0.3);
 }
 .btn-ajukan:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(207,126,126,0.4);
+    box-shadow: 0 8px 24px rgba(194,24,91,0.4);
     color: #fff;
 }
 
@@ -146,7 +146,7 @@
     justify-content: center;
     flex-shrink: 0;
 }
-.retur-card-number .rn-icon i { color: #cf7e7e; font-size: 0.9rem; }
+.retur-card-number .rn-icon i { color: var(--color-primary); font-size: 0.9rem; }
 .retur-card-number .rn-info h6 {
     margin: 0;
     font-weight: 700;
@@ -256,7 +256,7 @@
     text-decoration: none;
     transition: all 0.15s;
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 .btn-retur-cancel:hover {
     background: #fef2f2;
@@ -281,8 +281,8 @@
     justify-content: center;
     margin: 0 auto 1.5rem;
 }
-.rh-empty-icon i { font-size: 2.5rem; color: #cf7e7e; }
-.rh-empty h3 { font-weight: 800; color: #1a1a2e; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; }
+.rh-empty-icon i { font-size: 2.5rem; color: var(--color-primary); }
+.rh-empty h3 { font-weight: 800; color: #1a1a2e; margin-bottom: 0.5rem; font-family: 'Montserrat', sans-serif; }
 .rh-empty p { color: #9ca3af; font-size: 0.9rem; margin-bottom: 1.5rem; }
 
 /* ─── Pagination ─── */
@@ -299,8 +299,8 @@
     color: #374151;
 }
 .rh-pagination .page-item.active .page-link {
-    background: linear-gradient(135deg, #cf7e7e, #b76e79);
-    border-color: #cf7e7e;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+    border-color: var(--color-primary);
     color: #fff;
 }
 

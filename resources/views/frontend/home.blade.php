@@ -336,7 +336,7 @@
 <style>
 /* Reset & Base */
 .fashion-store {
-    font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
     overflow-x: hidden;
 }
 
@@ -428,19 +428,20 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #fff;
-    background: rgba(212, 165, 165, 0.35);
+    background: rgba(194, 24, 91, 0.25);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 0.5rem 1.25rem;
     border-radius: 50px;
     margin-bottom: 1.5rem;
     font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(194, 24, 91, 0.4);
 }
 
 .carousel-title-custom {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 4rem;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.15;
     color: #fff;
     margin-bottom: 1.5rem;
@@ -477,8 +478,8 @@
 
 .hero-search-wrapper:focus-within {
     background: rgba(255, 255, 255, 0.95);
-    border-color: #d4a5a5;
-    box-shadow: 0 10px 30px rgba(212, 165, 165, 0.3);
+    border-color: var(--color-primary);
+    box-shadow: 0 10px 30px rgba(194, 24, 91, 0.2);
 }
 
 .hero-search-icon {
@@ -492,7 +493,7 @@
 }
 
 .hero-search-wrapper:focus-within .hero-search-icon {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .hero-search-input {
@@ -557,7 +558,7 @@
 .hero-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 /* Controls style */
@@ -589,7 +590,7 @@
 .carousel-ctrl-prev:hover,
 .carousel-ctrl-next:hover {
     background: #fff;
-    color: #1a1a1a;
+    color: var(--color-primary);
     transform: translateY(-50%) scale(1.08);
 }
 
@@ -667,7 +668,7 @@
 
 .promo-banner-tag {
     display: inline-block;
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: white;
     padding: 0.3rem 1.5rem;
     border-radius: 50px;
@@ -677,9 +678,10 @@
 }
 
 .promo-banner-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2.2rem;
-    font-weight: 600;
-    color: #1a1a1a;
+    font-weight: 400;
+    color: var(--color-text);
     margin-bottom: 0.5rem;
 }
 
@@ -757,7 +759,7 @@
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #ff4444;
+    background: linear-gradient(135deg, #DC2626, #EF4444);
     color: white;
     padding: 5px 12px;
     border-radius: 50px;
@@ -792,7 +794,7 @@
 .promo-slide-sale {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .promo-slide-buttons {
@@ -814,7 +816,7 @@
 }
 
 .promo-slide-buy:hover {
-    background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     transform: scale(1.02);
 }
 
@@ -831,7 +833,7 @@
 }
 
 .promo-slide-detail:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: white;
 }
 
@@ -862,7 +864,7 @@
 
 .promo-slider-prev:hover,
 .promo-slider-next:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: white;
     transform: translateY(-50%) scale(1.1);
 }
@@ -887,7 +889,7 @@
 .promo-slider-dot.active {
     width: 25px;
     border-radius: 10px;
-    background: #d4a5a5;
+    background: var(--color-primary);
 }
 
 /* Section Styles */
@@ -905,21 +907,22 @@
     font-size: 0.8rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #d4a5a5;
+    color: var(--color-primary);
     margin-bottom: 1rem;
 }
 
 .section-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2.8rem;
-    font-weight: 300;
+    font-weight: 400;
     margin-bottom: 1rem;
-    color: #1a1a1a;
+    color: var(--color-text);
 }
 
 .section-divider {
     width: 60px;
     height: 2px;
-    background: linear-gradient(90deg, #d4a5a5, #b5838d);
+    background: var(--color-primary);
     margin: 1.5rem auto;
 }
 
@@ -954,18 +957,18 @@
 .category-card:hover .category-card-inner {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    border-color: #d4a5a5;
+    border-color: var(--color-primary);
 }
 
 .category-icon i {
     font-size: 3rem;
-    color: #d4a5a5;
+    color: var(--color-primary-light);
     transition: all 0.3s ease;
 }
 
 .category-card:hover .category-icon i {
     transform: scale(1.1);
-    color: #b5838d;
+    color: var(--color-primary);
 }
 
 .category-name {
@@ -977,7 +980,7 @@
 
 .category-shop {
     font-size: 0.8rem;
-    color: #d4a5a5;
+    color: var(--color-primary);
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.3s ease;
@@ -1015,7 +1018,7 @@
 
 .promo-badge {
     display: inline-block;
-    background: #d4a5a5;
+    background: var(--color-primary);
     padding: 0.5rem 1.5rem;
     border-radius: 50px;
     font-size: 0.8rem;
@@ -1049,7 +1052,7 @@
 .promo-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: #fff;
 }
 
@@ -1074,7 +1077,7 @@
     display: block;
     font-size: 2rem;
     font-weight: 600;
-    color: #d4a5a5;
+    color: var(--color-primary);
     line-height: 1;
 }
 
@@ -1089,7 +1092,7 @@
 .timer-sep {
     font-size: 2rem;
     font-weight: 600;
-    color: #d4a5a5;
+    color: var(--color-primary);
     align-self: center;
 }
 
@@ -1162,7 +1165,7 @@
 }
 
 .action-btn:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: #fff;
     transform: scale(1.1);
 }
@@ -1215,7 +1218,7 @@
 .price-sale, .price-current {
     font-size: 1rem;
     font-weight: 600;
-    color: #d4a5a5;
+    color: var(--color-gold, #CA8A04);
 }
 
 .product-link {
@@ -1224,12 +1227,12 @@
     font-size: 0.8rem;
     color: #1a1a1a;
     text-decoration: none;
-    border-bottom: 1px solid #d4a5a5;
+    border-bottom: 1px solid var(--color-primary);
     transition: all 0.3s ease;
 }
 
 .product-link:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
     letter-spacing: 1px;
 }
 
@@ -1249,7 +1252,7 @@
 
 .featured-item i {
     font-size: 2.5rem;
-    color: #d4a5a5;
+    color: var(--color-primary);
     margin-bottom: 1rem;
 }
 
@@ -1305,7 +1308,7 @@
 
 .newsletter-form button {
     padding: 1rem 2rem;
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: #fff;
     border: none;
     border-radius: 50px;
@@ -1315,7 +1318,7 @@
 }
 
 .newsletter-form button:hover {
-    background: #b5838d;
+    background: var(--color-primary-light);
     transform: translateY(-2px);
 }
 
@@ -1440,7 +1443,7 @@
 }
 
 .reco-tag {
-    background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+    background: var(--color-primary);
     color: #fff !important;
     padding: 0.4rem 1.25rem;
     border-radius: 50px;
@@ -1453,7 +1456,7 @@
 }
 
 .reco-divider {
-    background: linear-gradient(90deg, #d4a5a5, #e8b4b8, #d4a5a5) !important;
+    background: var(--color-primary) !important;
     width: 80px !important;
     animation: shimmerDivider 3s ease-in-out infinite;
 }
@@ -1464,7 +1467,7 @@
 }
 
 .reco-badge {
-    background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%) !important;
+    background: var(--color-primary) !important;
     color: #fff !important;
     font-size: 0.65rem !important;
     letter-spacing: 0.5px;
@@ -1485,7 +1488,7 @@
 
 /* Wishlist Toggle Button Active State */
 .wishlist-toggle-btn .fa-heart.fas {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 .wishlist-toggle-btn:hover {
@@ -1497,7 +1500,7 @@
 }
 
 .wishlist-toggle-btn.is-wishlisted .fa-heart {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 </style>
 
@@ -2040,7 +2043,7 @@
         }
         
         .modal-view-btn:hover {
-            background: #d4a5a5;
+            background: var(--color-primary);
         }
         
         .custom-toast {
@@ -2108,7 +2111,7 @@
         
         .login-modal-icon i {
             font-size: 3rem;
-            color: #d4a5a5;
+            color: var(--color-primary);
             margin-bottom: 1rem;
         }
         
@@ -2137,7 +2140,7 @@
         }
         
         .login-btn:hover {
-            background: #d4a5a5;
+            background: var(--color-primary);
         }
         
         .register-btn {
@@ -2146,7 +2149,7 @@
         }
         
         .register-btn:hover {
-            background: #d4a5a5;
+            background: var(--color-primary);
             color: white;
         }
         

@@ -5,9 +5,9 @@
 @push('styles')
 <style>
     :root{
-        --ck-pink: #d4a5a5;
-        --ck-pink-2: #b5838d;
-        --ck-soft: #fef6f5;
+        --ck-pink: var(--color-primary);
+        --ck-pink-2: var(--color-primary-light);
+        --ck-soft: var(--color-surface-alt);
         --ck-dark: #1a1a1a;
     }
 
@@ -118,7 +118,7 @@
         padding: 60px 20px;
         background: white;
         border-radius: 20px;
-        border: 1px dashed #d4a5a5;
+        border: 1px dashed var(--color-primary);
     }
 
     .btn-shop {
@@ -159,40 +159,64 @@
         background: var(--ck-soft);
         color: var(--ck-pink-2);
     }
+    
+    .nav-pills .nav-link {
+        color: #718096;
+        border: 1px solid #ede6e4;
+        white-space: nowrap;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+    .nav-pills .nav-link.active {
+        background: var(--color-primary);
+        color: white;
+        border-color: var(--color-primary);
+        box-shadow: 0 4px 12px rgba(194, 24, 91, 0.2);
+    }
+    .nav-pills .nav-link:hover:not(.active) {
+        background: var(--color-surface-alt);
+        color: var(--color-primary);
+    }
 </style>
 @endpush
 
 @section('content')
-<div class="container my-5" style="max-width: 800px;">
-    <h2 class="mb-4 fw-bold text-gray-800"><i class="fas fa-history text-primary me-2"></i>Riwayat Transaksi</h2>
+<div class="container my-5" style="max-width: 900px;">
+    <!-- Hero Banner -->
+    <div class="tx-hero mb-4 rounded-4 px-4 py-5" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -30px; left: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(233,30,140,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h1 class="text-white mb-2 position-relative" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-history me-3" style="color: var(--color-primary);"></i>Riwayat Transaksi</h1>
+        <p class="text-white-50 mb-0 position-relative" style="font-size: 0.95rem;">Lacak, kelola, dan pantau semua pesanan Anda</p>
+    </div>
     
     <div x-data="transactionFilter()" class="mb-4">
-        <div class="row g-2">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-search"></i></span>
-                    <input type="text" x-model="search" @input.debounce.500ms="fetchData()" class="form-control border-start-0 rounded-end-3 px-0" placeholder="Cari nomor invoice...">
+        <div class="row g-3 align-items-center mb-3">
+            <div class="col-md-8">
+                <div class="input-group" style="box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-radius: 50px; overflow: hidden;">
+                    <span class="input-group-text bg-white border-0 text-muted ps-4"><i class="fas fa-search"></i></span>
+                    <input type="text" x-model="search" @input.debounce.500ms="fetchData()" class="form-control border-0 py-2" placeholder="Cari nomor invoice...">
                 </div>
             </div>
-            <div class="col-md-4">
-                <select x-model="status" @change="fetchData()" class="form-select rounded-3">
-                    <option value="all">Semua Status</option>
-                    <option value="pending">Menunggu Pembayaran</option>
-                    <option value="processing">Diproses</option>
-                    <option value="shipped">Dikirim</option>
-                    <option value="delivered">Selesai</option>
-                    <option value="cancelled">Dibatalkan</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <div x-show="loading" class="d-flex align-items-center h-100" style="display: none;">
+            <div class="col-md-4 text-end">
+                <div x-show="loading" class="d-inline-flex align-items-center" style="display: none;">
                     <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
                     <span class="small text-muted">Memuat...</span>
                 </div>
             </div>
         </div>
+
+        <div class="nav-pills-wrapper overflow-auto pb-2" style="scrollbar-width: none;">
+            <ul class="nav nav-pills flex-nowrap" style="gap: 8px;">
+                <li class="nav-item"><a href="#" class="nav-link rounded-pill px-4" :class="status === 'all' ? 'active' : ''" @click.prevent="status = 'all'; fetchData()">Semua</a></li>
+                <li class="nav-item"><a href="#" class="nav-link rounded-pill px-4" :class="status === 'pending' ? 'active' : ''" @click.prevent="status = 'pending'; fetchData()">Menunggu Pembayaran</a></li>
+                <li class="nav-item"><a href="#" class="nav-link rounded-pill px-4" :class="status === 'processing' ? 'active' : ''" @click.prevent="status = 'processing'; fetchData()">Diproses</a></li>
+                <li class="nav-item"><a href="#" class="nav-link rounded-pill px-4" :class="status === 'shipped' ? 'active' : ''" @click.prevent="status = 'shipped'; fetchData()">Dikirim</a></li>
+                <li class="nav-item"><a href="#" class="nav-link rounded-pill px-4" :class="status === 'delivered' ? 'active' : ''" @click.prevent="status = 'delivered'; fetchData()">Selesai</a></li>
+                <li class="nav-item"><a href="#" class="nav-link rounded-pill px-4" :class="status === 'cancelled' ? 'active' : ''" @click.prevent="status = 'cancelled'; fetchData()">Dibatalkan</a></li>
+            </ul>
+        </div>
     </div>
-    
     <div id="transactionsContainer" style="position: relative;">
         @include('frontend.transactions.partials.list')
     </div>

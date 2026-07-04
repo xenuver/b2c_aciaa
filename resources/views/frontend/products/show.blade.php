@@ -33,23 +33,23 @@
 <style>
     /* Premium Design Tokens */
     :root {
-        --pd-pink: #d4a5a5;
-        --pd-pink-2: #b5838d;
-        --pd-pink-light: #fdf5f3;
-        --pd-soft: #fef6f5;
+        --pd-pink: var(--color-primary);
+        --pd-pink-2: var(--color-primary-light);
+        --pd-pink-light: var(--color-surface-alt);
+        --pd-soft: var(--color-surface-alt);
         --pd-dark: #111111;
         --pd-dark-gray: #2d3748;
         --pd-gray: #718096;
         --pd-border: #ede6e4;
         --pd-success: #38a169;
-        --pd-rating: #ecc94b;
+        --pd-rating: #CA8A04;
         --pd-shadow-soft: 0 10px 40px rgba(212, 165, 165, 0.12);
         --pd-shadow-hover: 0 20px 50px rgba(212, 165, 165, 0.22);
-        --pd-gradient: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+        --pd-gradient: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     }
 
     .pd-container {
-        font-family: 'Poppins', 'Inter', sans-serif;
+        font-family: var(--font-body, 'Montserrat', sans-serif);
         color: var(--pd-dark);
     }
 
@@ -405,28 +405,6 @@
 
     /* Action Buttons Row */
     .btn-pd-cart {
-        background: var(--pd-dark) !important;
-        border: none !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        padding: 14px 28px !important;
-        border-radius: 50px !important;
-        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-shadow: 0 5px 15px rgba(17, 17, 17, 0.15) !important;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .btn-pd-cart:hover {
-        background: #2a2a2a !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(17, 17, 17, 0.25) !important;
-    }
-
-    .btn-pd-buy {
         background: var(--pd-gradient) !important;
         border: none !important;
         color: #ffffff !important;
@@ -435,7 +413,28 @@
         padding: 14px 28px !important;
         border-radius: 50px !important;
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        box-shadow: 0 5px 15px rgba(181, 131, 141, 0.3) !important;
+        box-shadow: 0 5px 15px rgba(194, 24, 91, 0.3) !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-pd-cart:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(194, 24, 91, 0.45) !important;
+    }
+
+    .btn-pd-buy {
+        background: linear-gradient(135deg, #CA8A04 0%, #EAB308 100%) !important;
+        border: none !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.95rem !important;
+        padding: 14px 28px !important;
+        border-radius: 50px !important;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        box-shadow: 0 5px 15px rgba(202, 138, 4, 0.3) !important;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -444,7 +443,7 @@
 
     .btn-pd-buy:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 25px rgba(181, 131, 141, 0.45) !important;
+        box-shadow: 0 8px 25px rgba(202, 138, 4, 0.45) !important;
     }
 
     .btn-pd-wish {

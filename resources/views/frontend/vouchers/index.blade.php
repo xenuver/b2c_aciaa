@@ -5,19 +5,19 @@
 @section('content')
 <style>
     :root {
-        --vc-pink: #d4a5a5;
-        --vc-pink-2: #b5838d;
-        --vc-soft-pink: #fef6f5;
+        --vc-pink: var(--color-primary);
+        --vc-pink-2: var(--color-primary-light);
+        --vc-soft-pink: var(--color-surface-alt);
         --vc-dark: #1a1a1a;
         --vc-gray: #718096;
         --vc-light-gray: #f7fafc;
     }
 
     .vouchers-hero {
-        background: linear-gradient(135deg, rgba(212,165,165,0.15) 0%, rgba(254,246,245,0.7) 100%);
+        background: linear-gradient(135deg, rgba(194,24,91,0.15) 0%, rgba(254,246,245,0.7) 100%);
         padding: 60px 0;
         text-align: center;
-        border-bottom: 1px solid rgba(212,165,165,0.2);
+        border-bottom: 1px solid rgba(194,24,91,0.2);
         margin-bottom: 40px;
     }
 
@@ -50,8 +50,8 @@
 
     .ticket-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(212, 165, 165, 0.2);
-        border-color: rgba(212, 165, 165, 0.4);
+        box-shadow: 0 15px 35px rgba(194, 24, 91, 0.2);
+        border-color: rgba(194, 24, 91, 0.4);
     }
 
     /* Left Side of Ticket (Discount Value) */
@@ -174,7 +174,7 @@
         background: var(--vc-soft-pink);
         color: var(--vc-pink-2);
         padding: 4px 10px;
-        border: 1px dashed rgba(181, 131, 141, 0.4);
+        border: 1px dashed rgba(233, 30, 140, 0.4);
         border-radius: 6px;
     }
 
@@ -187,13 +187,13 @@
         border-radius: 50px;
         border: none;
         transition: all 0.25s ease;
-        box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);
+        box-shadow: 0 4px 10px rgba(233, 30, 140, 0.3);
         cursor: pointer;
     }
 
     .btn-claim:hover {
         transform: translateY(-1px);
-        box-shadow: 0 6px 15px rgba(181, 131, 141, 0.45);
+        box-shadow: 0 6px 15px rgba(233, 30, 140, 0.45);
     }
 
     .btn-claim:disabled {

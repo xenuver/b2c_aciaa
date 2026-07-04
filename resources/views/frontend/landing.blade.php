@@ -400,19 +400,20 @@
     letter-spacing: 3px;
     text-transform: uppercase;
     color: #fff;
-    background: rgba(212, 165, 165, 0.35);
+    background: rgba(194, 24, 91, 0.25);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     padding: 0.5rem 1.25rem;
     border-radius: 50px;
     margin-bottom: 1.5rem;
     font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(194, 24, 91, 0.4);
 }
 
 .carousel-title-custom {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 4rem;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.15;
     color: #fff;
     margin-bottom: 1.5rem;
@@ -438,7 +439,7 @@
     justify-content: center;
     padding: 1rem 2.25rem;
     min-height: 44px;
-    background: linear-gradient(135deg, #d4a5a5 0%, #b5838d 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     color: white !important;
     text-decoration: none;
     font-weight: 500;
@@ -450,8 +451,8 @@
 
 .btn-primary-custom:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(212, 165, 165, 0.6);
-    background: linear-gradient(135deg, #b5838d 0%, #9c6673 100%);
+    box-shadow: 0 15px 30px rgba(194, 24, 91, 0.3);
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
 }
 
 .btn-secondary-custom {
@@ -506,7 +507,7 @@
 .carousel-ctrl-prev:hover,
 .carousel-ctrl-next:hover {
     background: #fff;
-    color: #1a1a1a;
+    color: var(--color-primary);
     transform: translateY(-50%) scale(1.08);
 }
 
@@ -599,10 +600,40 @@
     }
 }
 
+/* Common Components */
+.section-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--color-text, #1a1a1a);
+    margin-bottom: 0.5rem;
+}
+.section-tag {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+.section-subtitle {
+    color: var(--color-text-muted, #666);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 1rem auto 0;
+}
+.section-divider-center {
+    width: 60px;
+    height: 2px;
+    background: var(--color-primary);
+    margin: 1.25rem auto;
+}
+
 /* Brand Manifesto */
 .brand-manifesto {
     padding: 80px 0;
-    background-color: #fef6f5;
+    background-color: var(--color-surface-alt);
 }
 .manifesto-image-wrapper {
     max-width: 100%;
@@ -622,21 +653,22 @@
     font-size: 0.8rem;
     letter-spacing: 2px;
     font-weight: 600;
-    color: #d4a5a5;
+    color: var(--color-primary);
     text-transform: uppercase;
     display: inline-block;
     margin-bottom: 0.5rem;
 }
 .manifesto-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2.6rem;
-    font-weight: 300;
+    font-weight: 400;
     color: #1a1a1a;
     line-height: 1.25;
 }
 .manifesto-divider {
     width: 50px;
     height: 2px;
-    background: #d4a5a5;
+    background: var(--color-primary);
     margin: 1.5rem 0;
 }
 .manifesto-desc {
@@ -665,18 +697,18 @@
     display: flex;
     align-items: center;
     padding: 24px 0;
-    border-bottom: 1px solid rgba(212, 165, 165, 0.25);
+    border-bottom: 1px solid var(--color-border);
     text-decoration: none;
     color: #1a1a1a;
     transition: all 0.3s ease;
 }
 .category-minimal-card:first-child {
-    border-top: 1px solid rgba(212, 165, 165, 0.25);
+    border-top: 1px solid var(--color-border);
 }
 .cat-num {
     font-size: 0.9rem;
     font-weight: 500;
-    color: #d4a5a5;
+    color: var(--color-primary);
     width: 60px;
 }
 .cat-name {
@@ -696,11 +728,11 @@
     transition: transform 0.3s ease, color 0.3s ease;
 }
 .category-minimal-card:hover .cat-name {
-    color: #d4a5a5;
+    color: var(--color-primary);
     transform: translateX(10px);
 }
 .category-minimal-card:hover .cat-arrow {
-    color: #d4a5a5;
+    color: var(--color-primary);
     transform: translateX(5px);
 }
 
@@ -719,12 +751,12 @@
     border-radius: 12px;
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border: 1px solid rgba(212, 165, 165, 0.12);
+    border: 1px solid var(--color-border);
 }
 .landing-product-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(212, 165, 165, 0.1);
-    border-color: rgba(212, 165, 165, 0.3);
+    box-shadow: var(--shadow-lg, 0 15px 35px rgba(0,0,0,0.1));
+    border-color: rgba(194, 24, 91, 0.2);
 }
 .product-img-wrapper {
     position: relative;
@@ -776,14 +808,14 @@
     transform: translateY(0);
 }
 .btn-product-detail:hover {
-    background: #d4a5a5;
+    background: var(--color-primary);
     color: #fff;
 }
 .product-discount-badge {
     position: absolute;
     top: 15px;
     left: 15px;
-    background: #e74c3c;
+    background: linear-gradient(135deg, #DC2626, #EF4444);
     color: #fff;
     padding: 0.35rem 0.85rem;
     font-size: 0.75rem;
@@ -799,7 +831,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    color: #d4a5a5;
+    color: var(--color-primary-light);
     margin-bottom: 8px;
     letter-spacing: 1px;
 }
@@ -815,7 +847,7 @@
     transition: color 0.2s ease;
 }
 .product-name-link a:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 .product-price-box {
     display: flex;
@@ -830,7 +862,7 @@
 .price-new {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #e74c3c;
+    color: var(--color-gold, #CA8A04);
 }
 .price-current {
     font-size: 1.1rem;
@@ -841,7 +873,7 @@
 /* Testimonials Single Quote */
 .landing-testimonials {
     padding: 80px 0;
-    background-color: #fef6f5;
+    background-color: var(--color-surface-alt);
 }
 .testimonial-single-wrapper {
     max-width: 800px;
@@ -849,12 +881,13 @@
 }
 .quote-large-icon {
     font-size: 3rem;
-    color: #d4a5a5;
+    color: var(--color-primary-light);
     opacity: 0.6;
 }
 .testimonial-quote {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 1.8rem;
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.6;
     color: #1a1a1a;
     font-style: italic;
@@ -917,16 +950,17 @@
 .lookbook-tag {
     font-size: 0.75rem;
     letter-spacing: 2px;
-    color: #d4a5a5;
+    color: var(--color-primary-light);
     font-weight: 600;
     text-transform: uppercase;
     display: inline-block;
     margin-bottom: 0.5rem;
 }
 .lookbook-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2rem;
     color: #fff;
-    font-weight: 300;
+    font-weight: 400;
     margin-bottom: 1rem;
     line-height: 1.2;
 }
@@ -940,16 +974,16 @@
     transition: all 0.3s ease;
 }
 .lookbook-link:hover {
-    color: #d4a5a5;
-    border-color: #d4a5a5;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
 }
 
 /* Value Props Simple Row */
 .landing-value-props {
     padding: 60px 0;
-    background-color: #fef6f5;
-    border-top: 1px solid rgba(212, 165, 165, 0.15);
-    border-bottom: 1px solid rgba(212, 165, 165, 0.15);
+    background-color: var(--color-surface-alt);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
 }
 .value-props-line-grid {
     display: grid;
@@ -964,7 +998,7 @@
 }
 .prop-icon {
     font-size: 1.2rem;
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 .prop-text {
     font-size: 0.9rem;
@@ -984,15 +1018,16 @@
 .newsletter-tag {
     font-size: 0.8rem;
     letter-spacing: 3px;
-    color: #d4a5a5;
+    color: var(--color-primary);
     font-weight: 600;
     display: inline-block;
     margin-bottom: 0.75rem;
     text-transform: uppercase;
 }
 .newsletter-title {
+    font-family: var(--font-heading, 'Cormorant', serif);
     font-size: 2.5rem;
-    font-weight: 300;
+    font-weight: 400;
     margin-bottom: 1rem;
     color: #1a1a1a;
 }
@@ -1010,6 +1045,10 @@
     display: flex;
     border-bottom: 2px solid #1a1a1a;
     padding-bottom: 6px;
+    transition: border-color 0.3s ease;
+}
+.newsletter-input-group-minimal:focus-within {
+    border-color: var(--color-primary);
 }
 .newsletter-input-minimal {
     flex-grow: 1;
@@ -1030,7 +1069,7 @@
     padding: 0 1rem;
 }
 .newsletter-btn-minimal:hover {
-    color: #d4a5a5;
+    color: var(--color-primary);
 }
 
 /* ========== RESPONSIVE DESIGN ========== */

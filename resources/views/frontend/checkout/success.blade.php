@@ -86,7 +86,7 @@
             @endphp
 
             @if($transaction->payment_status === 'paid')
-                <div class="success-icon-wrapper bg-success-subtle text-success">
+                <div class="success-icon-wrapper bg-success-subtle text-primary">
                     <i class="fas fa-check-circle" style="font-size: 80px;"></i>
                 </div>
                 <h2 class="fw-bold text-gray-800">Pembayaran Berhasil!</h2>
