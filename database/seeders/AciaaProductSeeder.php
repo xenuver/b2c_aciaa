@@ -15,55 +15,50 @@ class AciaaProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // Disable foreign key checks to safely clear tables
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        Product::truncate();
-        Category::truncate();
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        if (Category::count() == 0 && Product::count() == 0) {
+            // Define the 4 core categories requested by the user
+            $categoriesData = [
+                [
+                    'id' => 1,
+                    'name' => 'Atasan',
+                    'slug' => 'atasan',
+                    'description' => 'Blouse, kemeja, crop top, dan knitwear wanita import premium',
+                    'icon' => 'fa-tshirt',
+                    'order' => 1,
+                    'is_active' => 1,
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Bawahan',
+                    'slug' => 'bawahan',
+                    'description' => 'Celana panjang, wide-leg trousers, kulot, dan rok kasual elegan',
+                    'icon' => 'fa-shopping-bag',
+                    'order' => 2,
+                    'is_active' => 1,
+                ],
+                [
+                    'id' => 3,
+                    'name' => 'Dress',
+                    'slug' => 'dress',
+                    'description' => 'Midi dress, floral dress, satin slip dress, dan abaya premium',
+                    'icon' => 'fa-female',
+                    'order' => 3,
+                    'is_active' => 1,
+                ],
+                [
+                    'id' => 4,
+                    'name' => 'Outer',
+                    'slug' => 'outer',
+                    'description' => 'Knitted cardigan, blazer formal, dan jaket kasual modern',
+                    'icon' => 'fa-vest',
+                    'order' => 4,
+                    'is_active' => 1,
+                ]
+            ];
 
-        // Define the 4 core categories requested by the user
-        $categoriesData = [
-            [
-                'id' => 1,
-                'name' => 'Atasan',
-                'slug' => 'atasan',
-                'description' => 'Blouse, kemeja, crop top, dan knitwear wanita import premium',
-                'icon' => 'fa-tshirt',
-                'order' => 1,
-                'is_active' => 1,
-            ],
-            [
-                'id' => 2,
-                'name' => 'Bawahan',
-                'slug' => 'bawahan',
-                'description' => 'Celana panjang, wide-leg trousers, kulot, dan rok kasual elegan',
-                'icon' => 'fa-shopping-bag',
-                'order' => 2,
-                'is_active' => 1,
-            ],
-            [
-                'id' => 3,
-                'name' => 'Dress',
-                'slug' => 'dress',
-                'description' => 'Midi dress, floral dress, satin slip dress, dan abaya premium',
-                'icon' => 'fa-female',
-                'order' => 3,
-                'is_active' => 1,
-            ],
-            [
-                'id' => 4,
-                'name' => 'Outer',
-                'slug' => 'outer',
-                'description' => 'Knitted cardigan, blazer formal, dan jaket kasual modern',
-                'icon' => 'fa-vest',
-                'order' => 4,
-                'is_active' => 1,
-            ]
-        ];
-
-        foreach ($categoriesData as $cat) {
-            Category::create($cat);
-        }
+            foreach ($categoriesData as $cat) {
+                Category::create($cat);
+            }
 
         // Define 50 beautifully curated products distributed across the 4 core categories
         $productsData = [
@@ -495,6 +490,7 @@ class AciaaProductSeeder extends Seeder
             }
 
             Product::create($prod);
+        }
         }
     }
 }

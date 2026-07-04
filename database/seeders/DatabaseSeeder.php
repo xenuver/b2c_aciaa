@@ -15,9 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call Initial Data Seeder from aciaa3820_db.sql
+        // Call native seeders
         $this->call([
-            InitialDataSeeder::class,
+            UserSeeder::class,
+            LocationSeeder::class,
+            AciaaProductSeeder::class,
+            VoucherSeeder::class,
         ]);
 
         // Keep testing user setup if not already exists (commented out for production to avoid Faker error)

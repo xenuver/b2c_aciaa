@@ -16,15 +16,9 @@ class LocationSeeder extends Seeder
      */
     public function run(): void
     {
-        Schema::disableForeignKeyConstraints();
-
-        // Truncate tables to avoid duplicates
-        Province::truncate();
-        City::truncate();
-        Subdistrict::truncate();
-
         // 1. Seed Provinces
-        $provincesJson = File::get(database_path('data/provinces.json'));
+        if (Province::count() == 0) {
+            $provincesJson = File::get(database_path('data/provinces.json'));
         $provinces = json_decode($provincesJson, true);
         
         $provinceData = [];
@@ -38,9 +32,11 @@ class LocationSeeder extends Seeder
         }
         // Chunk to insert in case of large data, but provinces are only 34
         Province::insert($provinceData);
+        }
 
         // 2. Seed Cities
-        $citiesJson = File::get(database_path('data/cities.json'));
+        if (City::count() == 0) {
+            $citiesJson = File::get(database_path('data/cities.json'));
         $cities = json_decode($citiesJson, true);
         
         $cityChunks = array_chunk($cities, 100);
@@ -59,9 +55,11 @@ class LocationSeeder extends Seeder
             }
             City::insert($cityData);
         }
+        }
 
         // 3. Seed Subdistricts
-        $subdistrictsJson = File::get(database_path('data/subdistricts.json'));
+        if (Subdistrict::count() == 0) {
+            $subdistrictsJson = File::get(database_path('data/subdistricts.json'));
         $subdistricts = json_decode($subdistrictsJson, true);
         
         $subdistrictChunks = array_chunk($subdistricts, 100);
@@ -78,7 +76,6 @@ class LocationSeeder extends Seeder
             }
             Subdistrict::insert($subdistrictData);
         }
-
-        Schema::enableForeignKeyConstraints();
+        }
     }
 }
