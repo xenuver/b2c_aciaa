@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             LocationSeeder::class,
             AciaaProductSeeder::class,
+            AciaaBannerSeeder::class,
             VoucherSeeder::class,
         ]);
 
