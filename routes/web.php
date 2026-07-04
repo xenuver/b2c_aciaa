@@ -241,20 +241,11 @@ Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->mid
 
 require __DIR__.'/auth.php';
 
-Route::get('/cek-storage', function () {
-    $path = storage_path('app/public/products');
-    $files = [];
-    if (is_dir($path)) {
-        $files = scandir($path);
+// Route ajaib untuk bypass Nginx symlink permission
+Route::get('/storage/{path}', function ($path) {
+    $filePath = storage_path('app/public/' . $path);
+    if (!file_exists($filePath)) {
+        abort(404);
     }
-    
-    return [
-        'is_dir' => is_dir($path),
-        'files' => $files,
-        'symlink_exists' => is_link(public_path('storage')),
-        'public_storage_exists' => file_exists(public_path('storage')),
-        'symlink_target' => is_link(public_path('storage')) ? readlink(public_path('storage')) : null,
-        'asset_url' => asset('storage/products/' . ($files[2] ?? 'test.png')),
-        'file_get_contents' => file_exists(public_path('storage/products/' . ($files[2] ?? 'test.png'))) ? 'exists' : 'missing',
-    ];
-});
+    return response()->file($filePath);
+})->where('path', '.*');
