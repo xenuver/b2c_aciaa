@@ -163,7 +163,7 @@
                 <div class="card-body p-4 p-md-5">
                     <!-- Product Info Header -->
                     <div class="product-preview d-flex align-items-center gap-3 mb-4">
-                        <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" 
+                        <img src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}" 
                              alt="{{ $product->name }}" 
                              style="width: 70px; height: 70px; object-fit: cover; border-radius: 12px;">
                         <div class="text-start">
@@ -223,7 +223,7 @@
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach($rating->images as $image)
                                 <div class="position-relative">
-                                    <img src="{{ url('media/' . $image) }}" class="preview-img-card" alt="Foto ulasan {{ $product->name }}">
+                                    <img src="{{ url('render-image?path=' . $image) }}" class="preview-img-card" alt="Foto ulasan {{ $product->name }}">
                                 </div>
                                 @endforeach
                             </div>

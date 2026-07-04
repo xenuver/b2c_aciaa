@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body text-center">
                     @if($user->avatar)
-                        <img src="{{ url('media/' . $user->avatar) }}" width="100" height="100" style="border-radius: 50%; object-fit: cover;" class="mb-3">
+                        <img src="{{ url('render-image?path=' . $user->avatar) }}" width="100" height="100" style="border-radius: 50%; object-fit: cover;" class="mb-3">
                     @else
                         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center bg-dark text-white rounded-circle" style="width: 100px; height: 100px; font-size: 40px;">
                             {{ strtoupper(substr($user->name, 0, 1)) }}

@@ -854,7 +854,7 @@
     <div class="row g-5">
         <!-- Left Column: Image Showcase -->
         <div class="col-lg-6">
-            <div class="pd-gallery-container" x-data="{ mainImage: '{{ url('media/' . ($product->image ?? 'default.jpg')) }}' }">
+            <div class="pd-gallery-container" x-data="{ mainImage: '{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}' }">
                 <!-- Floating Promos and Badges -->
                 @if($diskonPercent > 0)
                     <span class="pd-floating-badge">-{{ $diskonPercent }}%</span>
@@ -867,7 +867,7 @@
                 <!-- Main Card Preview -->
                 <div class="pd-image-wrapper">
                     <div class="pd-zoom-wrapper">
-                        <img id="mainProductImg" :src="mainImage" src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" class="pd-img img-fluid" alt="{{ $product->name }}">
+                        <img id="mainProductImg" :src="mainImage" src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}" class="pd-img img-fluid" alt="{{ $product->name }}">
                     </div>
                 </div>
 
@@ -875,14 +875,14 @@
                 @if(count($gallery) > 0)
                     <div class="pd-thumbnails">
                         <!-- Main image thumbnail -->
-                        <button type="button" class="pd-thumb-btn" :class="{ 'active': mainImage === '{{ url('media/' . ($product->image ?? 'default.jpg')) }}' }" @click="mainImage = '{{ url('media/' . ($product->image ?? 'default.jpg')) }}'">
-                            <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="Thumbnail {{ $product->name }} Utama">
+                        <button type="button" class="pd-thumb-btn" :class="{ 'active': mainImage === '{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}' }" @click="mainImage = '{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}'">
+                            <img src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}" alt="Thumbnail {{ $product->name }} Utama">
                         </button>
                         
                         <!-- Extra thumbnails -->
                         @foreach($gallery as $gImg)
-                            <button type="button" class="pd-thumb-btn" :class="{ 'active': mainImage === '{{ url('media/' . $gImg) }}' }" @click="mainImage = '{{ url('media/' . $gImg) }}'">
-                                <img src="{{ url('media/' . $gImg) }}" alt="Thumbnail {{ $product->name }} {{ $loop->iteration }}">
+                            <button type="button" class="pd-thumb-btn" :class="{ 'active': mainImage === '{{ url('render-image?path=' . $gImg) }}' }" @click="mainImage = '{{ url('render-image?path=' . $gImg) }}'">
+                                <img src="{{ url('render-image?path=' . $gImg) }}" alt="Thumbnail {{ $product->name }} {{ $loop->iteration }}">
                             </button>
                         @endforeach
                     </div>
@@ -1234,7 +1234,7 @@
             <div class="col-lg-3 col-md-4 col-6 mb-4">
                 <div class="card recom-card h-100 d-flex flex-column justify-content-between">
                     <div class="recom-img-container">
-                        <img src="{{ url('media/' . ($related->image ?? 'default.jpg')) }}" class="recom-img" alt="{{ $related->name }}">
+                        <img src="{{ url('render-image?path=' . ($related->image ?? 'default.jpg')) }}" class="recom-img" alt="{{ $related->name }}">
                         @if($relDisPercent > 0)
                             <span class="recom-float-badge">-{{ $relDisPercent }}%</span>
                         @endif

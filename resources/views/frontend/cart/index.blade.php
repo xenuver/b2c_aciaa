@@ -334,7 +334,7 @@
                 @foreach($cartItems as $item)
                 <div class="cart-card" id="cart-item-{{ $item->id }}">
                     <div class="cart-item">
-                        <img src="{{ url('media/' . ($item->product->image ?? 'default.jpg')) }}"
+                        <img src="{{ url('render-image?path=' . ($item->product->image ?? 'default.jpg')) }}"
                              alt="{{ $item->product->name }}"
                              class="cart-item-img">
 

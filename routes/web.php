@@ -242,14 +242,17 @@ Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->mid
 require __DIR__.'/auth.php';
 
 // Route ajaib untuk bypass Nginx symlink permission
-Route::get('/media/{path}', function ($path) {
+Route::get('/render-image', function (Illuminate\Http\Request $request) {
+    $path = $request->query('path');
+    if (!$path) abort(404);
+    
     $filePath = storage_path('app/public/' . $path);
     if (!file_exists($filePath)) {
         abort(404);
     }
     $mime = mime_content_type($filePath);
     return response()->file($filePath, ['Content-Type' => $mime]);
-})->where('path', '.*');
+})->name('render-image');
 
 // Route untuk copy seed images ke persistent volume
 Route::get('/migrate-seed-images', function() {

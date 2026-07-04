@@ -295,7 +295,7 @@
                         <td>{{ $user->id }}</td>
                         <td>
                             @if($user->avatar)
-                                <img src="{{ url('media/' . $user->avatar) }}" class="user-avatar" alt="{{ $user->name }}">
+                                <img src="{{ url('render-image?path=' . $user->avatar) }}" class="user-avatar" alt="{{ $user->name }}">
                             @else
                                 <div class="avatar-placeholder">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}

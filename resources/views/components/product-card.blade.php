@@ -41,7 +41,7 @@
     <div class="product-image-wrapper">
         <a href="{{ route('products.show', $product->slug) }}" class="d-block" aria-label="Lihat detail {{ $product->name }}">
             <img
-                src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}"
+                src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}"
                 alt="{{ $product->name }}"
                 class="product-image"
                 onerror="this.onerror=null; this.src='{{ asset('images/placeholder-product.png') }}';"

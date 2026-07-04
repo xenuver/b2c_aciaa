@@ -137,7 +137,7 @@
             <div class="promo-grid">
                 @foreach($promoProducts as $product)
                 <div class="promo-card">
-                    <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" class="promo-image" alt="{{ $product->name }}">
+                    <img src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}" class="promo-image" alt="{{ $product->name }}">
                     <div class="promo-info">
                         <div class="promo-name">{{ $product->name }}</div>
                         <div class="promo-price">

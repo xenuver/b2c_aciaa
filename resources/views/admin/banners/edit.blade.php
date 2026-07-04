@@ -47,7 +47,7 @@
                             @if($banner->image)
                                 <div class="mb-2">
                                     <div style="width: 100%; max-width: 480px; aspect-ratio: 16/6; overflow: hidden; border-radius: 10px; border: 1px solid #ddd;">
-                                        <img src="{{ url('media/' . $banner->image) }}" id="imagePreview"
+                                        <img src="{{ url('render-image?path=' . $banner->image) }}" id="imagePreview"
                                             style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                     <small class="text-muted mt-1 d-block">Gambar saat ini</small>

@@ -55,7 +55,7 @@
                             <label class="form-label">Gambar Produk</label>
                             @if($product->image)
                                 <div class="mb-2">
-                                    <img src="{{ url('media/' . $product->image) }}" width="100" class="img-thumbnail" alt="">
+                                    <img src="{{ url('render-image?path=' . $product->image) }}" width="100" class="img-thumbnail" alt="">
                                     <small class="text-muted d-block">Biarkan kosong jika tidak ingin mengubah gambar</small>
                                 </div>
                             @endif

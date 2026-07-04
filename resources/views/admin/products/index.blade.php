@@ -409,7 +409,7 @@
                         <td>
                             <div style="display:flex;align-items:center;gap:12px">
                                 @if($product->image)
-                                    <img src="{{ url('media/' . $product->image) }}"
+                                    <img src="{{ url('render-image?path=' . $product->image) }}"
                                          class="prod-thumb" alt="{{ $product->name }}">
                                 @else
                                     <div class="prod-thumb-placeholder">
