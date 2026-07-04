@@ -335,9 +335,9 @@
 /* Admin Dashboard Styles */
 .admin-dashboard {
     padding: 24px 32px;
-    background: #f8f9fc;
+    background: transparent;
     min-height: 100vh;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Fira Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* Dashboard Header */
@@ -404,15 +404,16 @@
 }
 
 .stat-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.4));
+    border-radius: 16px;
     padding: 1.1rem 1.25rem;
-    box-shadow: none;
-    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-}
+ backdrop-filter: blur(10px); background: var(--glass-bg, rgba(255, 255, 255, 0.7)); border-color: var(--glass-border, rgba(255, 255, 255, 0.4)); box-shadow: 0 4px 15px rgba(219, 39, 119, 0.03); }
 
 .stat-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,.05);
@@ -441,14 +442,14 @@
     height: 18px;
 }
 
-.stat-icon-blue  { background: #eff6ff; color: #2563eb; }
-.stat-icon-green { background: #f0fdf4; color: #16a34a; }
-.stat-icon-amber { background: #fffbeb; color: #d97706; }
-.stat-icon-red   { background: #fef2f2; color: #dc2626; }
+.stat-icon-blue  { background: rgba(219,39,119,0.1); color: #DB2777; }
+.stat-icon-green { background: rgba(244,114,182,0.1); color: #F472B6; }
+.stat-icon-amber { background: rgba(202,138,4,0.1); color: #CA8A04; }
+.stat-icon-red   { background: rgba(131,24,67,0.1); color: #831843; }
 
 .stat-label {
     font-size: 11px;
-    color: #6b7280;
+    color: var(--primary-light, #F472B6);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: .04em;
@@ -458,7 +459,7 @@
 .stat-value {
     font-size: 22px;
     font-weight: 700;
-    color: #111827;
+    color: var(--text-main, #831843);
     line-height: 1.1;
     margin-bottom: 6px;
 }
@@ -473,18 +474,20 @@
     border-radius: 99px;
 }
 
-.sb-green { background: #dcfce7; color: #166534; }
-.sb-amber { background: #fef3c7; color: #92400e; }
-.sb-red   { background: #fee2e2; color: #991b1b; }
-.sb-blue  { background: #dbeafe; color: #1e40af; }
+.sb-green { background: rgba(244,114,182,0.15); color: #DB2777; }
+.sb-amber { background: rgba(202,138,4,0.15); color: #CA8A04; }
+.sb-red   { background: rgba(131,24,67,0.15); color: #831843; }
+.sb-blue  { background: rgba(219,39,119,0.15); color: #DB2777; }
 
 /* Status Section */
 .status-section {
-    background: white;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 24px;
     margin-bottom: 32px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.4));
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.03);
 }
 
 .section-header {
@@ -512,7 +515,7 @@
 }
 
 .status-item {
-    background: #f8f9fc;
+    background: transparent;
     border-radius: 16px;
     padding: 20px;
     text-align: center;
@@ -613,10 +616,12 @@
 
 /* Data Cards */
 .data-card {
-    background: white;
+    background: var(--glass-bg, rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.4));
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.03);
 }
 
 .card-header-primary, .card-header-success, .card-header-dark {
@@ -624,7 +629,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, var(--primary, #DB2777) 0%, var(--primary-light, #F472B6) 100%);
 }
 
 .card-header-primary i, .card-header-success i, .card-header-dark i {
@@ -641,15 +646,15 @@
 }
 
 .card-header-primary {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    background: linear-gradient(135deg, var(--primary, #DB2777), var(--cta, #CA8A04));
 }
 
 .card-header-success {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, #DB2777, #F472B6);
 }
 
 .card-header-dark {
-    background: linear-gradient(135deg, #1f2937, #374151);
+    background: linear-gradient(135deg, #831843, #DB2777);
 }
 
 .card-body {
@@ -667,7 +672,7 @@
 }
 
 .data-table thead {
-    background: #f8f9fc;
+    background: transparent;
 }
 
 .data-table th {
@@ -872,8 +877,16 @@
     }
     
     .stat-card {
-        padding: 16px;
-    }
+    background: var(--glass-bg, rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.4));
+    border-radius: 16px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+ backdrop-filter: blur(10px); background: var(--glass-bg, rgba(255, 255, 255, 0.7)); border-color: var(--glass-border, rgba(255, 255, 255, 0.4)); box-shadow: 0 4px 15px rgba(219, 39, 119, 0.03); }
     
     .stat-value {
         font-size: 20px;
