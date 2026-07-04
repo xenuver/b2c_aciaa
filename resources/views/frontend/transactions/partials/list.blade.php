@@ -44,7 +44,7 @@
                     @if($firstDetail)
                         <div class="d-flex align-items-center gap-3">
                             @if($firstDetail->product && $firstDetail->product->image)
-                                <img src="{{ asset('storage/' . $firstDetail->product->image) }}" class="order-product-img" alt="{{ $firstDetail->product->name }}">
+                                <img src="{{ url('media/' . $firstDetail->product->image) }}" class="order-product-img" alt="{{ $firstDetail->product->name }}">
                             @else
                                 <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 70px; height: 70px;">
                                     <i class="fas fa-image text-muted"></i>

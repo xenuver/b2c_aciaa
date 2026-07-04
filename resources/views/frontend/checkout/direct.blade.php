@@ -293,7 +293,7 @@
                     @foreach($cartItems as $item)
                     <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
                         @if($item->product->image)
-                            <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <img src="{{ url('media/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
                         @else
                             <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
                                 <i class="fas fa-image text-muted"></i>

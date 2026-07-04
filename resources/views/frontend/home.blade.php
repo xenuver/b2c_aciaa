@@ -11,7 +11,7 @@
             @if($banners->count() > 0)
                 @foreach($banners as $key => $banner)
                 <div class="carousel-item-custom {{ $key == 0 ? 'active' : '' }}">
-                    <div class="carousel-bg-custom" style="background-image: url('{{ asset('storage/' . $banner->image) }}');"></div>
+                    <div class="carousel-bg-custom" style="background-image: url('{{ url('media/' . $banner->image) }}');"></div>
                     <div class="carousel-overlay-custom"></div>
                     <div class="container carousel-container-custom">
                         <div class="carousel-content-custom">
@@ -172,7 +172,7 @@
                         <div class="promo-slide" data-product-id="{{ $product->id }}" data-product-slug="{{ $product->slug }}">
                             <div class="promo-slide-inner">
                                 <div class="promo-slide-image">
-                                    <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}">
+                                    <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}">
                                     <span class="promo-slide-discount">-{{ $product->discount_price ? round((1 - $product->discount_price/$product->price) * 100) : rand(20, 50) }}%</span>
                                     <div class="promo-slide-overlay"></div>
                                 </div>
@@ -222,7 +222,7 @@
                 @foreach($newProducts as $product)
                 <div class="product-card" data-product-id="{{ $product->id }}">
                     <div class="product-image-wrapper">
-                        <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
+                        <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
                         <div class="product-actions">
                             <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                 <i class="fas fa-eye"></i>
@@ -276,7 +276,7 @@
                 @foreach($recommendations as $product)
                 <div class="product-card reco-card" data-product-id="{{ $product->id }}">
                     <div class="product-image-wrapper">
-                        <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
+                        <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
                         <div class="product-actions">
                             <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                 <i class="fas fa-eye"></i>

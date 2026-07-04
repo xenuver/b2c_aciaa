@@ -453,7 +453,7 @@
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center gap-3 py-2">
                                             @if($detail->product && $detail->product->image)
-                                                <img src="{{ asset('storage/' . $detail->product->image) }}" 
+                                                <img src="{{ url('media/' . $detail->product->image) }}" 
                                                      style="width: 55px; height: 55px; object-fit: cover; border-radius: 10px;" 
                                                      alt="{{ $detail->product->name }}">
                                             @else

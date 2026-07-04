@@ -7,7 +7,7 @@
     <div class="row">
         <!-- Gambar Produk -->
         <div class="col-md-6">
-            <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" 
+            <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" 
                  class="img-fluid rounded shadow" 
                  alt="{{ $product->name }}">
         </div>
@@ -99,7 +99,7 @@
                 @foreach($relatedProducts as $related)
                 <div class="col-md-3 col-6 mb-3">
                     <div class="card h-100 shadow-sm">
-                        <img src="{{ asset('storage/' . ($related->image ?? 'default.jpg')) }}" 
+                        <img src="{{ url('media/' . ($related->image ?? 'default.jpg')) }}" 
                              class="card-img-top" alt="{{ $related->name }}" 
                              style="height: 150px; object-fit: cover;">
                         <div class="card-body p-2">

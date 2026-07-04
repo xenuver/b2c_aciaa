@@ -305,7 +305,7 @@
                             <td>
                                 <div style="display:flex;align-items:center;gap:10px">
                                     @if($product->image)
-                                        <img src="{{ asset('storage/' . $product->image) }}" class="prod-thumb" alt="{{ $product->name }}">
+                                        <img src="{{ url('media/' . $product->image) }}" class="prod-thumb" alt="{{ $product->name }}">
                                     @else
                                         <div class="prod-thumb" style="background:#f3f4f6;display:flex;align-items:center;justify-content:center;">
                                             <i class="far fa-image text-muted" style="font-size:12px;"></i>

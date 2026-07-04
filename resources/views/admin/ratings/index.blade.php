@@ -331,7 +331,7 @@
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 @if($rating->product && $rating->product->image)
-                                    <img src="{{ asset('storage/' . $rating->product->image) }}" alt="" style="width:36px; height:36px; object-fit:cover; border-radius:6px;">
+                                    <img src="{{ url('media/' . $rating->product->image) }}" alt="" style="width:36px; height:36px; object-fit:cover; border-radius:6px;">
                                 @else
                                     <div style="width:36px; height:36px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; border-radius:6px; color:#9ca3af;"><i class="fas fa-image"></i></div>
                                 @endif
@@ -355,8 +355,8 @@
                                 @if($rating->images && count($rating->images) > 0)
                                 <div class="d-flex gap-1 mt-2">
                                     @foreach($rating->images as $img)
-                                        <a href="{{ asset('storage/' . $img) }}" target="_blank">
-                                            <img src="{{ asset('storage/' . $img) }}" style="width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #e5e7eb;">
+                                        <a href="{{ url('media/' . $img) }}" target="_blank">
+                                            <img src="{{ url('media/' . $img) }}" style="width:40px; height:40px; object-fit:cover; border-radius:6px; border:1px solid #e5e7eb;">
                                         </a>
                                     @endforeach
                                 </div>

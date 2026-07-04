@@ -464,7 +464,7 @@
                     <h5>Bukti Foto</h5>
                 </div>
                 <div class="rd-photo-body">
-                    <img src="{{ asset('storage/' . $retur->proof_image) }}" alt="Bukti foto retur" class="img-fluid">
+                    <img src="{{ url('media/' . $retur->proof_image) }}" alt="Bukti foto retur" class="img-fluid">
                 </div>
             </div>
             @endif

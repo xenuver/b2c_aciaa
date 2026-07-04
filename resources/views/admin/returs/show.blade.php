@@ -89,7 +89,7 @@
                     <h5 class="mb-0">Bukti Foto</h5>
                 </div>
                 <div class="card-body text-center">
-                    <img src="{{ asset('storage/' . $retur->proof_image) }}" class="img-fluid rounded" style="max-height: 300px;">
+                    <img src="{{ url('media/' . $retur->proof_image) }}" class="img-fluid rounded" style="max-height: 300px;">
                 </div>
             </div>
             @endif

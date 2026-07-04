@@ -163,7 +163,7 @@
                 <div class="card-body p-4 p-md-5">
                     <!-- Product Information Header -->
                     <div class="product-preview d-flex align-items-center gap-3 mb-4">
-                        <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" 
+                        <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" 
                              alt="{{ $product->name }}" 
                              style="width: 70px; height: 70px; object-fit: cover; border-radius: 12px;">
                         <div class="text-start">

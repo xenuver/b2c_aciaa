@@ -424,7 +424,7 @@
                         @foreach($promoProducts as $product)
                         <div class="product-card promo-card" data-product-id="{{ $product->id }}">
                             <div class="product-image-wrapper">
-                                <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
+                                <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
                                 <div class="product-actions">
                                     <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                         <i data-lucide="eye"></i>
@@ -475,7 +475,7 @@
                         @foreach($recommendations as $product)
                         <div class="product-card" data-product-id="{{ $product->id }}">
                             <div class="product-image-wrapper">
-                                <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
+                                <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
                                 <div class="product-actions">
                                     <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                         <i data-lucide="eye"></i>
@@ -530,7 +530,7 @@
                     <div class="product-grid" id="productGrid">
                         @forelse($products as $product)                        <div class="product-card" data-product-id="{{ $product->id }}">
                             <div class="product-image-wrapper">
-                                <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
+                                <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
                                 <div class="product-actions">
                                     <button class="action-btn quick-view" data-product="{{ $product->slug }}">
                                         <i data-lucide="eye"></i>

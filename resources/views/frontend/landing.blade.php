@@ -11,7 +11,7 @@
             @if($banners->count() > 0)
                 @foreach($banners as $key => $banner)
                 <div class="carousel-item-custom {{ $key == 0 ? 'active' : '' }}">
-                    <div class="carousel-bg-custom" style="background-image: url('{{ asset('storage/' . $banner->image) }}');"></div>
+                    <div class="carousel-bg-custom" style="background-image: url('{{ url('media/' . $banner->image) }}');"></div>
                     <div class="carousel-overlay-custom"></div>
                     <div class="container carousel-container-custom">
                         <div class="carousel-content-custom">
@@ -72,7 +72,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 mb-5 mb-lg-0">
                     <div class="manifesto-image-wrapper">
-                        <img src="{{ asset('images/manifesto.jpg') }}" onerror="this.src='{{ asset('storage/default.jpg') }}'" alt="Elegant Style" class="img-fluid manifesto-single-img">
+                        <img src="{{ asset('images/manifesto.jpg') }}" onerror="this.src='{{ url('media/default.jpg') }}'" alt="Elegant Style" class="img-fluid manifesto-single-img">
                     </div>
                 </div>
                 <div class="col-lg-6 offset-lg-1">
@@ -129,7 +129,7 @@
                 @forelse($featuredProducts as $product)
                 <div class="landing-product-card">
                     <div class="product-img-wrapper">
-                        <img src="{{ asset('storage/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-img">
+                        <img src="{{ url('media/' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-img">
                         <div class="product-hover-overlay">
                             <a href="{{ route('products.show', $product->slug) }}" class="btn-product-detail">View Details</a>
                         </div>
@@ -236,7 +236,7 @@
             <div class="row g-4">
                 <div class="col-md-6">
                     <div class="lookbook-banner-card">
-                        <img src="{{ asset('images/lookbook1.jpg') }}" onerror="this.src='{{ asset('storage/default.jpg') }}'" alt="Lookbook 1" class="lookbook-img">
+                        <img src="{{ asset('images/lookbook1.jpg') }}" onerror="this.src='{{ url('media/default.jpg') }}'" alt="Lookbook 1" class="lookbook-img">
                         <div class="lookbook-overlay"></div>
                         <div class="lookbook-content">
                             <span class="lookbook-tag">Minimalist Silhouette</span>
@@ -247,7 +247,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="lookbook-banner-card">
-                        <img src="{{ asset('images/lookbook2.jpg') }}" onerror="this.src='{{ asset('storage/default.jpg') }}'" alt="Lookbook 2" class="lookbook-img">
+                        <img src="{{ asset('images/lookbook2.jpg') }}" onerror="this.src='{{ url('media/default.jpg') }}'" alt="Lookbook 2" class="lookbook-img">
                         <div class="lookbook-overlay"></div>
                         <div class="lookbook-content">
                             <span class="lookbook-tag">Urban Essentials</span>

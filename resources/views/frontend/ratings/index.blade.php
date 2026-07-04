@@ -171,7 +171,7 @@
                     <div>
                         {{-- Card Header: Product & Image --}}
                         <div class="d-flex gap-3 pb-3 border-bottom mb-3 flex-wrap flex-sm-nowrap">
-                            <img src="{{ asset('storage/' . ($rating->product->image ?? 'default.jpg')) }}" 
+                            <img src="{{ url('media/' . ($rating->product->image ?? 'default.jpg')) }}" 
                                  class="product-img" alt="{{ $rating->product->name }}">
                             <div class="flex-grow-1 text-start">
                                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-1">
@@ -206,8 +206,8 @@
                             @if($rating->images && count($rating->images) > 0)
                             <div class="d-flex gap-2 mb-3">
                                 @foreach($rating->images as $img)
-                                <a href="{{ asset('storage/' . $img) }}" target="_blank">
-                                    <img src="{{ asset('storage/' . $img) }}" alt="Foto ulasan {{ $rating->product->name }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--pd-border);">
+                                <a href="{{ url('media/' . $img) }}" target="_blank">
+                                    <img src="{{ url('media/' . $img) }}" alt="Foto ulasan {{ $rating->product->name }}" style="width: 55px; height: 55px; object-fit: cover; border-radius: 8px; border: 1px solid var(--pd-border);">
                                 </a>
                                 @endforeach
                             </div>

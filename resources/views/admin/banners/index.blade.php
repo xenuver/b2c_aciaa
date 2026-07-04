@@ -222,7 +222,7 @@
                         <td>{{ $banner->id }}</td>
                         <td>
                             @if($banner->image)
-                                <img src="{{ asset('storage/' . $banner->image) }}" class="prod-thumb" alt="{{ $banner->title }}">
+                                <img src="{{ url('media/' . $banner->image) }}" class="prod-thumb" alt="{{ $banner->title }}">
                             @else
                                 <div class="prod-thumb-placeholder">
                                     <i class="far fa-image text-muted" style="font-size:16px;"></i>
