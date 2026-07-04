@@ -575,18 +575,24 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(() => {});
     @endauth
 
-    // Scroll aware navbar for home page
-    const appNavbar = document.getElementById('appNavbar');
-    if (appNavbar && appNavbar.classList.contains('navbar-home-transparent')) {
-        function handleAppNavbarScroll() {
-            if (window.scrollY > 60) {
-                appNavbar.classList.add('scrolled');
-            } else {
-                appNavbar.classList.remove('scrolled');
-            }
-        }
-        window.addEventListener('scroll', handleAppNavbarScroll, { passive: true });
-        handleAppNavbarScroll();
-    }
 });
+</script>
+
+<script>
+    // Scroll aware navbar for all pages
+    (function() {
+        const navbar = document.getElementById('appNavbar');
+        if (navbar) {
+            function handleScroll() {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            // Jalankan sekali saat load
+            handleScroll();
+        }
+    })();
 </script>
