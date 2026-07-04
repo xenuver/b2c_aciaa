@@ -241,18 +241,21 @@ Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->mid
 
 require __DIR__.'/auth.php';
 
-// Temporary route to reset admin password
-Route::get('/reset-admin-password', function () {
-    // Reset password for ALL users to 'password'
-    \App\Models\User::query()->update([
-        'password' => \Illuminate\Support\Facades\Hash::make('password')
-    ]);
+// Temporary route to fix broken storage symlink on production
+Route::get('/fix-storage', function () {
+    $publicStorage = public_path('storage');
     
-    // Get all users to show their emails
-    $users = \App\Models\User::all(['name', 'email', 'role']);
+    // Hapus file/folder jika sudah ada
+    if (\Illuminate\Support\Facades\File::exists($publicStorage)) {
+        if (is_link($publicStorage)) {
+            unlink($publicStorage);
+        } else {
+            \Illuminate\Support\Facades\File::deleteDirectory($publicStorage);
+        }
+    }
     
-    return response()->json([
-        'message' => 'SEMUA password akun telah di-reset menjadi: password',
-        'daftar_akun' => $users
-    ]);
+    // Buat ulang link
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    
+    return 'Storage berhasil diperbaiki! Silakan kembali ke website dan hapus route ini nanti.';
 });
