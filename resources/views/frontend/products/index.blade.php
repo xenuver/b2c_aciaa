@@ -392,6 +392,74 @@
                     </div>
                 </div>
 
+                <!-- All Products -->
+                <div class="all-products-section">
+                    <div class="section-header">
+                        <h2 class="section-title">All Products</h2>
+                        <div class="section-divider"></div>
+                    </div>
+                    
+                    {{-- Skeleton loader: tampil saat AJAX loading --}}
+                    <div x-show="loading" x-cloak>
+                        <x-skeleton-loader :count="8" />
+                    </div>
+
+                    {{-- Product grid: tampil saat tidak loading --}}
+                    <div x-show="!loading">
+                    <div class="product-grid" id="productGrid">
+                        @forelse($products as $product)                        <div class="product-card" data-product-id="{{ $product->id }}">
+                            <div class="product-image-wrapper">
+                                <img src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
+                                <div class="product-actions">
+                                    <button class="action-btn quick-view" data-product="{{ $product->slug }}">
+                                        <i data-lucide="eye"></i>
+                                    </button>
+                                    <button class="action-btn wishlist"
+                                        x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
+                                        :class="{ 'active': inWishlist }"
+                                        @click.prevent="toggle({{ $product->id }})"
+                                        :disabled="isProcessing"
+                                        type="button">
+                                        <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
+                                    </button>
+                                </div>
+                                @if($product->discount_price)
+                                <div class="product-badges">
+                                    <span class="badge sale-badge">Sale</span>
+                                </div>
+                                @endif
+                            </div>
+                            <div class="product-info">
+                                <h3 class="product-title">{{ Str::limit($product->name, 40) }}</h3>
+                                <div class="product-price">
+                                    @if($product->discount_price)
+                                        <span class="price-original">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                        <span class="price-sale">Rp {{ number_format($product->discount_price, 0, ',', '.') }}</span>
+                                    @else
+                                        <span class="price-current">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                    @endif
+                                </div>
+                                <a href="{{ route('products.show', $product->slug) }}" class="product-link">View Details →</a>
+                            </div>
+                        </div>
+                        @empty
+                        <div class="empty-state">
+                            <i data-lucide="package-x"></i>
+                            <h3>No Products Found</h3>
+                            <p>Try adjusting your filters or check back later for new arrivals.</p>
+                            <a href="{{ route('products.index') }}" class="empty-state-btn">Clear Filters</a>
+                        </div>
+                        @endforelse
+                    </div>{{-- end product-grid --}}
+                    </div>{{-- end x-show="!loading" --}}
+ 
+                    <!-- Pagination — always rendered so AJAX can update it -->
+                    <div class="pagination-wrapper" id="paginationArea" @if(!$products->hasPages()) style="display:none;" @endif>
+                        @if($products->hasPages())
+                            {{ $products->withQueryString()->links() }}
+                        @endif
+                    </div>
+
                 <!-- Promo Products Section -->
                 @if(isset($promoProducts) && $promoProducts->count() > 0)
                 <div class="promo-section mb-5" x-show="!isSearching" x-transition>
@@ -513,73 +581,6 @@
                 </div>
                 @endif
 
-                <!-- All Products -->
-                <div class="all-products-section">
-                    <div class="section-header">
-                        <h2 class="section-title">All Products</h2>
-                        <div class="section-divider"></div>
-                    </div>
-                    
-                    {{-- Skeleton loader: tampil saat AJAX loading --}}
-                    <div x-show="loading" x-cloak>
-                        <x-skeleton-loader :count="8" />
-                    </div>
-
-                    {{-- Product grid: tampil saat tidak loading --}}
-                    <div x-show="!loading">
-                    <div class="product-grid" id="productGrid">
-                        @forelse($products as $product)                        <div class="product-card" data-product-id="{{ $product->id }}">
-                            <div class="product-image-wrapper">
-                                <img src="{{ url('render-image?path=' . ($product->image ?? 'default.jpg')) }}" alt="{{ $product->name }}" class="product-image">
-                                <div class="product-actions">
-                                    <button class="action-btn quick-view" data-product="{{ $product->slug }}">
-                                        <i data-lucide="eye"></i>
-                                    </button>
-                                    <button class="action-btn wishlist"
-                                        x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
-                                        :class="{ 'active': inWishlist }"
-                                        @click.prevent="toggle({{ $product->id }})"
-                                        :disabled="isProcessing"
-                                        type="button">
-                                        <i :class="inWishlist ? 'fas fa-heart' : 'far fa-heart'"></i>
-                                    </button>
-                                </div>
-                                @if($product->discount_price)
-                                <div class="product-badges">
-                                    <span class="badge sale-badge">Sale</span>
-                                </div>
-                                @endif
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-title">{{ Str::limit($product->name, 40) }}</h3>
-                                <div class="product-price">
-                                    @if($product->discount_price)
-                                        <span class="price-original">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                                        <span class="price-sale">Rp {{ number_format($product->discount_price, 0, ',', '.') }}</span>
-                                    @else
-                                        <span class="price-current">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
-                                    @endif
-                                </div>
-                                <a href="{{ route('products.show', $product->slug) }}" class="product-link">View Details →</a>
-                            </div>
-                        </div>
-                        @empty
-                        <div class="empty-state">
-                            <i data-lucide="package-x"></i>
-                            <h3>No Products Found</h3>
-                            <p>Try adjusting your filters or check back later for new arrivals.</p>
-                            <a href="{{ route('products.index') }}" class="empty-state-btn">Clear Filters</a>
-                        </div>
-                        @endforelse
-                    </div>{{-- end product-grid --}}
-                    </div>{{-- end x-show="!loading" --}}
- 
-                    <!-- Pagination — always rendered so AJAX can update it -->
-                    <div class="pagination-wrapper" id="paginationArea" @if(!$products->hasPages()) style="display:none;" @endif>
-                        @if($products->hasPages())
-                            {{ $products->withQueryString()->links() }}
-                        @endif
-                    </div>
                 </div>
             </div>
         </div>
