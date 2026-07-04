@@ -241,19 +241,6 @@ Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->mid
 
 require __DIR__.'/auth.php';
 
-// Temporary route to view laravel logs
-Route::get('/debug-log', function () {
-    $logFile = storage_path('logs/laravel.log');
-    if (!file_exists($logFile)) {
-        return 'No log file found.';
-    }
-    
-    // Read the last 20000 bytes of the log file
-    $content = file_get_contents($logFile);
-    $content = substr($content, -20000);
-    return response("<pre>" . htmlspecialchars($content) . "</pre>");
-});
-
 // Temporary route to fix broken storage symlink on production
 Route::get('/fix-storage', function () {
     $publicStorage = public_path('storage');
