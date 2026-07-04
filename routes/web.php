@@ -241,6 +241,15 @@ Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->mid
 
 require __DIR__.'/auth.php';
 
+Route::get('/debug-log', function () {
+    $logFile = storage_path('logs/laravel.log');
+    if (!file_exists($logFile)) {
+        return 'No log file found.';
+    }
+    $content = file_get_contents($logFile);
+    return response("<pre>" . htmlspecialchars(substr($content, -20000)) . "</pre>");
+});
+
 // Temporary route to fix broken storage symlink on production
 Route::get('/fix-storage', function () {
     $publicStorage = public_path('storage');
