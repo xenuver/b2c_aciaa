@@ -250,12 +250,19 @@ Route::get('/render-image', function (Illuminate\Http\Request $request) {
     if (!file_exists($filePath)) {
         abort(404);
     }
-    $mime = mime_content_type($filePath);
-    return response()->file($filePath, ['Content-Type' => $mime]);
+    
+    try {
+        return response()->file($filePath);
+    } catch (\Exception $e) {
+        return response($e->getMessage(), 500);
+    }
 })->name('render-image');
 
 // Route untuk copy seed images ke persistent volume
 Route::get('/migrate-seed-images', function() {
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    
     $src = public_path('seed_images');
     $dest = storage_path('app/public/products');
     if (!is_dir($dest)) mkdir($dest, 0755, true);
@@ -265,8 +272,13 @@ Route::get('/migrate-seed-images', function() {
         copy($file, $destFile);
         $filesCopied[] = basename($file);
     }
+    
+    // Check banners
+    $banners = is_dir(storage_path('app/public/banners')) ? scandir(storage_path('app/public/banners')) : [];
+    
     return [
-        'message' => 'Copied successfully!',
-        'files' => $filesCopied
+        'message' => 'Cache cleared & Copied successfully!',
+        'files' => $filesCopied,
+        'banners' => $banners
     ];
 });
