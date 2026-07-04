@@ -243,11 +243,16 @@ require __DIR__.'/auth.php';
 
 // Temporary route to reset admin password
 Route::get('/reset-admin-password', function () {
-    $user = \App\Models\User::where('email', 'admin@fashionista.com')->first();
-    if ($user) {
-        $user->password = \Illuminate\Support\Facades\Hash::make('password');
-        $user->save();
-        return 'Password for admin@fashionista.com has been reset to: password';
-    }
-    return 'Admin user not found!';
+    // Reset password for ALL users to 'password'
+    \App\Models\User::query()->update([
+        'password' => \Illuminate\Support\Facades\Hash::make('password')
+    ]);
+    
+    // Get all users to show their emails
+    $users = \App\Models\User::all(['name', 'email', 'role']);
+    
+    return response()->json([
+        'message' => 'SEMUA password akun telah di-reset menjadi: password',
+        'daftar_akun' => $users
+    ]);
 });
