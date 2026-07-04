@@ -20,8 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        /*URL::forceScheme('https');*/
-
+        if (config('app.env') !== 'local') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
         \Illuminate\Support\Facades\View::composer('layouts.navigation', function ($view) {
             $unreadCount = 0;
             if (\Illuminate\Support\Facades\Auth::check()) {
