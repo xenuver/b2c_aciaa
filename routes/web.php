@@ -248,7 +248,8 @@ Route::get('/render-image', function (Illuminate\Http\Request $request) {
     
     $filePath = storage_path('app/public/' . $path);
     if (!file_exists($filePath)) {
-        abort(404);
+        $filePath = storage_path('app/public/default.jpg');
+        if (!file_exists($filePath)) abort(404);
     }
     
     try {
