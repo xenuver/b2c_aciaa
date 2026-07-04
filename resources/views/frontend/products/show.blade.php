@@ -1019,7 +1019,7 @@
                                 <button type="submit" class="btn btn-pd-cart btn-lg w-100 py-3 px-4" :disabled="loadingCart">
                                     <i class="fas fa-shopping-cart" x-show="!loadingCart"></i>
                                     <i class="fas fa-spinner fa-spin" x-show="loadingCart" style="display: none;"></i> 
-                                    <span x-text="loadingCart ? 'Menambahkan...' : 'Tambah Keranjang'"></span>
+                                    <span x-text="loadingCart ? 'Menambahkan...' : 'Tambah Keranjang'">Tambah Keranjang</span>
                                 </button>
                             </form>
                             
@@ -1030,7 +1030,7 @@
                                 <button type="submit" class="btn btn-pd-buy btn-lg w-100 py-3 px-4" :disabled="loadingBuy">
                                     <i class="fas fa-bolt" x-show="!loadingBuy"></i>
                                     <i class="fas fa-spinner fa-spin" x-show="loadingBuy" style="display: none;"></i>
-                                    <span x-text="loadingBuy ? 'Memproses...' : 'Beli Sekarang'"></span>
+                                    <span x-text="loadingBuy ? 'Memproses...' : 'Beli Sekarang'">Beli Sekarang</span>
                                 </button>
                             </form>
                             
@@ -1375,7 +1375,6 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function () {
     // Alpine Components Data
     document.addEventListener('alpine:init', () => {
         Alpine.data('productActions', (productId, maxStock) => ({
@@ -1450,6 +1449,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }));
     });
 
+document.addEventListener('DOMContentLoaded', function () {
     // 2. Custom SKU Copy to Clipboard function
     const skuCopyBtn = document.getElementById('skuCopyBtn');
     const skuText = "{{ $product->sku ?? '' }}";

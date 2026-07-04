@@ -43,6 +43,16 @@
     height: 64px;
 }
 
+/* Solid Navbar Styling on Scroll */
+.fashion-navbar.navbar-solid.scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.fashion-navbar.navbar-solid.scrolled .navbar-main {
+    height: 64px;
+}
+
 /* Home Page Header Colors Transition */
 .fashion-navbar.navbar-home-transparent .logo-text {
     color: #fff;
