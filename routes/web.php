@@ -240,3 +240,14 @@ Route::middleware('auth')->group(function () {
 Route::get('/redirect', [AdminAuthController::class, 'redirectAfterLogin'])->middleware('auth')->name('redirect');
 
 require __DIR__.'/auth.php';
+
+// Temporary route to reset admin password
+Route::get('/reset-admin-password', function () {
+    $user = \App\Models\User::where('email', 'admin@fashionista.com')->first();
+    if ($user) {
+        $user->password = \Illuminate\Support\Facades\Hash::make('password');
+        $user->save();
+        return 'Password for admin@fashionista.com has been reset to: password';
+    }
+    return 'Admin user not found!';
+});
