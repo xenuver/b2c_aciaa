@@ -14,17 +14,18 @@
     
     <!-- Custom Admin CSS -->
     <style>
-        :root {
-            --primary: #DB2777;
-            --primary-light: #F472B6;
+        \:root {
+            --primary: #DB2777; /* Pink accent */
+            --primary-light: #FBCFE8; /* Soft pink */
             --cta: #CA8A04;
-            --bg-body: #FDF2F8;
-            --text-main: #831843;
-            --glass-bg: rgba(255, 255, 255, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --sidebar-bg: rgba(219, 39, 119, 0.03);
-            --sidebar-active: rgba(219, 39, 119, 0.1);
-            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --bg-body: #F8F9FA; /* Clean light gray background */
+            --text-main: #1F2937; /* Dark gray text */
+            --text-muted: #6B7280;
+            --glass-bg: #FFFFFF; /* Solid white cards */
+            --glass-border: #E5E7EB; /* Subtle gray borders */
+            --sidebar-bg: #FFFFFF;
+            --sidebar-active: rgba(219, 39, 119, 0.08); /* Soft pink active state */
+            --transition-smooth: all 0.3s ease;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,29 +38,16 @@
             position: relative;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, rgba(202, 138, 4, 0.05) 0%, transparent 40%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
         /* Sidebar - Liquid Glass */
         .admin-sidebar {
-            background: rgba(253, 242, 248, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: #FFFFFF;
+            
+            -webkit-
             min-height: 100vh;
             width: 280px;
             transition: var(--transition-smooth);
             position: relative;
-            box-shadow: 4px 0 25px rgba(219, 39, 119, 0.05);
+            box-shadow: 1px 0 0 var(--glass-border);
             border-right: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
@@ -142,7 +130,7 @@
         }
         
         .sidebar-nav .nav-link:hover {
-            background: var(--glass-bg);
+            background: #FFFFFF;
             border: 1px solid var(--glass-border);
             box-shadow: 0 4px 15px rgba(219, 39, 119, 0.05);
             transform: translateX(4px);
@@ -191,19 +179,19 @@
         
         /* Top Navbar - Glassmorphism */
         .admin-topbar {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: #FFFFFF;
+            
+            -webkit-
             padding: 0 32px;
             height: 70px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            
             border-bottom: 1px solid var(--glass-border);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1030;
             flex-shrink: 0;
         }
         
@@ -268,7 +256,7 @@
         /* Mobile Sidebar Toggle */
         .sidebar-toggle {
             display: none;
-            background: var(--glass-bg);
+            background: #FFFFFF;
             border: 1px solid var(--glass-border);
             cursor: pointer;
             padding: 8px;
@@ -305,7 +293,7 @@
             transition: var(--transition-smooth);
             font-weight: 500;
             font-size: 0.85rem;
-            background: var(--glass-bg);
+            background: #FFFFFF;
             backdrop-filter: blur(8px);
         }
         
@@ -543,7 +531,7 @@
             min-width: 220px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            margin-top: 10px !important;
+            margin-top: 8px;
         }
         
         .profile-dropdown .dropdown-header {
@@ -599,24 +587,22 @@
 
         /* Bootstrap Overrides for Liquid Glass */
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: #FFFFFF;
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(219, 39, 119, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             overflow: hidden;
         }
         
         .card-header {
-            background: rgba(255, 255, 255, 0.3);
+            background: #F9FAFB;
             border-bottom: 1px solid var(--glass-border);
             padding: 1rem 1.5rem;
             font-weight: 600;
         }
         
         .form-control, .form-select {
-            background: rgba(255, 255, 255, 0.6) !important;
+            background: #FFFFFF !important;
             border: 1px solid var(--glass-border) !important;
             border-radius: 12px;
             padding: 0.6rem 1rem;
@@ -750,16 +736,15 @@
                     <span>Kelola Pengguna</span>
                 </a>
                 
-                <a href="{{ route('admin.reports.index') }}" class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
-                    <i data-lucide="chart-line"></i>
+                <a href="{{ route('admin.reports.index') }}" class="nav-link">
+                    <i data-lucide="bar-chart-2"></i>
                     <span>Laporan Penjualan</span>
                 </a>
             </div>
             
-            <div class="sidebar-divider"></div>
-            
-            <div class="sidebar-nav">
-                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <div class="sidebar-divider" style="margin-top: auto; margin-bottom: 8px;"></div>
+            <div class="sidebar-nav" style="flex-grow: 0;">
+                <a class="nav-link text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i data-lucide="log-out"></i>
                     <span>Logout</span>
                 </a>
@@ -824,12 +809,6 @@
                             <li>
                                 <a class="dropdown-item" href="#">
                                     <i data-lucide="settings"></i> Pengaturan
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i data-lucide="log-out"></i> Logout
                                 </a>
                             </li>
                         </ul>
