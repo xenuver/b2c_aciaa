@@ -988,3 +988,17 @@
 .fashion-navbar.navbar-solid .mobile-search-btn svg {
     color: #4a4a4a;
 }
+
+/* Force visibility of navbar right icons on all pages */
+.navbar-right .search-toggle.wishlist-nav,
+.navbar-right .search-toggle.cart-nav,
+.navbar-right .user-dropdown .search-toggle {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.fashion-navbar.navbar-solid .navbar-right .search-toggle svg,
+.fashion-navbar.navbar-solid .navbar-right .search-toggle i[data-lucide] svg {
+    color: #4a4a4a !important;
+}

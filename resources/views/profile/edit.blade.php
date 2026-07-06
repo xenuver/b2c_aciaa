@@ -7,41 +7,6 @@
     .profile-page {
         font-family: var(--font-body, 'Montserrat', sans-serif);
     }
-    .profile-hero {
-        background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
-        padding: 2.5rem 0 4rem;
-        position: relative;
-        overflow: hidden;
-    }
-    .profile-hero::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 350px;
-        height: 350px;
-        background: radial-gradient(circle, rgba(194,24,91,0.15) 0%, transparent 70%);
-        border-radius: 50%;
-    }
-    .profile-hero h1 {
-        font-family: var(--font-heading, 'Cormorant', serif);
-        font-size: 2rem;
-        font-weight: 400;
-        color: #fff;
-        margin: 0;
-    }
-    .profile-hero p {
-        color: rgba(255,255,255,0.55);
-        font-size: 0.9rem;
-        margin-top: 6px;
-    }
-    .profile-wrapper {
-        max-width: 760px;
-        margin: -2rem auto 3rem;
-        padding: 0 1rem;
-        position: relative;
-        z-index: 2;
-    }
     .profile-card {
         background: #fff;
         border-radius: 20px;
@@ -171,13 +136,13 @@
 @endpush
 
 @section('content')
-<div class="profile-page">
-    <!-- Hero -->
-    <div class="profile-hero">
-        <div class="container">
-            <h1>Profil Saya</h1>
-            <p>Kelola informasi akun dan keamanan Anda</p>
-        </div>
+<div class="container my-4 profile-page" style="max-width: 900px;">
+    <!-- Hero Banner -->
+    <div class="mb-4 rounded-4 px-4 py-5" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -30px; left: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(233,30,140,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h1 class="text-white mb-2 position-relative" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-user-circle me-3" style="color: var(--color-primary);"></i>Profil Saya</h1>
+        <p class="text-white-50 mb-0 position-relative" style="font-size: 0.95rem;">Kelola informasi akun dan keamanan Anda</p>
     </div>
 
     <div class="profile-wrapper">

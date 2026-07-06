@@ -16,6 +16,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
     <!-- Custom Admin CSS -->
     <style>
         :root {
@@ -74,6 +77,33 @@
         .btn-secondary-custom:hover {
             background: #F3F4F6 !important;
             backdrop-filter: none !important;
+        }
+
+        /* Pink Filter Button Styles */
+        .btn-filter-pink,
+        .pm-filters button[type="submit"] {
+            background-color: #fff !important;
+            border: 1px solid #e0e0e0 !important;
+            color: var(--primary) !important;
+            border-radius: 50px !important;
+            padding: 8px 18px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 6px !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-filter-pink:hover,
+        .pm-filters button[type="submit"]:hover {
+            background-color: var(--primary-light) !important;
+            color: var(--primary) !important;
+            border-color: var(--primary-light) !important;
+        }
+        .btn-filter-pink i,
+        .pm-filters button[type="submit"] i,
+        .pm-filters button[type="submit"] svg {
+            color: var(--primary) !important;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }

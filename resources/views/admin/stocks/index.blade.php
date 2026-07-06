@@ -203,7 +203,7 @@
                 </div>
                 <div class="col-md-4">
                     <div style="display:flex;gap:8px;">
-                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <button type="submit" class="btn btn-filter-pink"><i data-lucide="filter"></i> Filter</button>
                         <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary">Reset</a>
                     </div>
                 </div>
@@ -340,3 +340,4 @@
     </div>
 </div>
 @endsection
+

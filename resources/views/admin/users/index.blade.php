@@ -246,7 +246,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i> Filter
+                    <i data-lucide="filter"></i> Filter
                 </button>
                 <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                     <i class="fas fa-sync"></i> Reset
