@@ -72,14 +72,14 @@
         font-size: 1.5rem;
     }
 
-    .profile-hero h1{
+    .profile-hero-inner h1{
         font-size: 1.5rem;
         margin: 0;
         color: #fff;
         font-weight: 700;
         font-family: var(--font-heading, 'Cormorant', serif);
     }
-    .profile-hero p{
+    .profile-hero-inner p{
         margin: 2px 0 0;
         color: rgba(255, 255, 255, 0.7);
         font-size: .9rem;
@@ -93,13 +93,20 @@
     }
 
     .stat-card{
-        background: rgba(255,255,255,0.9);
-        border: 1px solid rgba(0,0,0,0.06);
-        border-radius: 18px;
-        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 16px;
+        padding: 16px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .stat-label{ color: var(--muted); font-size: .78rem; margin: 0; }
-    .stat-value{ color: var(--dark); font-size: 1.1rem; font-weight: 700; margin: 2px 0 0; }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .stat-label{ color: var(--muted); font-size: 0.8rem; font-weight: 600; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value{ color: var(--dark); font-size: 1.25rem; font-weight: 800; margin: 4px 0 0; font-family: var(--font-heading, 'Cormorant', serif); }
 
     .section-card{
         border: 0;
