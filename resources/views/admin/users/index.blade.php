@@ -76,20 +76,6 @@
 }
 .pm-select:focus { border-color: #6ee7b7; background-color: #fff; box-shadow: 0 0 0 3px rgba(22,163,74,.1); }
 
-.btn-primary-custom {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; background: #2563eb; border: none;
-    border-radius: 9px; font-size: 13px; font-weight: 600; color: #fff;
-    cursor: pointer; text-decoration: none; transition: background .15s;
-}
-.btn-primary-custom:hover { background: #1d4ed8; color: #fff; }
-.btn-secondary-custom {
-    display: inline-flex; align-items: center;
-    padding: 8px 16px; background: #fff; border: 1px solid #d1d5db;
-    border-radius: 9px; font-size: 13px; font-weight: 600; color: #374151;
-    cursor: pointer; text-decoration: none; transition: background .15s;
-}
-.btn-secondary-custom:hover { background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); color: var(--text-main, #831843); text-decoration: none; }
 
 .pm-table { width: 100%; border-collapse: collapse; }
 .pm-table thead th {
@@ -259,10 +245,10 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn-primary-custom">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search"></i> Filter
                 </button>
-                <a href="{{ route('admin.users.index') }}" class="btn-secondary-custom">
+                <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
                     <i class="fas fa-sync"></i> Reset
                 </a>
             </div>

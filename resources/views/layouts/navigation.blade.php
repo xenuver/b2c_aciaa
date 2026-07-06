@@ -139,8 +139,6 @@
 
             <!-- Right Section -->
             <div class="navbar-right">
-
-                @if(!Auth::check() || Auth::user()->role !== 'admin')
                     <a href="{{ route('wishlist.index') }}" class="search-toggle wishlist-nav" title="Wishlist Saya" style="position: relative; text-decoration: none;">
                         <i data-lucide="heart"></i>
                         @auth
@@ -244,8 +242,6 @@
                             <i data-lucide="bell"></i>
                         </a>
                     @endauth
-                @endif
-
                 @auth
                     <div class="user-dropdown" x-data="{ open: false }">
                         <button @click="open = !open" class="user-trigger">
@@ -429,8 +425,6 @@
             <a href="{{ route('products.index') }}" class="mobile-nav-link" @click="open = false">
                 <i data-lucide="shopping-bag"></i> Belanja
             </a>
-            
-            @if(!Auth::check() || Auth::user()->role !== 'admin')
                 <a href="{{ route('cart.index') }}" class="mobile-nav-link" @click="open = false">
                     <i data-lucide="shopping-cart"></i> Keranjang
                     @auth
@@ -459,7 +453,6 @@
                         <i data-lucide="bell"></i> Notifikasi
                     </a>
                 @endauth
-            @endif
 
             @auth
                 @if(Auth::user()->role === 'admin')

@@ -28,20 +28,6 @@
 }
 .pm-date-input:focus { border-color: #6ee7b7; background: #fff; }
 
-.btn-primary-custom {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; background: #2563eb; border: none;
-    border-radius: 9px; font-size: 13px; font-weight: 600; color: #fff;
-    cursor: pointer; text-decoration: none; transition: background .15s;
-}
-.btn-primary-custom:hover { background: #1d4ed8; color: #fff; }
-.btn-green-custom {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 16px; background: #16a34a; border: none;
-    border-radius: 9px; font-size: 13px; font-weight: 600; color: #fff;
-    cursor: pointer; text-decoration: none; transition: background .15s;
-}
-.btn-green-custom:hover { background: #15803d; color: #fff; }
 
 /* Stats Grid */
 .stats-grid {
@@ -165,10 +151,10 @@
             </div>
 
             <div class="d-flex gap-2">
-                <button type="submit" class="btn-primary-custom">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-chart-line me-1"></i> Tampilkan
                 </button>
-                <a href="{{ route('admin.reports.export', request()->query()) }}" class="btn-green-custom">
+                <a href="{{ route('admin.reports.export', request()->query()) }}" class="btn btn-success">
                     <i class="fas fa-file-excel me-1"></i> Export Excel (CSV)
                 </a>
             </div>

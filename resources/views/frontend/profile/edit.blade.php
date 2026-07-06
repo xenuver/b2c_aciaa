@@ -19,10 +19,10 @@
     }
 
     .profile-hero{
-        background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
-        border: 1px solid rgba(0,0,0,0.06);
+        background: linear-gradient(135deg, rgba(219,39,119,0.05) 0%, rgba(244,114,182,0.1) 100%);
+        border: 1px solid rgba(219,39,119,0.1);
         border-radius: 24px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         position: relative;
         overflow: hidden;
     }
@@ -33,7 +33,7 @@
         right: -50px;
         width: 250px;
         height: 250px;
-        background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(219,39,119,0.08) 0%, transparent 70%);
         border-radius: 50%;
     }
     .profile-hero::after {
@@ -43,7 +43,7 @@
         left: 10%;
         width: 150px;
         height: 150px;
-        background: radial-gradient(circle, rgba(233,30,140,0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(244,114,182,0.08) 0%, transparent 70%);
         border-radius: 50%;
     }
 
@@ -75,13 +75,13 @@
     .profile-hero-inner h1{
         font-size: 1.5rem;
         margin: 0;
-        color: #fff;
+        color: var(--dark);
         font-weight: 700;
         font-family: var(--font-heading, 'Cormorant', serif);
     }
     .profile-hero-inner p{
         margin: 2px 0 0;
-        color: rgba(255, 255, 255, 0.7);
+        color: var(--muted);
         font-size: .9rem;
     }
 
@@ -93,10 +93,8 @@
     }
 
     .stat-card{
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.06);
         border-radius: 16px;
         padding: 16px;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
