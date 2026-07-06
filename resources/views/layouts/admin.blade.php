@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin Panel - @yield('title')</title>
+    <title>Aciaa Store Admin - @yield('title')</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -79,10 +79,7 @@
             font-family: 'Fira Code', monospace;
             font-size: 1.3rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--cta) 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--primary);
             letter-spacing: 0.5px;
         }
         
@@ -622,6 +619,7 @@
             border-radius: 12px !important;
             padding: 0.6rem 1.5rem;
             font-weight: 600;
+            color: #FFFFFF !important;
             box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
             transition: var(--transition-smooth);
         }
@@ -629,7 +627,8 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(219, 39, 119, 0.4);
-            background: linear-gradient(135deg, var(--primary-light), var(--primary)) !important;
+            background: linear-gradient(135deg, var(--primary), #be185d) !important;
+            color: #FFFFFF !important;
         }
         
         .btn-secondary {
@@ -775,12 +774,17 @@
                         <i data-lucide="external-link"></i>
                     </a>
                     
-                    <button class="topbar-btn position-relative" title="Notifikasi">
+                    <a href="{{ route('notifications.index') }}" class="topbar-btn position-relative" title="Notifikasi">
                         <i data-lucide="bell"></i>
+                        @php
+                            $unreadCount = App\Models\Notification::where('user_id', Auth::id())->where('is_read', false)->count();
+                        @endphp
+                        @if($unreadCount > 0)
                         <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle" style="margin-top: 10px; margin-left: -5px;">
                             <span class="visually-hidden">New alerts</span>
                         </span>
-                    </button>
+                        @endif
+                    </a>
                     
                     <div class="topbar-divider"></div>
                     
@@ -802,12 +806,12 @@
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i data-lucide="user"></i> Profil Saya
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                                     <i data-lucide="settings"></i> Pengaturan
                                 </a>
                             </li>

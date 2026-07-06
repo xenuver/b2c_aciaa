@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="ACIAA — Premium Women's Fashion">
 
-    <title>{{ config('app.name', 'ACIAA') }} - @yield('title')</title>
+    <title>Aciaa Store - @yield('title', 'Premium Fashion')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

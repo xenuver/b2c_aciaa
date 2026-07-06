@@ -1015,6 +1015,7 @@
                     <div class="d-flex gap-3 flex-wrap align-items-center mt-3 pt-3 border-top">
                         @if($product->stock > 0)
                             <!-- Form Tambah Keranjang -->
+                            @auth
                             <form @submit.prevent="addToCart" class="m-0 flex-grow-1 flex-md-grow-0">
                                 <button type="submit" class="btn btn-pd-cart btn-lg w-100 py-3 px-4" :disabled="loadingCart">
                                     <i class="fas fa-shopping-cart" x-show="!loadingCart"></i>
@@ -1022,8 +1023,15 @@
                                     <span x-text="loadingCart ? 'Menambahkan...' : 'Tambah Keranjang'">Tambah Keranjang</span>
                                 </button>
                             </form>
+                            @else
+                            <button type="button" onclick="showPdLoginModal('Keranjang')" class="btn btn-pd-cart btn-lg w-100 py-3 px-4 m-0 flex-grow-1 flex-md-grow-0 text-decoration-none">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Tambah Keranjang</span>
+                            </button>
+                            @endauth
                             
                             <!-- Form Beli Langsung -->
+                            @auth
                             <form action="{{ route('checkout.direct', $product->id) }}" method="POST" class="m-0 flex-grow-1 flex-md-grow-0" @submit="loadingBuy = true">
                                 @csrf
                                 <input type="hidden" name="quantity" :value="quantity">
@@ -1033,8 +1041,15 @@
                                     <span x-text="loadingBuy ? 'Memproses...' : 'Beli Sekarang'">Beli Sekarang</span>
                                 </button>
                             </form>
+                            @else
+                            <button type="button" onclick="showPdLoginModal('Checkout')" class="btn btn-pd-buy btn-lg w-100 py-3 px-4 m-0 flex-grow-1 flex-md-grow-0 text-decoration-none">
+                                <i class="fas fa-bolt"></i>
+                                <span>Beli Sekarang</span>
+                            </button>
+                            @endauth
                             
                             <!-- Wishlist Toggle (AJAX) -->
+                            @auth
                             <button type="button" class="btn btn-pd-wish btn-lg" 
                                     x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
                                     :class="{ 'active': inWishlist }"
@@ -1043,6 +1058,11 @@
                                     :title="inWishlist ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'">
                                 <i :class="inWishlist ? 'fas text-danger' : 'far'" class="fa-heart fa-lg"></i>
                             </button>
+                            @else
+                            <a href="{{ route('login') }}" class="btn btn-pd-wish btn-lg text-decoration-none" title="Tambah ke Wishlist">
+                                <i class="far fa-heart fa-lg"></i>
+                            </a>
+                            @endauth
                             
                             <!-- Share Button -->
                             <button type="button" class="btn btn-pd-share btn-lg" id="btnShareProduct" title="Bagikan Produk" aria-label="Bagikan produk {{ $product->name }}">
@@ -1511,9 +1531,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // 6. Login Required Modal for Product Detail
-    function showPdLoginModal() {
+    // 6. Login Required Modal for Product Detail
+    window.showPdLoginModal = function(actionContext = 'Wishlist') {
         const existing = document.getElementById('pdLoginModal');
         if (existing) existing.remove();
+        
+        let contextMessage = 'Silakan login atau daftar untuk menyimpan produk ke wishlist favorit Anda.';
+        if (actionContext === 'Keranjang') {
+            contextMessage = 'Silakan login atau daftar untuk menambahkan produk ke keranjang belanja Anda.';
+        } else if (actionContext === 'Checkout') {
+            contextMessage = 'Silakan login atau daftar untuk melanjutkan transaksi Anda.';
+        }
 
         const modal = document.createElement('div');
         modal.id = 'pdLoginModal';
@@ -1522,13 +1550,14 @@ document.addEventListener('DOMContentLoaded', function () {
             <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(5px);" id="pdLoginOverlay"></div>
             <div style="position:relative;background:white;border-radius:20px;padding:40px;max-width:400px;width:90%;text-align:center;transform:scale(0.9);transition:transform 0.3s ease;z-index:2;box-shadow:0 10px 25px rgba(0,0,0,0.2);" id="pdLoginContent">
                 <button id="pdLoginClose" style="position:absolute;top:15px;right:20px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:#999;transition:color 0.3s;">&times;</button>
-                <div style="display:flex;justify-content:center;margin-bottom:1.5rem;">
-                    <i class="fas fa-heart" style="font-size:48px;color:var(--pd-pink);"></i>
+                <div style="display:flex;justify-content:center;margin-bottom:1.5rem;align-items:center;gap:12px;">
+                    <img src="{{ asset('images/aciaa_logo.png') }}" alt="Aciaa Logo" style="width:48px;height:48px;object-fit:contain;border-radius:12px;">
+                    <span style="font-size:1.5rem;font-weight:800;color:#1a1a1a;letter-spacing:1px;">ACIAA</span>
                 </div>
-                <h3 style="font-size:1.5rem;margin-bottom:0.5rem;font-weight:600;color:#1a1a1a;">Login Dibutuhkan</h3>
-                <p style="color:#666;font-size:0.9rem;margin-bottom:1.5rem;">Silakan login atau daftar untuk menyimpan produk ke wishlist favorit Anda.</p>
+                <h3 style="font-size:1.25rem;margin-bottom:0.5rem;font-weight:600;color:#1a1a1a;">Login Dibutuhkan</h3>
+                <p style="color:#666;font-size:0.9rem;margin-bottom:1.5rem;">${contextMessage}</p>
                 <div style="display:flex;gap:15px;justify-content:center;margin-bottom:1rem;">
-                    <a href="{{ route('login') }}" style="padding:10px 25px;border-radius:50px;text-decoration:none;font-weight:500;font-size:0.9rem;background:#1a1a1a;color:white;transition:all 0.3s;">Login</a>
+                    <a href="{{ route('login') }}" style="padding:10px 25px;border-radius:50px;text-decoration:none;font-weight:500;font-size:0.9rem;background:linear-gradient(135deg, var(--pd-pink), #be185d);color:white;transition:all 0.3s;box-shadow:0 4px 10px rgba(219,39,119,0.3);">Login</a>
                     <a href="{{ route('register') }}" style="padding:10px 25px;border-radius:50px;text-decoration:none;font-weight:500;font-size:0.9rem;background:#f0f0f0;color:#1a1a1a;transition:all 0.3s;">Daftar</a>
                 </div>
                 <p style="font-size:0.75rem;color:#999;margin:0;">Halaman akan otomatis dialihkan kembali setelah login</p>

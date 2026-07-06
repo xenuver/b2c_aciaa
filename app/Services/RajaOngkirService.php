@@ -108,6 +108,11 @@ class RajaOngkirService
             $formattedCosts = $this->fetchCostFromKomerce($komerceOrigin, $komerceDest, $weight, $courier);
         }
 
+        // Fallback to standard RajaOngkir API if Komerce API fails or is disabled
+        if (empty($formattedCosts)) {
+            $formattedCosts = $this->fetchCostFromStandardRajaOngkir($localOriginId, $localDestId, $weight, $courier);
+        }
+
         foreach ($formattedCosts as $item) {
             ShippingCost::updateOrCreate(
                 [
@@ -153,6 +158,45 @@ class RajaOngkirService
             return $this->parseKomerceCostRows($response->json('data') ?? []);
         } catch (\Exception $e) {
             Log::error('RajaOngkir Komerce cost exception: ' . $e->getMessage());
+            return [];
+        }
+    }
+
+    protected function fetchCostFromStandardRajaOngkir(int $originId, int $destinationId, int $weight, string $courier): array
+    {
+        try {
+            $response = Http::withHeaders(['key' => $this->apiKey])
+                ->timeout(25)
+                ->asForm()
+                ->post("https://api.rajaongkir.com/starter/cost", [
+                    'origin' => $originId,
+                    'destination' => $destinationId,
+                    'weight' => $weight,
+                    'courier' => $courier,
+                ]);
+
+            if (!$response->successful()) {
+                Log::error('RajaOngkir Standard cost error: ' . $response->body());
+                return [];
+            }
+
+            $results = $response->json('rajaongkir.results.0.costs') ?? [];
+            
+            $parsed = collect($results)
+                ->map(fn ($row) => [
+                    'service' => (string) ($row['service'] ?? ''),
+                    'description' => (string) ($row['description'] ?? ''),
+                    'cost' => (int) ($row['cost'][0]['value'] ?? 0),
+                    'etd' => (string) ($row['cost'][0]['etd'] ?? ''),
+                    'code' => $courier,
+                ])
+                ->filter(fn ($row) => $row['service'] !== '' && $row['cost'] > 0)
+                ->values()
+                ->all();
+                
+            return $this->formatCostRows($parsed);
+        } catch (\Exception $e) {
+            Log::error('RajaOngkir Standard exception: ' . $e->getMessage());
             return [];
         }
     }

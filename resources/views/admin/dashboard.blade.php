@@ -510,14 +510,14 @@
 
 .status-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
 }
 
 .status-item {
     background: transparent;
-    border-radius: 16px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 12px 10px;
     text-align: center;
     transition: all 0.3s ease;
 }
@@ -528,9 +528,9 @@
 }
 
 .status-icon {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 12px;
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -538,8 +538,8 @@
 }
 
 .status-icon i {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
 }
 
 .status-pending .status-icon {
@@ -585,14 +585,14 @@
 }
 
 .status-value {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
-    margin: 0 0 4px 0;
+    margin: 0 0 2px 0;
     color: #1a1a1a;
 }
 
 .status-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #666;
     margin: 0;
     text-transform: uppercase;

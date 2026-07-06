@@ -140,18 +140,22 @@
             <!-- Right Section -->
             <div class="navbar-right">
 
-                @auth
-                    @if(Auth::user()->role !== 'admin')
-                        <a href="{{ route('wishlist.index') }}" class="search-toggle wishlist-nav" title="Wishlist Saya" style="position: relative; text-decoration: none;">
-                            <i data-lucide="heart"></i>
+                @if(!Auth::check() || Auth::user()->role !== 'admin')
+                    <a href="{{ route('wishlist.index') }}" class="search-toggle wishlist-nav" title="Wishlist Saya" style="position: relative; text-decoration: none;">
+                        <i data-lucide="heart"></i>
+                        @auth
                             <span class="nav-badge wishlist-badge" id="wishlistCount">0</span>
-                        </a>
+                        @endauth
+                    </a>
 
-                        <a href="{{ route('cart.index') }}" class="search-toggle cart-nav" title="Keranjang Belanja" style="position: relative; text-decoration: none;">
-                            <i data-lucide="shopping-cart"></i>
+                    <a href="{{ route('cart.index') }}" class="search-toggle cart-nav" title="Keranjang Belanja" style="position: relative; text-decoration: none;">
+                        <i data-lucide="shopping-cart"></i>
+                        @auth
                             <span class="nav-badge cart-badge" id="cartCount">0</span>
-                        </a>
+                        @endauth
+                    </a>
 
+                    @auth
                         <!-- Notifications Dropdown -->
                         <div class="user-dropdown" x-data="{ 
                             open: false, 
@@ -235,8 +239,12 @@
                                 </div>
                             </div>
                         </div>
-                    @endif
-                @endauth
+                    @else
+                        <a href="{{ route('notifications.index') }}" class="search-toggle" title="Notifikasi" style="position: relative; text-decoration: none;">
+                            <i data-lucide="bell"></i>
+                        </a>
+                    @endauth
+                @endif
 
                 @auth
                     <div class="user-dropdown" x-data="{ open: false }">
@@ -413,7 +421,7 @@
         </div>
 
     <!-- Mobile Menu -->
-    <div x-show="open" x-cloak class="mobile-menu" @click.away="open = false">
+    <div x-show="open" x-transition.duration.300ms x-cloak class="mobile-menu" @click.away="open = false">
         <div class="mobile-menu-inner">
             <a href="{{ route('home') }}" class="mobile-nav-link" @click="open = false">
                 <i data-lucide="home"></i> Beranda
@@ -422,20 +430,20 @@
                 <i data-lucide="shopping-bag"></i> Belanja
             </a>
             
-            @auth
-                @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="mobile-nav-link" @click="open = false">
-                        <i data-lucide="layout-dashboard"></i> Dashboard Admin
-                    </a>
-                @else
-                    <a href="{{ route('cart.index') }}" class="mobile-nav-link" @click="open = false">
-                        <i data-lucide="shopping-cart"></i> Keranjang
+            @if(!Auth::check() || Auth::user()->role !== 'admin')
+                <a href="{{ route('cart.index') }}" class="mobile-nav-link" @click="open = false">
+                    <i data-lucide="shopping-cart"></i> Keranjang
+                    @auth
                         <span class="mobile-badge" id="mobileCartCount">0</span>
-                    </a>
-                    <a href="{{ route('wishlist.index') }}" class="mobile-nav-link" @click="open = false">
-                        <i data-lucide="heart"></i> Wishlist
+                    @endauth
+                </a>
+                <a href="{{ route('wishlist.index') }}" class="mobile-nav-link" @click="open = false">
+                    <i data-lucide="heart"></i> Wishlist
+                    @auth
                         <span class="mobile-badge" id="mobileWishlistCount" style="display: none;">0</span>
-                    </a>
+                    @endauth
+                </a>
+                @auth
                     <a href="{{ route('transactions.index') }}" class="mobile-nav-link" @click="open = false">
                         <i data-lucide="clock"></i> Riwayat
                     </a>
@@ -445,6 +453,18 @@
                     <a href="{{ route('notifications.index') }}" class="mobile-nav-link" @click="open = false">
                         <i data-lucide="bell"></i> Notifikasi
                         <span class="mobile-badge" id="mobileNotificationCount" style="{{ (isset($unreadCount) && $unreadCount > 0) ? '' : 'display: none;' }}">{{ $unreadCount ?? 0 }}</span>
+                    </a>
+                @else
+                    <a href="{{ route('notifications.index') }}" class="mobile-nav-link" @click="open = false">
+                        <i data-lucide="bell"></i> Notifikasi
+                    </a>
+                @endauth
+            @endif
+
+            @auth
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="mobile-nav-link" @click="open = false">
+                        <i data-lucide="layout-dashboard"></i> Dashboard Admin
                     </a>
                 @endif
             @endauth

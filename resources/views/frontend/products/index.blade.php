@@ -352,35 +352,7 @@
                         <span id="productCount">{{ $products->total() }} Products</span>
                     </div>
 
-                    <!-- Search bar for products page -->
-                    <div class="products-search-bar">
-                        <form @submit.prevent="fetchProducts()" class="products-search-form">
-                            <!-- Retain other filters like category, min_price, max_price, sort -->
-                            @foreach(request()->except(['search', 'page']) as $key => $value)
-                                <input type="hidden" name="{{ $key }}" value="{{ $value }}">
-                            @endforeach
-                            
-                            <div class="products-search-wrapper">
-                                <i data-lucide="search" class="products-search-icon"></i>
-                                <input type="text" 
-                                       name="search" 
-                                       id="productsSearchInput" 
-                                       class="products-search-input" 
-                                       placeholder="Cari produk..." 
-                                       value="{{ request('search') }}"
-                                       x-model="search"
-                                       :disabled="loading"
-                                       :class="{ 'input-loading': loading }">
-                                <button type="button" 
-                                        id="clearProductsSearchBtn" 
-                                        class="clear-products-search-btn" 
-                                        style="display: {{ request('search') ? 'flex' : 'none' }};">
-                                    <i data-lucide="x"></i>
-                                </button>
-                                <button type="submit" class="products-search-btn" :disabled="loading">Cari</button>
-                            </div>
-                        </form>
-                    </div>
+                    <!-- Search bar dipindah ke global navbar -->
 
                     <div class="products-view-toggle">
                         <button class="view-btn active" data-view="grid">
