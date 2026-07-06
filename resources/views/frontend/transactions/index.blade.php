@@ -181,9 +181,9 @@
 @endpush
 
 @section('content')
-<div class="container my-5" style="max-width: 900px;">
+<div class="container my-4" style="max-width: 900px;">
     <!-- Hero Banner -->
-    <div class="tx-hero mb-4 rounded-4 px-4 py-5" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <div class="mb-4 rounded-4 px-4 py-5" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
         <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
         <div style="position: absolute; bottom: -30px; left: 10%; width: 150px; height: 150px; background: radial-gradient(circle, rgba(233,30,140,0.1) 0%, transparent 70%); border-radius: 50%;"></div>
         <h1 class="text-white mb-2 position-relative" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-history me-3" style="color: var(--color-primary);"></i>Riwayat Transaksi</h1>
@@ -193,7 +193,7 @@
     <div x-data="transactionFilter()" class="mb-4">
         <div class="row g-3 align-items-center mb-3">
             <div class="col-12">
-                <div x-show="loading" class="d-inline-flex align-items-center" style="display: none;">
+                <div x-show="loading" x-cloak class="d-inline-flex align-items-center">
                     <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
                     <span class="small text-muted">Memuat...</span>
                 </div>

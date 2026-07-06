@@ -505,10 +505,23 @@
 <script>
 // Inisialisasi setelah halaman load
 document.addEventListener('DOMContentLoaded', function() {
-    // Lucide icons
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    // Init Lucide icons
+    function initLucide() {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
+    initLucide();
+    
+    // Re-init after Alpine is done
+    document.addEventListener('alpine:initialized', function() {
+        initLucide();
+    });
+    
+    // Also re-init on any Alpine component mount
+    document.addEventListener('alpine:init', function() {
+        setTimeout(initLucide, 100);
+    });
     
     // Logika tombol hapus ('X') di pencarian navbar
     const searchInput = document.getElementById('searchInput');
@@ -594,6 +607,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(() => {});
     @endauth
+
+    // Re-init Lucide whenever Alpine components update
+    setInterval(function() {
+        if (typeof lucide !== 'undefined' && document.querySelector('[data-lucide]')) {
+            lucide.createIcons();
+        }
+    }, 500);
 
 });
 </script>
