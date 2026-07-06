@@ -6,6 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Aciaa Store Admin - @yield('title')</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/aciaa_logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/aciaa_logo.png') }}">
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -14,18 +18,62 @@
     
     <!-- Custom Admin CSS -->
     <style>
-        \:root {
-            --primary: #DB2777; /* Pink accent */
-            --primary-light: #FBCFE8; /* Soft pink */
+        :root {
+            --primary: #DB2777;
+            --primary-light: #FBCFE8;
             --cta: #CA8A04;
-            --bg-body: #F8F9FA; /* Clean light gray background */
-            --text-main: #1F2937; /* Dark gray text */
+            --bg-body: #F8F9FA;
+            --text-main: #1F2937;
             --text-muted: #6B7280;
-            --glass-bg: #FFFFFF; /* Solid white cards */
-            --glass-border: #E5E7EB; /* Subtle gray borders */
+            /* PENTING: glass-bg dan glass-border harus solid, bukan transparan */
+            --glass-bg: #FFFFFF;
+            --glass-border: #E5E7EB;
             --sidebar-bg: #FFFFFF;
-            --sidebar-active: rgba(219, 39, 119, 0.08); /* Soft pink active state */
+            --sidebar-active: rgba(219, 39, 119, 0.08);
             --transition-smooth: all 0.3s ease;
+        }
+
+        /* ===== GLOBAL FIX: Paksa semua elemen yang pakai glass variables tetap solid ===== */
+        /* Halaman-halaman admin memakai fallback rgba() yang transparan — ini menimpanya */
+        [class*="pm-card"],
+        [class*="stat-card"],
+        [class*="data-card"],
+        [class*="filter-card"],
+        [class*="status-section"],
+        [class*="pm-form-card"],
+        [class*="pm-filter-card"] {
+            background: #FFFFFF !important;
+            border-color: #E5E7EB !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+        }
+
+        /* Table headers yang transparan */
+        .pm-table thead th {
+            background: #F9FAFB !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border-bottom: 1px solid #E5E7EB !important;
+        }
+
+        /* Table row borders */
+        .pm-table tbody td,
+        .pm-card-header {
+            border-color: #E5E7EB !important;
+        }
+
+        /* Search input transparan */
+        .search-input {
+            background: #FFFFFF !important;
+            border: 1.5px solid #D1D5DB !important;
+            backdrop-filter: none !important;
+        }
+
+        /* Hover states transparan */
+        .btn-act-edit:hover,
+        .btn-secondary-custom:hover {
+            background: #F3F4F6 !important;
+            backdrop-filter: none !important;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,8 +89,6 @@
         /* Sidebar - Liquid Glass */
         .admin-sidebar {
             background: #FFFFFF;
-            
-            -webkit-
             min-height: 100vh;
             width: 280px;
             transition: var(--transition-smooth);
@@ -177,8 +223,6 @@
         /* Top Navbar - Glassmorphism */
         .admin-topbar {
             background: #FFFFFF;
-            
-            -webkit-
             padding: 0 32px;
             height: 70px;
             display: flex;

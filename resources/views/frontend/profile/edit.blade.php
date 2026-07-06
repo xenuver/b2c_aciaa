@@ -13,20 +13,38 @@
     }
 
     .profile-page{
-        background: linear-gradient(135deg, #ffffff 0%, var(--soft) 55%, #ffffff 100%);
         padding: 40px 0 80px;
         min-height: calc(100vh - 64px);
         font-family: var(--font-body, 'Montserrat', sans-serif);
     }
 
     .profile-hero{
-        background: radial-gradient(1200px 300px at 20% 0%, rgba(194,24,91,0.15) 0%, rgba(194,24,91,0) 60%),
-                    radial-gradient(900px 300px at 90% 10%, rgba(233,30,140,0.1) 0%, rgba(233,30,140,0) 55%),
-                    #fff;
+        background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%);
         border: 1px solid rgba(0,0,0,0.06);
         border-radius: 24px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
         overflow: hidden;
+    }
+    .profile-hero::before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 250px;
+        height: 250px;
+        background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+    .profile-hero::after {
+        content: '';
+        position: absolute;
+        bottom: -30px;
+        left: 10%;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(233,30,140,0.1) 0%, transparent 70%);
+        border-radius: 50%;
     }
 
     .profile-hero-inner{
@@ -34,6 +52,8 @@
         display: flex;
         align-items: center;
         gap: 18px;
+        position: relative;
+        z-index: 2;
     }
 
     .profile-avatar{
@@ -49,17 +69,19 @@
         letter-spacing: .5px;
         box-shadow: 0 10px 25px rgba(194,24,91,0.2);
         flex: 0 0 auto;
+        font-size: 1.5rem;
     }
 
     .profile-hero h1{
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         margin: 0;
-        color: var(--dark);
+        color: #fff;
         font-weight: 700;
+        font-family: var(--font-heading, 'Cormorant', serif);
     }
     .profile-hero p{
         margin: 2px 0 0;
-        color: var(--muted);
+        color: rgba(255, 255, 255, 0.7);
         font-size: .9rem;
     }
 
@@ -108,9 +130,9 @@
     }
 
     .badge-soft{
-        background: rgba(194,24,91,0.08);
-        color: var(--dark);
-        border: 1px solid rgba(194,24,91,0.2);
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.2);
         border-radius: 999px;
         padding: 6px 10px;
         font-size: .75rem;

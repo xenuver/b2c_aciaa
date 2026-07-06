@@ -8,6 +8,10 @@
 
     <title>Aciaa Store - @yield('title', 'Premium Fashion')</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/aciaa_logo.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/aciaa_logo.png') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,7 +58,7 @@
             --color-text: #1A1A2E;
             --color-text-secondary: #4A5568;
             --color-text-muted: #9CA3AF;
-            --color-bg: #FFFFFF; /* Changed to #FFFFFF */
+            --color-bg: #faf8f7; /* Reverted to provide contrast */
             --color-surface: #FFFFFF;
             --color-surface-alt: #FEF6F5;
             --color-border: rgba(194, 24, 91, 0.12);

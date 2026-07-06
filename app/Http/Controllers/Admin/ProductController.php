@@ -12,10 +12,44 @@ use Illuminate\Support\Facades\DB; // Tambahkan ini untuk DB transaction
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.products.index', compact('products'));
+        $query = Product::with('category')->orderBy('created_at', 'desc');
+
+        // Filter pencarian
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter kategori
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+
+        // Filter status
+        if ($request->filled('status')) {
+            if ($request->status === 'aktif') {
+                $query->where('is_active', 1);
+            } elseif ($request->status === 'nonaktif') {
+                $query->where('is_active', 0);
+            } elseif ($request->status === 'promo') {
+                $query->where('is_promo', 1);
+            }
+        }
+
+        $products   = $query->paginate(10)->withQueryString();
+        $categories = Category::where('is_active', 1)->orderBy('name')->get();
+
+        // Statistik dihitung dari seluruh tabel (bukan hanya halaman ini)
+        $totalProducts  = Product::count();
+        $activeProducts = Product::where('is_active', 1)->count();
+        $promoProducts  = Product::where('is_promo', 1)->count();
+        $lowStockCount  = Product::where('stock', '<', 10)->count();
+
+        return view('admin.products.index', compact(
+            'products', 'categories',
+            'totalProducts', 'activeProducts', 'promoProducts', 'lowStockCount'
+        ));
     }
 
     public function create()

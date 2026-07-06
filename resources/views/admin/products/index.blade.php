@@ -289,7 +289,7 @@
             <div class="stat-top">
                 <div>
                     <div class="stat-label">Total Produk</div>
-                    <div class="stat-val">{{ $products->total() }}</div>
+                    <div class="stat-val">{{ $totalProducts }}</div>
                 </div>
                 <div class="stat-icon stat-icon-blue">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -299,13 +299,13 @@
                     </svg>
                 </div>
             </div>
-            <span class="stat-badge sb-blue">Semua kategori</span>
+            <span class="stat-badge sb-blue">{{ $categories->count() }} kategori</span>
         </div>
         <div class="stat-card">
             <div class="stat-top">
                 <div>
                     <div class="stat-label">Produk Aktif</div>
-                    <div class="stat-val">{{ $products->getCollection()->where('is_active', true)->count() }}</div>
+                    <div class="stat-val">{{ $activeProducts }}</div>
                 </div>
                 <div class="stat-icon stat-icon-green">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -323,7 +323,7 @@
             <div class="stat-top">
                 <div>
                     <div class="stat-label">Sedang Promo</div>
-                    <div class="stat-val">{{ $products->getCollection()->where('is_promo', true)->count() }}</div>
+                    <div class="stat-val">{{ $promoProducts }}</div>
                 </div>
                 <div class="stat-icon stat-icon-amber">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -340,7 +340,7 @@
             <div class="stat-top">
                 <div>
                     <div class="stat-label">Stok Menipis</div>
-                    <div class="stat-val">{{ $products->getCollection()->where('stock', '<', 10)->count() }}</div>
+                    <div class="stat-val">{{ $lowStockCount }}</div>
                 </div>
                 <div class="stat-icon stat-icon-red">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
@@ -364,7 +364,7 @@
         {{-- Card header --}}
         <div class="pm-card-header">
             <span class="pm-card-title">Daftar Produk</span>
-            <div class="pm-filters">
+            <form method="GET" action="{{ route('admin.products.index') }}" class="pm-filters" id="filterForm">
                 <div class="search-wrap">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor" stroke-width="2"
@@ -372,18 +372,30 @@
                         <circle cx="11" cy="11" r="8"/>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <input type="text" class="search-input" placeholder="Cari produk...">
+                    <input type="text" name="search" class="search-input" placeholder="Cari produk..."
+                           value="{{ request('search') }}"
+                           onchange="this.form.submit()">
                 </div>
-                <select class="pm-select">
+                <select name="category" class="pm-select" onchange="this.form.submit()">
                     <option value="">Semua Kategori</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->name }}
+                        </option>
+                    @endforeach
                 </select>
-                <select class="pm-select">
+                <select name="status" class="pm-select" onchange="this.form.submit()">
                     <option value="">Semua Status</option>
-                    <option value="aktif">Aktif</option>
-                    <option value="nonaktif">Nonaktif</option>
-                    <option value="promo">Promo</option>
+                    <option value="aktif"    {{ request('status') === 'aktif'    ? 'selected' : '' }}>Aktif</option>
+                    <option value="nonaktif" {{ request('status') === 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+                    <option value="promo"    {{ request('status') === 'promo'    ? 'selected' : '' }}>Promo</option>
                 </select>
-            </div>
+                @if(request()->hasAny(['search','category','status']))
+                    <a href="{{ route('admin.products.index') }}" class="btn-act btn-act-edit" style="height:34px;font-size:11px;">
+                        ✕ Reset
+                    </a>
+                @endif
+            </form>
         </div>
 
         {{-- Table --}}
