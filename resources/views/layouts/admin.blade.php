@@ -310,9 +310,8 @@
             font-weight: 600;
         }
         
-        .d-flex {
+        .admin-wrapper {
             display: flex;
-            overflow-x: auto !important;
             max-width: 100%;
             min-width: 0;
         }
@@ -775,7 +774,7 @@
     @stack('styles')
 </head>
 <body>
-    <div class="d-flex">
+    <div class="admin-wrapper">
         <!-- Sidebar -->
         <div class="admin-sidebar" id="adminSidebar">
             <div class="sidebar-header">
@@ -875,12 +874,6 @@
                     <button class="sidebar-toggle" id="sidebarToggle">
                         <i data-lucide="menu"></i>
                     </button>
-                    
-                    <div class="topbar-search d-none d-md-flex">
-                        <i data-lucide="search"></i>
-                        <input type="text" placeholder="Cari transaksi, produk, dll...">
-                        <div class="search-shortcut">Ctrl+K</div>
-                    </div>
                 </div>
                 
                 <div class="topbar-right">
