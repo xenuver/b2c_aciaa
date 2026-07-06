@@ -257,10 +257,7 @@
         <form method="GET" action="{{ route('admin.ratings.index') }}" class="row g-3">
             <div class="col-md-3">
                 <label class="form-label small fw-bold text-muted">Cari Ulasan</label>
-                <div class="input-group input-group-sm">
-                    <span class="input-group-text bg-light border-end-0"><i class="fas fa-search text-muted"></i></span>
-                    <input type="text" name="search" class="form-control border-start-0" placeholder="User, Produk, atau isi ulasan..." value="{{ request('search') }}">
-                </div>
+                <input type="text" name="search" class="form-control" placeholder="User, Produk, atau isi ulasan..." value="{{ request('search') }}">
             </div>
 
             <div class="col-md-2.5 col-sm-6">

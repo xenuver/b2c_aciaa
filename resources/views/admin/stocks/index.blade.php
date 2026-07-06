@@ -114,7 +114,7 @@
                          </td>
                         <td>{{ $product->sold_count ?? 0 }}</td>
                         <td>
-                            <div class="btn-group" role="group">
+                            <div class="d-flex gap-1 flex-wrap">
                                 <a href="{{ route('admin.stocks.edit', $product->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-edit"></i> Update
                                 </a>

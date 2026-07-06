@@ -600,7 +600,7 @@
         
         .form-control, .form-select {
             background: #FFFFFF !important;
-            border: 1px solid var(--glass-border) !important;
+            border: 1.5px solid #D1D5DB !important;
             border-radius: 12px;
             padding: 0.6rem 1rem;
             color: var(--text-main);
@@ -611,6 +611,22 @@
             background: #fff !important;
             border-color: var(--primary) !important;
             box-shadow: 0 0 0 4px rgba(219, 39, 119, 0.15) !important;
+            outline: none !important;
+        }
+
+        .form-control::placeholder, .form-select option[value=""] {
+            color: #9CA3AF;
+        }
+
+        .input-group .input-group-text {
+            border: 1.5px solid #D1D5DB !important;
+            background: #F9FAFB !important;
+        }
+        .input-group .form-control {
+            border-left: none !important;
+        }
+        .input-group:focus-within .input-group-text {
+            border-color: var(--primary) !important;
         }
         
         .btn-primary {
@@ -656,7 +672,105 @@
             color: var(--text-main);
             font-weight: 700;
         }
-\n    </style>
+
+        /* ===== GLOBAL BUTTON FIXES ===== */
+        /* Pastikan semua btn-sm dan btn-group selalu visible */
+        .btn { 
+            position: relative; 
+            z-index: 1;
+        }
+        .btn-sm {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.85rem;
+            font-weight: 600;
+            border-radius: 10px !important;
+        }
+        .btn-info {
+            background: linear-gradient(135deg, #0891b2, #06b6d4) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 3px 10px rgba(8,145,178,0.25);
+            font-weight: 600;
+        }
+        .btn-info:hover {
+            background: linear-gradient(135deg, #0e7490, #0891b2) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(8,145,178,0.3);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 3px 10px rgba(217,119,6,0.25);
+            font-weight: 600;
+        }
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #b45309, #d97706) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 3px 10px rgba(220,38,38,0.25);
+            font-weight: 600;
+        }
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #b91c1c, #dc2626) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+            border: none !important;
+            color: #fff !important;
+            box-shadow: 0 3px 10px rgba(22,163,74,0.25);
+            font-weight: 600;
+        }
+        .btn-success:hover {
+            background: linear-gradient(135deg, #15803d, #16a34a) !important;
+            color: #fff !important;
+            transform: translateY(-1px);
+        }
+        .btn-outline-secondary {
+            background: #fff !important;
+            border: 1.5px solid #D1D5DB !important;
+            color: var(--text-main) !important;
+            border-radius: 10px !important;
+            font-weight: 600;
+        }
+        .btn-outline-secondary:hover {
+            background: #F3F4F6 !important;
+            border-color: #9CA3AF !important;
+        }
+
+        /* btn-group children harus solid */
+        .btn-group .btn { border-radius: 10px !important; }
+        .btn-group .btn + .btn { margin-left: 4px; }
+
+        /* Input-group override */
+        .input-group .form-control {
+            border-left: none !important;
+        }
+        .input-group .input-group-text {
+            border: 1.5px solid #D1D5DB !important;
+            background: #F9FAFB !important;
+            border-radius: 12px 0 0 12px !important;
+        }
+        .input-group .form-control:first-child {
+            border-left: 1.5px solid #D1D5DB !important;
+            border-radius: 12px 0 0 12px !important;
+        }
+        .input-group .form-control:last-child {
+            border-radius: 0 12px 12px 0 !important;
+        }
+        .input-group:focus-within .input-group-text,
+        .input-group:focus-within .form-control {
+            border-color: var(--primary) !important;
+        }
+    </style>
     
     @stack('styles')
 </head>
@@ -811,9 +925,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                    <i data-lucide="settings"></i> Pengaturan
+                                <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form-topbar').submit();">
+                                    <i data-lucide="log-out"></i> Logout
                                 </a>
+                                <form id="logout-form-topbar" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                         </ul>
                     </div>

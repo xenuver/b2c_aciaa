@@ -192,13 +192,7 @@
     
     <div x-data="transactionFilter()" class="mb-4">
         <div class="row g-3 align-items-center mb-3">
-            <div class="col-md-8">
-                <div class="input-group" style="box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-radius: 50px; overflow: hidden;">
-                    <span class="input-group-text bg-white border-0 text-muted ps-4"><i class="fas fa-search"></i></span>
-                    <input type="text" x-model="search" @input.debounce.500ms="fetchData()" class="form-control border-0 py-2" placeholder="Cari nomor invoice...">
-                </div>
-            </div>
-            <div class="col-md-4 text-end">
+            <div class="col-12">
                 <div x-show="loading" class="d-inline-flex align-items-center" style="display: none;">
                     <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
                     <span class="small text-muted">Memuat...</span>
@@ -227,7 +221,6 @@
 <script>
 document.addEventListener('alpine:init', () => {
     Alpine.data('transactionFilter', () => ({
-        search: '',
         status: 'all',
         loading: false,
         
@@ -235,7 +228,6 @@ document.addEventListener('alpine:init', () => {
             this.loading = true;
             
             const urlObj = new URL(url, window.location.origin);
-            if (this.search) urlObj.searchParams.set('search', this.search);
             if (this.status !== 'all') urlObj.searchParams.set('status', this.status);
             
             axios.get(urlObj.toString(), {
