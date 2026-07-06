@@ -192,12 +192,6 @@
     
     <div x-data="transactionFilter()" class="mb-4">
         <div class="row g-3 align-items-center mb-3">
-            <div class="col-12">
-                <div x-show="loading" x-cloak class="d-inline-flex align-items-center">
-                    <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
-                    <span class="small text-muted">Memuat...</span>
-                </div>
-            </div>
         </div>
 
         <div class="nav-pills-wrapper overflow-auto pb-2" style="scrollbar-width: none;">

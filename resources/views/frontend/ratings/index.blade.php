@@ -152,16 +152,14 @@
 </style>
 
 @section('content')
-<!-- Hero Banner -->
-<div class="mb-0" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 2.5rem 0 3rem;">
-    <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
-    <div class="container position-relative">
-        <h1 class="text-white mb-2" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-star me-3" style="color: var(--color-primary);"></i>Ulasan Saya</h1>
-        <p class="text-white-50 mb-0" style="font-size: 0.95rem;">Kelola dan lihat semua ulasan yang telah Anda berikan</p>
-    </div>
-</div>
+<div class="container my-4 rating-page-container" style="max-width: 900px;">
 
-<div class="container my-4 rating-page-container">
+    <!-- Hero Banner -->
+    <div class="mb-4 rounded-4 px-4 py-5" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h1 class="text-white mb-2 position-relative" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-star me-3" style="color: var(--color-primary);"></i>Ulasan Saya</h1>
+        <p class="text-white-50 mb-0 position-relative" style="font-size: 0.95rem;">Kelola dan lihat semua ulasan yang telah Anda berikan</p>
+    </div>
 
 
 

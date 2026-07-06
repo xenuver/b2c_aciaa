@@ -314,14 +314,14 @@
 @endpush
 
 @section('content')
-<!-- Hero Banner -->
-<div class="mb-4 rounded-4 px-4 py-5 mx-3 mx-md-0" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-    <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
-    <h1 class="text-white mb-2 position-relative" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-exchange-alt me-3" style="color: var(--color-primary);"></i>Riwayat Retur</h1>
-    <p class="text-white-50 mb-0 position-relative" style="font-size: 0.95rem;">Kelola dan pantau semua pengajuan retur Anda</p>
-</div>
-
 <div class="container my-4" style="max-width: 900px;">
+
+    <!-- Hero Banner -->
+    <div class="mb-4 rounded-4 px-4 py-5" style="background: linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #2a2a2a 100%); position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="position: absolute; top: -50px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(194,24,91,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+        <h1 class="text-white mb-2 position-relative" style="font-family: var(--font-heading, 'Cormorant', serif); font-size: 2.2rem;"><i class="fas fa-exchange-alt me-3" style="color: var(--color-primary);"></i>Riwayat Retur</h1>
+        <p class="text-white-50 mb-0 position-relative" style="font-size: 0.95rem;">Kelola dan pantau semua pengajuan retur Anda</p>
+    </div>
 
 
     <div class="rh-topbar">
