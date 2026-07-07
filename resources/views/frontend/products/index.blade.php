@@ -1696,7 +1696,6 @@
 }
 </style>
 
-<script src="https://unpkg.com/lucide@latest"></script>
 <script>
 // productFilter() Alpine.js component — Task 3.4
 // $watch on all 5 filter properties with 400ms debounce → Axios GET /products/ajax

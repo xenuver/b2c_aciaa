@@ -140,14 +140,14 @@
             <!-- Right Section -->
             <div class="navbar-right">
                     <a href="{{ route('wishlist.index') }}" class="search-toggle wishlist-nav" title="Wishlist Saya" style="position: relative; text-decoration: none;">
-                        <i data-lucide="heart"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                         @auth
                             <span class="nav-badge wishlist-badge" id="wishlistCount">0</span>
                         @endauth
                     </a>
 
                     <a href="{{ route('cart.index') }}" class="search-toggle cart-nav" title="Keranjang Belanja" style="position: relative; text-decoration: none;">
-                        <i data-lucide="shopping-cart"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                         @auth
                             <span class="nav-badge cart-badge" id="cartCount">0</span>
                         @endauth
@@ -194,7 +194,7 @@
                             }
                         }">
                             <button @click="open = !open; if(open) fetchNotifications()" class="search-toggle" title="Notifikasi" style="position: relative; text-decoration: none;">
-                                <i data-lucide="bell"></i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                                 <span class="nav-badge" id="notificationCount" x-show="unreadCount > 0" x-text="unreadCount" style="display: none; background: #ff4444; color: white;"></span>
                             </button>
 
@@ -239,7 +239,7 @@
                         </div>
                     @else
                         <a href="{{ route('notifications.index') }}" class="search-toggle" title="Notifikasi" style="position: relative; text-decoration: none;">
-                            <i data-lucide="bell"></i>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                         </a>
                     @endauth
                 @auth
@@ -492,29 +492,9 @@
     </div>
 </nav>
 
-
-
-<script src="https://unpkg.com/lucide@latest"></script>
 <script>
 // Inisialisasi setelah halaman load
 document.addEventListener('DOMContentLoaded', function() {
-    // Init Lucide icons
-    function initLucide() {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-    }
-    initLucide();
-    
-    // Re-init after Alpine is done
-    document.addEventListener('alpine:initialized', function() {
-        initLucide();
-    });
-    
-    // Also re-init on any Alpine component mount
-    document.addEventListener('alpine:init', function() {
-        setTimeout(initLucide, 100);
-    });
     
     // Logika tombol hapus ('X') di pencarian navbar
     const searchInput = document.getElementById('searchInput');
@@ -600,14 +580,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(() => {});
     @endauth
-
-    // Re-init Lucide whenever Alpine components update
-    setInterval(function() {
-        if (typeof lucide !== 'undefined' && document.querySelector('[data-lucide]')) {
-            lucide.createIcons();
-        }
-    }, 500);
-
 });
 </script>
 

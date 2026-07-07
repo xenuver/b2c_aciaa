@@ -34,9 +34,6 @@
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
         :root {
             /* Color Palette */
@@ -158,6 +155,51 @@
                 }
             }
         }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.292.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial create
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
+            // Re-init when Alpine updates DOM
+            document.addEventListener('alpine:initialized', function() {
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            });
+
+            // Robust observer for dynamic elements
+            const observer = new MutationObserver(function(mutations) {
+                let shouldUpdate = false;
+                for (const mutation of mutations) {
+                    if (mutation.type === 'childList') {
+                        mutation.addedNodes.forEach(node => {
+                            if (node.nodeType === 1) { // Element node
+                                if (node.hasAttribute('data-lucide') || node.querySelector('[data-lucide]')) {
+                                    shouldUpdate = true;
+                                }
+                            }
+                        });
+                    }
+                }
+                
+                if (shouldUpdate && typeof lucide !== 'undefined') {
+                    // Debounce slightly to prevent thrashing
+                    clearTimeout(window.lucideTimeout);
+                    window.lucideTimeout = setTimeout(() => {
+                        lucide.createIcons();
+                    }, 50);
+                }
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
     </script>
 
     @stack('scripts')
