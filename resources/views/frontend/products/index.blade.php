@@ -1769,7 +1769,7 @@ function productFilter() {
                         // Show friendly empty state when no results found
                         productGrid.innerHTML = `
                             <div class="empty-state" style="grid-column: 1 / -1; width: 100%;">
-                                <i data-lucide="search-x"></i>
+                                <i class="fas fa-search-minus" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
                                 <h3>Produk tidak ditemukan</h3>
                                 <p>Coba ubah kata kunci pencarian atau hapus filter yang aktif.</p>
                                 <button

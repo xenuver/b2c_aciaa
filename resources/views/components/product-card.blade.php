@@ -58,7 +58,7 @@
                 aria-label="Lihat cepat {{ $product->name }}"
                 type="button"
             >
-                <i data-lucide="eye"></i>
+                <i class="far fa-eye"></i>
             </button>
 
             {{-- Wishlist Toggle --}}

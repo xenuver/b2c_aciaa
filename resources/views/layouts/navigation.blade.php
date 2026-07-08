@@ -11,27 +11,15 @@
 
             <!-- Desktop Navigation -->
             <div class="nav-links">
-                <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <i data-lucide="home"></i>
-                    <span>{{ __('Beranda') }}</span>
-                </a>
+                <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"><span>{{ __('Beranda') }}</span></a>
                 
-                <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}">
-                    <i data-lucide="shopping-bag"></i>
-                    <span>{{ __('Belanja') }}</span>
-                </a>
+                <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}"><span>{{ __('Belanja') }}</span></a>
 
-                <a href="{{ route('vouchers.index') }}" class="nav-link {{ request()->routeIs('vouchers.index') ? 'active' : '' }}">
-                    <i data-lucide="ticket"></i>
-                    <span>{{ __('Promo & Voucher') }}</span>
-                </a>
+                <a href="{{ route('vouchers.index') }}" class="nav-link {{ request()->routeIs('vouchers.index') ? 'active' : '' }}"><span>{{ __('Promo & Voucher') }}</span></a>
                 
                 @auth
                     @if(Auth::user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                            <i data-lucide="layout-dashboard"></i>
-                            <span>{{ __('Dashboard Admin') }}</span>
-                        </a>
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><span>{{ __('Dashboard Admin') }}</span></a>
                     @endif
                 @endauth
             </div>
@@ -246,31 +234,31 @@
                     <div class="user-dropdown" x-data="{ open: false }">
                         <button @click="open = !open" class="user-trigger">
                             <div class="user-avatar">
-                                <i data-lucide="user"></i>
+                                <i class="far fa-user"></i>
                             </div>
                             <span class="user-name">{{ Auth::user()->name }}</span>
-                            <i data-lucide="chevron-down" class="dropdown-icon" :class="{ 'rotate': open }"></i>
+                            <i class="fas fa-chevron-down dropdown-icon" :class="{ 'rotate': open }"></i>
                         </button>
 
                         <div class="dropdown-panel" x-show="open" @click.away="open = false" x-cloak>
                             @if(Auth::user()->role !== 'admin')
                                 <a href="{{ route('transactions.index') }}" class="dropdown-item">
-                                    <i data-lucide="clock" class="me-2" style="width: 16px; height: 16px;"></i> {{ __('Riwayat Transaksi') }}
+                                    <i class="fas fa-history me-2 text-secondary" style="font-size: 14px; margin-left: 2px;"></i> {{ __('Riwayat Transaksi') }}
                                 </a>
                                 <a href="{{ route('returs.index') }}" class="dropdown-item">
-                                    <i data-lucide="rotate-ccw" class="me-2" style="width: 16px; height: 16px;"></i> {{ __('Retur Saya') }}
+                                    <i class="fas fa-undo me-2 text-secondary" style="font-size: 14px; margin-left: 2px;"></i> {{ __('Retur Saya') }}
                                 </a>
                             @endif
                             <a href="{{ route('ratings.index') }}" class="dropdown-item">
                                 <i class="fas fa-star me-2 text-warning" style="font-size: 14px; margin-left: 2px;"></i> {{ __('Ulasan Saya') }}
                             </a>
                             <a href="{{ route('profile.edit') }}" class="dropdown-item">
-                                <i data-lucide="user"></i> Profile
+                                <i class="far fa-user me-2 text-secondary" style="font-size: 14px; margin-left: 2px;"></i> Profile
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="dropdown-item logout-item">
-                                    <i data-lucide="log-out"></i> Log Out
+                                    <i class="fas fa-sign-out-alt me-2" style="font-size: 14px; margin-left: 2px;"></i> {{ __('Log Out') }}
                                 </button>
                             </form>
                         </div>
