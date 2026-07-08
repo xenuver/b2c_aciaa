@@ -1082,7 +1082,7 @@
                         <span><i class="fas fa-align-left text-muted me-2"></i> Deskripsi Produk</span>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>
-                    <div id="collapseDesc" class="collapse show" data-bs-parent="#productDetailAccordion">
+                    <div id="collapseDesc" class="collapse show">
                         <div class="pd-accordion-content pt-2">
                             {{ $product->description }}
                         </div>
@@ -1095,7 +1095,7 @@
                         <span><i class="fas fa-tasks text-muted me-2"></i> Spesifikasi Detail</span>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>
-                    <div id="collapseSpecs" class="collapse" data-bs-parent="#productDetailAccordion">
+                    <div id="collapseSpecs" class="collapse">
                         <div class="pd-accordion-content pt-2">
                             <table class="pd-specs-table">
                                 <tr>
@@ -1129,7 +1129,7 @@
                         <span><i class="fas fa-truck text-muted me-2"></i> Pengiriman & Garansi</span>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>
-                    <div id="collapseShipping" class="collapse" data-bs-parent="#productDetailAccordion">
+                    <div id="collapseShipping" class="collapse">
                         <div class="pd-accordion-content pt-2">
                             Kami memastikan pengemasan yang aman dan rapi untuk seluruh produk import premium kami.
                             <ul class="ps-3 mt-2 mb-0">
@@ -1147,83 +1147,114 @@
                         <span><i class="fas fa-star text-muted me-2"></i> Ulasan Pelanggan</span>
                         <i class="fas fa-chevron-down arrow-icon"></i>
                     </button>
-                    <div id="collapseReviews" class="collapse" data-bs-parent="#productDetailAccordion">
-                        <div class="pd-accordion-content pt-3">
-                            <div class="row align-items-center mb-4">
-                                <div class="col-md-4 text-center border-end">
-                                    <div class="review-score-big">4.8</div>
-                                    <div class="text-warning my-1">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                    <div class="review-count-small">Berdasarkan 24 Ulasan</div>
-                                </div>
-                                <div class="col-md-8 ps-md-4 mt-4 mt-md-0">
-                                    <div class="rating-bar-container">
-                                        <span class="rating-bar-star-num">5</span> <i class="fas fa-star text-warning"></i>
-                                        <div class="rating-bar-track ms-2"><div class="rating-bar-fill" style="width: 85%;"></div></div>
-                                        <span class="rating-bar-percent">85%</span>
-                                    </div>
-                                    <div class="rating-bar-container">
-                                        <span class="rating-bar-star-num">4</span> <i class="fas fa-star text-warning"></i>
-                                        <div class="rating-bar-track ms-2"><div class="rating-bar-fill" style="width: 10%;"></div></div>
-                                        <span class="rating-bar-percent">10%</span>
-                                    </div>
-                                    <div class="rating-bar-container">
-                                        <span class="rating-bar-star-num">3</span> <i class="fas fa-star text-warning"></i>
-                                        <div class="rating-bar-track ms-2"><div class="rating-bar-fill" style="width: 5%;"></div></div>
-                                        <span class="rating-bar-percent">5%</span>
-                                    </div>
-                                </div>
-                            </div>
+                    <div id="collapseReviews" class="collapse">
+                        <div class="pd-accordion-content pt-4 pb-4">
                             
-                            <hr class="my-4 text-muted opacity-25">
-                            
-                            <!-- Dummy Reviews -->
-                            <div class="review-list">
-                                <div class="review-card p-3 mb-3">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="review-avatar-circle">AD</div>
-                                            <div>
-                                                <div class="review-user-name">Amanda D. <span class="review-verified-badge ms-2"><i class="fas fa-check-circle"></i> Verified Buyer</span></div>
-                                                <div class="text-warning" style="font-size: 0.75rem;">
-                                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="review-date-text">2 Hari yang lalu</span>
-                                    </div>
-                                    <p class="review-comment mb-0 mt-2">Bahan sangat premium dan jahitannya rapi banget. Dipakai seharian tetap nyaman dan nggak gerah. Warnanya juga sesuai dengan ekspektasi, bahkan lebih bagus aslinya. Worth every penny!</p>
+                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                                <div>
+                                    <h5 class="fw-bold text-dark m-0">Ulasan & Rating Produk</h5>
                                 </div>
-
-                                <div class="review-card p-3 mb-3">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <div class="d-flex align-items-center gap-3">
-                                            <div class="review-avatar-circle">SB</div>
-                                            <div>
-                                                <div class="review-user-name">Sarah B. <span class="review-verified-badge ms-2"><i class="fas fa-check-circle"></i> Verified Buyer</span></div>
-                                                <div class="text-warning" style="font-size: 0.75rem;">
-                                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span class="review-date-text">1 Minggu yang lalu</span>
-                                    </div>
-                                    <p class="review-comment mb-0 mt-2">Ukurannya pas banget di badan, modelnya elegan dan gampang di-mix and match. Pengirimannya juga cepet banget. Puas belanja di sini, bakal order lagi next time.</p>
-                                </div>
+                                
+                                @if($userRating)
+                                    <a href="{{ route('ratings.edit', $userRating->id) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 btn-sm fw-bold">
+                                        <i class="fas fa-edit me-2"></i> Edit Ulasan Anda
+                                    </a>
+                                @endif
                             </div>
 
-                            @if($canReview)
-                            <div class="text-center mt-4">
-                                <a href="#" class="btn-write-review">
-                                    <i class="fas fa-pen"></i> Tulis Ulasan Anda
-                                </a>
+                            <div class="row g-4">
+                                <!-- Left Side: Ratings Breakdown Statistics -->
+                                <div class="col-lg-4">
+                                    <div class="review-summary-card">
+                                        <span class="review-score-big">{{ number_format($averageRating, 1) }}</span>
+                                        
+                                        <div class="text-warning my-2" style="font-size: 1.25rem;">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= floor($averageRating))
+                                                    <i class="fas fa-star"></i>
+                                                @elseif($i - 0.5 <= $averageRating)
+                                                    <i class="fas fa-star-half-alt"></i>
+                                                @else
+                                                    <i class="far fa-star"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                        
+                                        <span class="review-count-small">Berdasarkan {{ $reviews->count() }} Ulasan</span>
+                                        
+                                        <!-- Progress Bar Stars Distributions -->
+                                        @php
+                                            $totalReviews = $reviews->count();
+                                            $starCounts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+                                            foreach($reviews as $rev) {
+                                                $r = (int)$rev->rating;
+                                                if(isset($starCounts[$r])) {
+                                                    $starCounts[$r]++;
+                                                }
+                                            }
+                                        @endphp
+                                        
+                                        <div class="w-100 mt-4 px-2">
+                                            @for($star = 5; $star >= 1; $star--)
+                                                @php
+                                                    $percent = $totalReviews > 0 ? ($starCounts[$star] / $totalReviews) * 100 : 0;
+                                                @endphp
+                                                <div class="rating-bar-container">
+                                                    <span class="rating-bar-star-num">{{ $star }}</span>
+                                                    <i class="fas fa-star text-warning" style="font-size: 0.75rem;"></i>
+                                                    <div class="rating-bar-track">
+                                                        <div class="rating-bar-fill" style="width: {{ $percent }}%;"></div>
+                                                    </div>
+                                                    <span class="rating-bar-percent">{{ round($percent) }}%</span>
+                                                </div>
+                                            @endfor
+                                        </div>
+                                        
+                                        @if($canReview)
+                                            <div class="mt-4">
+                                                <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
+                                                    <i class="fas fa-pen"></i> Tulis Ulasan Produk
+                                                </a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Right Side: Reviews List Feed -->
+                                <div class="col-lg-8" x-data="reviewsLoader({{ $product->id }}, {{ $reviews->currentPage() }}, {{ $reviews->hasMorePages() ? 'true' : 'false' }})">
+                                    <div class="row g-3" id="reviewsListArea">
+                                        @forelse($reviews as $review)
+                                            @include('components.review-card', ['review' => $review])
+                                        @empty
+                                            <div class="col-12" id="emptyReviewsState">
+                                                <div class="card border border-dashed rounded-4 p-5 text-center text-muted bg-light">
+                                                    <div class="mb-3">
+                                                        <i class="far fa-comment-dots fa-3x opacity-25"></i>
+                                                    </div>
+                                                    <h5 class="fw-bold text-dark mb-1">Belum Ada Ulasan</h5>
+                                                    <p class="mb-0 text-muted small px-lg-5">Produk ini belum menerima ulasan dari pembeli. Bagikan pengalaman berbelanja Anda jika Anda telah membeli produk ini!</p>
+                                                    
+                                                    @if($canReview)
+                                                        <div class="mt-4">
+                                                            <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
+                                                                <i class="fas fa-pen"></i> Mulai Ulas Pertama Kali
+                                                            </a>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforelse
+                                    </div>
+                                    
+                                    <div class="text-center mt-4" x-show="hasMore">
+                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" @click="loadMore" :disabled="loadingReviews">
+                                            <span x-show="!loadingReviews">Muat Lebih Banyak Ulasan</span>
+                                            <span x-show="loadingReviews" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i> Memuat...</span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            @endif
+
                         </div>
                     </div>
                 </div>
@@ -1283,114 +1314,6 @@
     </div>
     @endif
 
-    <!-- Reviews and Ratings Dashboard -->
-    <div class="mt-5 pt-5 border-top" id="reviewsContainer">
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <div>
-                <span class="text-uppercase text-muted fw-bold small tracking-wider" style="letter-spacing: 1px;">Testimoni Pelanggan</span>
-                <h3 class="fw-bold text-dark m-0">Ulasan & Rating Produk</h3>
-            </div>
-            
-            @if($userRating)
-                <a href="{{ route('ratings.edit', $userRating->id) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 btn-sm fw-bold">
-                    <i class="fas fa-edit me-2"></i> Edit Ulasan Anda
-                </a>
-            @endif
-        </div>
-
-        <div class="row g-4">
-            <!-- Left Side: Ratings Breakdown Statistics -->
-            <div class="col-lg-4">
-                <div class="review-summary-card">
-                    <span class="review-score-big">{{ number_format($averageRating, 1) }}</span>
-                    
-                    <div class="text-warning my-2" style="font-size: 1.25rem;">
-                        @for($i = 1; $i <= 5; $i++)
-                            @if($i <= floor($averageRating))
-                                <i class="fas fa-star"></i>
-                            @elseif($i - 0.5 <= $averageRating)
-                                <i class="fas fa-star-half-alt"></i>
-                            @else
-                                <i class="far fa-star"></i>
-                            @endif
-                        @endfor
-                    </div>
-                    
-                    <span class="review-count-small">Berdasarkan {{ $reviews->count() }} Ulasan</span>
-                    
-                    <!-- Progress Bar Stars Distributions -->
-                    @php
-                        $totalReviews = $reviews->count();
-                        $starCounts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
-                        foreach($reviews as $rev) {
-                            $r = (int)$rev->rating;
-                            if(isset($starCounts[$r])) {
-                                $starCounts[$r]++;
-                            }
-                        }
-                    @endphp
-                    
-                    <div class="w-100 mt-4 px-2">
-                        @for($star = 5; $star >= 1; $star--)
-                            @php
-                                $percent = $totalReviews > 0 ? ($starCounts[$star] / $totalReviews) * 100 : 0;
-                            @endphp
-                            <div class="rating-bar-container">
-                                <span class="rating-bar-star-num">{{ $star }}</span>
-                                <i class="fas fa-star text-warning" style="font-size: 0.75rem;"></i>
-                                <div class="rating-bar-track">
-                                    <div class="rating-bar-fill" style="width: {{ $percent }}%;"></div>
-                                </div>
-                                <span class="rating-bar-percent">{{ round($percent) }}%</span>
-                            </div>
-                        @endfor
-                    </div>
-                    
-                    @if($canReview)
-                        <div class="mt-4">
-                            <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
-                                <i class="fas fa-pen"></i> Tulis Ulasan Produk
-                            </a>
-                        </div>
-                    @endif
-                </div>
-            </div>
-
-            <!-- Right Side: Reviews List Feed -->
-            <div class="col-lg-8" x-data="reviewsLoader({{ $product->id }}, {{ $reviews->currentPage() }}, {{ $reviews->hasMorePages() ? 'true' : 'false' }})">
-                <div class="row g-3" id="reviewsListArea">
-                    @forelse($reviews as $review)
-                        @include('components.review-card', ['review' => $review])
-                    @empty
-                        <div class="col-12" id="emptyReviewsState">
-                            <div class="card border border-dashed rounded-4 p-5 text-center text-muted bg-light">
-                                <div class="mb-3">
-                                    <i class="far fa-comment-dots fa-3x opacity-25"></i>
-                                </div>
-                                <h5 class="fw-bold text-dark mb-1">Belum Ada Ulasan</h5>
-                                <p class="mb-0 text-muted small px-lg-5">Produk ini belum menerima ulasan dari pembeli. Bagikan pengalaman berbelanja Anda jika Anda telah membeli produk ini!</p>
-                                
-                                @if($canReview)
-                                    <div class="mt-4">
-                                        <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
-                                            <i class="fas fa-pen"></i> Mulai Ulas Pertama Kali
-                                        </a>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
-                    @endforelse
-                </div>
-                
-                <div class="text-center mt-4" x-show="hasMore">
-                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" @click="loadMore" :disabled="loadingReviews">
-                        <span x-show="!loadingReviews">Muat Lebih Banyak Ulasan</span>
-                        <span x-show="loadingReviews" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i> Memuat...</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @push('scripts')
