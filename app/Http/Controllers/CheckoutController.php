@@ -830,7 +830,7 @@ class CheckoutController extends Controller
             'user_id' => Auth::id(),
             'voucher_id' => $voucherId,
             'invoice_number' => $invoiceNumber,
-            'midtrans_order_id' => $invoiceNumber,
+            'midtrans_order_id' => str_replace('/', '-', $invoiceNumber),
             'subtotal' => $subtotal,
             'shipping_cost' => $shippingCost,
             'discount_amount' => $discountAmount,
