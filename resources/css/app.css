@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Fix: Tailwind Preflight sets .collapse { visibility: collapse } for HTML tables,
+   which conflicts with Bootstrap 5's .collapse accordion component.
+   This override restores Bootstrap's intended behavior globally. */
+.collapse {
+    visibility: inherit;
+}

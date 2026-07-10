@@ -1084,7 +1084,7 @@
                     </button>
                     <div id="collapseDesc" class="collapse show">
                         <div class="pd-accordion-content pt-2">
-                            {{ $product->description }}
+                            {!! nl2br(e($product->description)) !!}
                         </div>
                     </div>
                 </div>
