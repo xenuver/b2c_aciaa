@@ -1141,122 +1141,114 @@
                     </div>
                 </div>
 
-                <!-- Reviews / Ulasan -->
-                <div class="pd-accordion-item">
-                    <button class="pd-accordion-header collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviews" aria-expanded="false" aria-controls="collapseReviews">
-                        <span><i class="fas fa-star text-muted me-2"></i> Ulasan Pelanggan</span>
-                        <i class="fas fa-chevron-down arrow-icon"></i>
-                    </button>
-                    <div id="collapseReviews" class="collapse">
-                        <div class="pd-accordion-content pt-4 pb-4">
-                            
-                            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                                <div>
-                                    <h5 class="fw-bold text-dark m-0">Ulasan & Rating Produk</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Standalone Reviews / Ulasan Section -->
+    <div class="mt-5 pt-5 border-top">
+        <div class="mb-4">
+            <span class="text-uppercase text-muted fw-bold small tracking-wider" style="letter-spacing: 1px;">TESTIMONI PELANGGAN</span>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <h3 class="fw-bold text-dark m-0">Ulasan & Rating Produk</h3>
+                
+                @if($userRating)
+                    <a href="{{ route('ratings.edit', $userRating->id) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 btn-sm fw-bold">
+                        <i class="fas fa-edit me-2"></i> Edit Ulasan Anda
+                    </a>
+                @endif
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Side: Ratings Breakdown Statistics -->
+            <div class="col-lg-4">
+                <div class="review-summary-card">
+                    <span class="review-score-big">{{ number_format($averageRating, 1) }}</span>
+                    
+                    <div class="text-warning my-2" style="font-size: 1.25rem;">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= floor($averageRating))
+                                <i class="fas fa-star"></i>
+                            @elseif($i - 0.5 <= $averageRating)
+                                <i class="fas fa-star-half-alt"></i>
+                            @else
+                                <i class="far fa-star"></i>
+                            @endif
+                        @endfor
+                    </div>
+                    
+                    <span class="review-count-small">Berdasarkan {{ $reviews->count() }} Ulasan</span>
+                    
+                    <!-- Progress Bar Stars Distributions -->
+                    @php
+                        $totalReviews = $reviews->count();
+                        $starCounts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
+                        foreach($reviews as $rev) {
+                            $r = (int)$rev->rating;
+                            if(isset($starCounts[$r])) {
+                                $starCounts[$r]++;
+                            }
+                        }
+                    @endphp
+                    
+                    <div class="w-100 mt-4 px-2">
+                        @for($star = 5; $star >= 1; $star--)
+                            @php
+                                $percent = $totalReviews > 0 ? ($starCounts[$star] / $totalReviews) * 100 : 0;
+                            @endphp
+                            <div class="rating-bar-container">
+                                <span class="rating-bar-star-num">{{ $star }}</span>
+                                <i class="fas fa-star text-warning" style="font-size: 0.75rem;"></i>
+                                <div class="rating-bar-track">
+                                    <div class="rating-bar-fill" style="width: {{ $percent }}%;"></div>
                                 </div>
+                                <span class="rating-bar-percent">{{ round($percent) }}%</span>
+                            </div>
+                        @endfor
+                    </div>
+                    
+                    @if($canReview)
+                        <div class="mt-4">
+                            <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
+                                <i class="fas fa-pen"></i> Tulis Ulasan Produk
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Right Side: Reviews List Feed -->
+            <div class="col-lg-8" x-data="reviewsLoader({{ $product->id }}, {{ $reviews->currentPage() }}, {{ $reviews->hasMorePages() ? 'true' : 'false' }})">
+                <div class="row g-3" id="reviewsListArea">
+                    @forelse($reviews as $review)
+                        @include('components.review-card', ['review' => $review])
+                    @empty
+                        <div class="col-12" id="emptyReviewsState">
+                            <div class="card border border-dashed rounded-4 p-5 text-center text-muted bg-light">
+                                <div class="mb-3">
+                                    <i class="far fa-comment-dots fa-3x opacity-25"></i>
+                                </div>
+                                <h5 class="fw-bold text-dark mb-1">Belum Ada Ulasan</h5>
+                                <p class="mb-0 text-muted small px-lg-5">Produk ini belum menerima ulasan dari pembeli. Bagikan pengalaman berbelanja Anda jika Anda telah membeli produk ini!</p>
                                 
-                                @if($userRating)
-                                    <a href="{{ route('ratings.edit', $userRating->id) }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 btn-sm fw-bold">
-                                        <i class="fas fa-edit me-2"></i> Edit Ulasan Anda
-                                    </a>
+                                @if($canReview)
+                                    <div class="mt-4">
+                                        <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
+                                            <i class="fas fa-pen"></i> Mulai Ulas Pertama Kali
+                                        </a>
+                                    </div>
                                 @endif
                             </div>
-
-                            <div class="row g-4">
-                                <!-- Left Side: Ratings Breakdown Statistics -->
-                                <div class="col-lg-4">
-                                    <div class="review-summary-card">
-                                        <span class="review-score-big">{{ number_format($averageRating, 1) }}</span>
-                                        
-                                        <div class="text-warning my-2" style="font-size: 1.25rem;">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                @if($i <= floor($averageRating))
-                                                    <i class="fas fa-star"></i>
-                                                @elseif($i - 0.5 <= $averageRating)
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                @else
-                                                    <i class="far fa-star"></i>
-                                                @endif
-                                            @endfor
-                                        </div>
-                                        
-                                        <span class="review-count-small">Berdasarkan {{ $reviews->count() }} Ulasan</span>
-                                        
-                                        <!-- Progress Bar Stars Distributions -->
-                                        @php
-                                            $totalReviews = $reviews->count();
-                                            $starCounts = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
-                                            foreach($reviews as $rev) {
-                                                $r = (int)$rev->rating;
-                                                if(isset($starCounts[$r])) {
-                                                    $starCounts[$r]++;
-                                                }
-                                            }
-                                        @endphp
-                                        
-                                        <div class="w-100 mt-4 px-2">
-                                            @for($star = 5; $star >= 1; $star--)
-                                                @php
-                                                    $percent = $totalReviews > 0 ? ($starCounts[$star] / $totalReviews) * 100 : 0;
-                                                @endphp
-                                                <div class="rating-bar-container">
-                                                    <span class="rating-bar-star-num">{{ $star }}</span>
-                                                    <i class="fas fa-star text-warning" style="font-size: 0.75rem;"></i>
-                                                    <div class="rating-bar-track">
-                                                        <div class="rating-bar-fill" style="width: {{ $percent }}%;"></div>
-                                                    </div>
-                                                    <span class="rating-bar-percent">{{ round($percent) }}%</span>
-                                                </div>
-                                            @endfor
-                                        </div>
-                                        
-                                        @if($canReview)
-                                            <div class="mt-4">
-                                                <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
-                                                    <i class="fas fa-pen"></i> Tulis Ulasan Produk
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <!-- Right Side: Reviews List Feed -->
-                                <div class="col-lg-8" x-data="reviewsLoader({{ $product->id }}, {{ $reviews->currentPage() }}, {{ $reviews->hasMorePages() ? 'true' : 'false' }})">
-                                    <div class="row g-3" id="reviewsListArea">
-                                        @forelse($reviews as $review)
-                                            @include('components.review-card', ['review' => $review])
-                                        @empty
-                                            <div class="col-12" id="emptyReviewsState">
-                                                <div class="card border border-dashed rounded-4 p-5 text-center text-muted bg-light">
-                                                    <div class="mb-3">
-                                                        <i class="far fa-comment-dots fa-3x opacity-25"></i>
-                                                    </div>
-                                                    <h5 class="fw-bold text-dark mb-1">Belum Ada Ulasan</h5>
-                                                    <p class="mb-0 text-muted small px-lg-5">Produk ini belum menerima ulasan dari pembeli. Bagikan pengalaman berbelanja Anda jika Anda telah membeli produk ini!</p>
-                                                    
-                                                    @if($canReview)
-                                                        <div class="mt-4">
-                                                            <a href="{{ route('ratings.create', $product->id) }}" class="btn btn-write-review">
-                                                                <i class="fas fa-pen"></i> Mulai Ulas Pertama Kali
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @endforelse
-                                    </div>
-                                    
-                                    <div class="text-center mt-4" x-show="hasMore">
-                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" @click="loadMore" :disabled="loadingReviews">
-                                            <span x-show="!loadingReviews">Muat Lebih Banyak Ulasan</span>
-                                            <span x-show="loadingReviews" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i> Memuat...</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
-                    </div>
+                    @endforelse
+                </div>
+                
+                <div class="text-center mt-4" x-show="hasMore">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" @click="loadMore" :disabled="loadingReviews">
+                        <span x-show="!loadingReviews">Muat Lebih Banyak Ulasan</span>
+                        <span x-show="loadingReviews" style="display: none;"><i class="fas fa-spinner fa-spin me-2"></i> Memuat...</span>
+                    </button>
                 </div>
             </div>
         </div>

@@ -72,7 +72,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-5 mb-5 mb-lg-0">
                     <div class="manifesto-image-wrapper">
-                        <img src="{{ asset('images/manifesto.jpg') }}" onerror="this.src='{{ url('render-image?path=default.jpg') }}'" alt="Elegant Style" class="img-fluid manifesto-single-img">
+                        <img src="{{ asset('images/manifesto.png') }}" onerror="this.src='{{ url('render-image?path=default.jpg') }}'" alt="Elegant Style" class="img-fluid manifesto-single-img">
                     </div>
                 </div>
                 <div class="col-lg-6 offset-lg-1">
@@ -236,7 +236,7 @@
             <div class="row g-4">
                 <div class="col-md-6">
                     <div class="lookbook-banner-card">
-                        <img src="{{ asset('images/lookbook1.jpg') }}" onerror="this.src='{{ url('render-image?path=default.jpg') }}'" alt="Lookbook 1" class="lookbook-img">
+                        <img src="{{ asset('images/lookbook1.png') }}" onerror="this.src='{{ url('render-image?path=default.jpg') }}'" alt="Lookbook 1" class="lookbook-img">
                         <div class="lookbook-overlay"></div>
                         <div class="lookbook-content">
                             <span class="lookbook-tag">Minimalist Silhouette</span>
@@ -247,7 +247,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="lookbook-banner-card">
-                        <img src="{{ asset('images/lookbook2.jpg') }}" onerror="this.src='{{ url('render-image?path=default.jpg') }}'" alt="Lookbook 2" class="lookbook-img">
+                        <img src="{{ asset('images/lookbook2.png') }}" onerror="this.src='{{ url('render-image?path=default.jpg') }}'" alt="Lookbook 2" class="lookbook-img">
                         <div class="lookbook-overlay"></div>
                         <div class="lookbook-content">
                             <span class="lookbook-tag">Urban Essentials</span>
