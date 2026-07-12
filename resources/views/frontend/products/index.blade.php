@@ -69,7 +69,7 @@
                             <i data-lucide="dollar-sign"></i>
                             Price Range
                         </h4>
-                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterFormOffcanvas">
+                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterFormOffcanvas" @submit.prevent>
                             @foreach(request()->except(['min_price', 'max_price', 'page']) as $key => $value)
                                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                             @endforeach
@@ -224,7 +224,7 @@
                             <i data-lucide="dollar-sign"></i>
                             Price Range
                         </h4>
-                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterForm">
+                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterForm" @submit.prevent>
                             @foreach(request()->except(['min_price', 'max_price', 'page']) as $key => $value)
                                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                             @endforeach
@@ -434,7 +434,7 @@
 
                 <!-- Promo Products Section -->
                 @if(isset($promoProducts) && $promoProducts->count() > 0)
-                <div class="promo-section mb-5" x-show="!isSearching" x-transition>
+                <div class="promo-section mb-5" x-transition>
                     <div class="promo-section-header">
                         <div class="promo-badge">
                             <i data-lucide="flame"></i>
@@ -502,7 +502,7 @@
 
                 <!-- Rekomendasi Untuk Anda Section -->
                 @if(isset($recommendations) && $recommendations->count() > 0)
-                <div class="promo-section mb-5 recommendations-section" x-show="!isSearching" x-transition style="background: linear-gradient(135deg, #fef8f6 0%, #fff 100%); border: 1px solid rgba(212, 165, 165, 0.2);">
+                <div class="promo-section mb-5 recommendations-section" x-transition style="background: linear-gradient(135deg, #fef8f6 0%, #fff 100%); border: 1px solid rgba(212, 165, 165, 0.2);">
                     <div class="promo-section-header text-start mb-4" style="text-align: left !important; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
                         <div class="promo-badge mb-2" style="background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); color: #fff; padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                             <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
@@ -1867,8 +1867,14 @@ function productFilter() {
                 [min, max] = [max, min];
             }
             
-            minPrice.value = min;
-            maxPrice.value = max;
+            if (minPrice.value !== String(min)) {
+                minPrice.value = min;
+                minPrice.dispatchEvent(new Event('input'));
+            }
+            if (maxPrice.value !== String(max)) {
+                maxPrice.value = max;
+                maxPrice.dispatchEvent(new Event('input'));
+            }
             
             const percentMin = (min / 1000000) * 100;
             const percentMax = (max / 1000000) * 100;
@@ -2254,8 +2260,15 @@ function productFilter() {
             let min = parseInt(minSliderOC.value);
             let max = parseInt(maxSliderOC.value);
             if (min > max) { [min, max] = [max, min]; }
-            if (minPriceOC) minPriceOC.value = min;
-            if (maxPriceOC) maxPriceOC.value = max;
+            
+            if (minPriceOC && minPriceOC.value !== String(min)) {
+                minPriceOC.value = min;
+                minPriceOC.dispatchEvent(new Event('input'));
+            }
+            if (maxPriceOC && maxPriceOC.value !== String(max)) {
+                maxPriceOC.value = max;
+                maxPriceOC.dispatchEvent(new Event('input'));
+            }
         }
         minSliderOC.addEventListener('input', function() {
             if (parseInt(this.value) > parseInt(maxSliderOC.value)) maxSliderOC.value = this.value;
