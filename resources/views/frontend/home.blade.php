@@ -1361,12 +1361,25 @@
     
     .category-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+        gap: 12px;
+    }
+
+    .category-card-inner {
+        padding: 20px 10px;
+    }
+
+    .category-icon i {
+        font-size: 2rem;
+    }
+
+    .category-name {
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
     }
     
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 12px;
     }
     
     .countdown-timer {
@@ -1388,6 +1401,20 @@
     
     .featured-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .featured-item i {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .featured-item h4 {
+        font-size: 0.9rem;
+    }
+
+    .featured-item p {
+        font-size: 0.75rem;
     }
     
     .promo-products-banner {

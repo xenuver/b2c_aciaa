@@ -69,7 +69,7 @@
                             <i data-lucide="dollar-sign"></i>
                             Price Range
                         </h4>
-                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterFormOffcanvas" @submit.prevent>
+                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterFormOffcanvas" @submit.prevent="applyPriceFilter()">
                             @foreach(request()->except(['min_price', 'max_price', 'page']) as $key => $value)
                                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                             @endforeach
@@ -224,7 +224,7 @@
                             <i data-lucide="dollar-sign"></i>
                             Price Range
                         </h4>
-                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterForm" @submit.prevent>
+                        <form method="GET" action="{{ route('products.index') }}" id="priceFilterForm" @submit.prevent="applyPriceFilter()">
                             @foreach(request()->except(['min_price', 'max_price', 'page']) as $key => $value)
                                 <input type="hidden" name="{{ $key }}" value="{{ $value }}">
                             @endforeach
@@ -1729,6 +1729,8 @@ function productFilter() {
 
             // Expose clearFilters to global scope so injected empty-state button can call it
             window._clearProductFilters = () => this.clearFilters();
+            window._alpine_setMinPrice = (val) => { this.minPrice = String(val); };
+            window._alpine_setMaxPrice = (val) => { this.maxPrice = String(val); };
         },
 
         _debouncedFetch() {
@@ -1744,6 +1746,14 @@ function productFilter() {
             this.minPrice  = '';
             this.maxPrice  = '';
             this.sort      = 'terbaru';
+        },
+
+        applyPriceFilter() {
+            const minEl = document.getElementById('minPrice') ?? document.getElementById('minPriceOffcanvas');
+            const maxEl = document.getElementById('maxPrice') ?? document.getElementById('maxPriceOffcanvas');
+            if (minEl) this.minPrice = minEl.value;
+            if (maxEl) this.maxPrice = maxEl.value;
+            this._debouncedFetch();
         },
 
         fetchProducts() {
@@ -1869,11 +1879,11 @@ function productFilter() {
             
             if (minPrice.value !== String(min)) {
                 minPrice.value = min;
-                minPrice.dispatchEvent(new Event('input'));
+                if (window._alpine_setMinPrice) window._alpine_setMinPrice(min);
             }
             if (maxPrice.value !== String(max)) {
                 maxPrice.value = max;
-                maxPrice.dispatchEvent(new Event('input'));
+                if (window._alpine_setMaxPrice) window._alpine_setMaxPrice(max);
             }
             
             const percentMin = (min / 1000000) * 100;
@@ -1928,7 +1938,11 @@ function productFilter() {
     const resetBtn = document.getElementById('resetFiltersBtn');
     if (resetBtn) {
         resetBtn.addEventListener('click', function() {
-            window.location.href = '{{ route("products.index") }}';
+            if (window._clearProductFilters) {
+                window._clearProductFilters();
+            } else {
+                window.location.href = '{{ route("products.index") }}';
+            }
         });
     }
     
@@ -1968,59 +1982,59 @@ function productFilter() {
         startPromoTimer();
     }
     
-    // Quick View Modal
-    const quickViewBtns = document.querySelectorAll('.quick-view');
-    quickViewBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const productSlug = btn.getAttribute('data-product');
-            
-            const modal = document.createElement('div');
-            modal.className = 'custom-modal';
-            modal.innerHTML = `
-                <div class="custom-modal-content">
-                    <span class="custom-modal-close">&times;</span>
-                    <div class="modal-body">
-                        <div class="modal-loading">
-                            <i data-lucide="loader-circle" class="spin"></i>
-                            <p>Loading product details...</p>
-                        </div>
+    // Quick View Modal (Event Delegation)
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.quick-view');
+        if (!btn) return;
+        
+        e.preventDefault();
+        e.stopPropagation();
+        const productSlug = btn.getAttribute('data-product');
+        
+        const modal = document.createElement('div');
+        modal.className = 'custom-modal';
+        modal.innerHTML = `
+            <div class="custom-modal-content">
+                <span class="custom-modal-close">&times;</span>
+                <div class="modal-body">
+                    <div class="modal-loading">
+                        <i data-lucide="loader-circle" class="spin"></i>
+                        <p>Loading product details...</p>
                     </div>
                 </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        lucide.createIcons();
+        
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.querySelector('.custom-modal-content').style.transform = 'scale(1)';
+        }, 10);
+        
+        const closeBtn = modal.querySelector('.custom-modal-close');
+        closeBtn.onclick = () => {
+            modal.style.opacity = '0';
+            modal.querySelector('.custom-modal-content').style.transform = 'scale(0.9)';
+            setTimeout(() => modal.remove(), 300);
+        };
+        
+        modal.onclick = (event) => {
+            if (event.target === modal) {
+                closeBtn.click();
+            }
+        };
+        
+        setTimeout(() => {
+            const modalBody = modal.querySelector('.modal-body');
+            modalBody.innerHTML = `
+                <i data-lucide="sparkles" style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 1rem;"></i>
+                <h3 style="margin-bottom: 0.5rem;">Quick View</h3>
+                <p style="color: #666; margin-bottom: 1.5rem;">Product details will appear here.<br>Click "View Details" for complete information.</p>
+                <a href="/products/${productSlug}" class="modal-view-btn">View Full Details →</a>
             `;
-            document.body.appendChild(modal);
             lucide.createIcons();
-            
-            setTimeout(() => {
-                modal.style.opacity = '1';
-                modal.querySelector('.custom-modal-content').style.transform = 'scale(1)';
-            }, 10);
-            
-            const closeBtn = modal.querySelector('.custom-modal-close');
-            closeBtn.onclick = () => {
-                modal.style.opacity = '0';
-                modal.querySelector('.custom-modal-content').style.transform = 'scale(0.9)';
-                setTimeout(() => modal.remove(), 300);
-            };
-            
-            modal.onclick = (e) => {
-                if (e.target === modal) {
-                    closeBtn.click();
-                }
-            };
-            
-            setTimeout(() => {
-                const modalBody = modal.querySelector('.modal-body');
-                modalBody.innerHTML = `
-                    <i data-lucide="sparkles" style="width: 48px; height: 48px; color: var(--color-primary); margin-bottom: 1rem;"></i>
-                    <h3 style="margin-bottom: 0.5rem;">Quick View</h3>
-                    <p style="color: #666; margin-bottom: 1.5rem;">Product details will appear here.<br>Click "View Details" for complete information.</p>
-                    <a href="/products/${productSlug}" class="modal-view-btn">View Full Details →</a>
-                `;
-                lucide.createIcons();
-            }, 500);
-        });
+        }, 500);
     });
     
     // ========== SHOW LOGIN MODAL ==========
@@ -2233,7 +2247,11 @@ function productFilter() {
     const resetOffcanvasBtn = document.getElementById('resetFiltersOffcanvasBtn');
     if (resetOffcanvasBtn) {
         resetOffcanvasBtn.addEventListener('click', function() {
-            window.location.href = '{{ route("products.index") }}';
+            if (window._clearProductFilters) {
+                window._clearProductFilters();
+            } else {
+                window.location.href = '{{ route("products.index") }}';
+            }
         });
     }
 
@@ -2263,11 +2281,11 @@ function productFilter() {
             
             if (minPriceOC && minPriceOC.value !== String(min)) {
                 minPriceOC.value = min;
-                minPriceOC.dispatchEvent(new Event('input'));
+                if (window._alpine_setMinPrice) window._alpine_setMinPrice(min);
             }
             if (maxPriceOC && maxPriceOC.value !== String(max)) {
                 maxPriceOC.value = max;
-                maxPriceOC.dispatchEvent(new Event('input'));
+                if (window._alpine_setMaxPrice) window._alpine_setMaxPrice(max);
             }
         }
         minSliderOC.addEventListener('input', function() {
