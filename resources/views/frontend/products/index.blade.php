@@ -88,9 +88,9 @@
                                 </div>
                                 <div class="price-slider-container">
                                     <div class="price-track"></div>
-                                    <div class="price-range"></div>
-                                    <input type="range" id="minSliderOffcanvas" min="0" max="1000000" step="10000" value="{{ request('min_price', 0) }}" :disabled="loading">
-                                    <input type="range" id="maxSliderOffcanvas" min="0" max="1000000" step="10000" value="{{ request('max_price', 1000000) }}" :disabled="loading">
+                                    <div class="price-range" :style="`left: ${(parseInt(minPrice || 0) / 1000000) * 100}%; width: ${((parseInt(maxPrice || 1000000) - parseInt(minPrice || 0)) / 1000000) * 100}%;`"></div>
+                                    <input type="range" id="minSliderOffcanvas" min="0" max="1000000" step="10000" x-model="minPrice" :disabled="loading">
+                                    <input type="range" id="maxSliderOffcanvas" min="0" max="1000000" step="10000" x-model="maxPrice" :disabled="loading">
                                 </div>
                             </div>
                             <button type="submit" class="filter-apply-btn" :disabled="loading" :class="{ 'filter-btn-loading': loading }">
@@ -243,9 +243,9 @@
                                 </div>
                                 <div class="price-slider-container">
                                     <div class="price-track"></div>
-                                    <div class="price-range"></div>
-                                    <input type="range" id="minSlider" min="0" max="1000000" step="10000" value="{{ request('min_price', 0) }}" :disabled="loading">
-                                    <input type="range" id="maxSlider" min="0" max="1000000" step="10000" value="{{ request('max_price', 1000000) }}" :disabled="loading">
+                                    <div class="price-range" :style="`left: ${(parseInt(minPrice || 0) / 1000000) * 100}%; width: ${((parseInt(maxPrice || 1000000) - parseInt(minPrice || 0)) / 1000000) * 100}%;`"></div>
+                                    <input type="range" id="minSlider" min="0" max="1000000" step="10000" x-model="minPrice" :disabled="loading">
+                                    <input type="range" id="maxSlider" min="0" max="1000000" step="10000" x-model="maxPrice" :disabled="loading">
                                 </div>
                             </div>
                             <button type="submit" class="filter-apply-btn" :disabled="loading" :class="{ 'filter-btn-loading': loading }">
@@ -1703,8 +1703,8 @@ function productFilter() {
     return {
         search: '{{ request("search", "") }}',
         category: '{{ request("category", "") }}',
-        minPrice: '{{ request("min_price", "") }}',
-        maxPrice: '{{ request("max_price", "") }}',
+        minPrice: '{{ request("min_price", "0") }}',
+        maxPrice: '{{ request("max_price", "1000000") }}',
         sort: '{{ request("sort", "terbaru") }}',
         loading: false,
 
@@ -1743,8 +1743,8 @@ function productFilter() {
         clearFilters() {
             this.search    = '';
             this.category  = '';
-            this.minPrice  = '';
-            this.maxPrice  = '';
+            this.minPrice  = '0';
+            this.maxPrice  = '1000000';
             this.sort      = 'terbaru';
         },
 
@@ -1763,8 +1763,8 @@ function productFilter() {
                 params: {
                     search:    this.search,
                     category:  this.category,
-                    min_price: this.minPrice,
-                    max_price: this.maxPrice,
+                    min_price: this.minPrice == '0' ? '' : this.minPrice,
+                    max_price: this.maxPrice == '1000000' ? '' : this.maxPrice,
                     sort:      this.sort,
                     page:      1,
                 }
@@ -1859,80 +1859,11 @@ function productFilter() {
             }
         });
     }
+    // Removed vanilla JS Price Range Slider logic because Alpine.js handles it perfectly via x-model and :style
     
-    // Price Range Slider
-    const minSlider = document.getElementById('minSlider');
-    const maxSlider = document.getElementById('maxSlider');
-    const minPrice = document.getElementById('minPrice');
-    const maxPrice = document.getElementById('maxPrice');
-    const priceRange = document.querySelector('.price-range');
-    const priceTrack = document.querySelector('.price-track');
-    
-    if (minSlider && maxSlider) {
-        function updatePriceRange() {
-            let min = parseInt(minSlider.value);
-            let max = parseInt(maxSlider.value);
-            
-            if (min > max) {
-                [min, max] = [max, min];
-            }
-            
-            if (minPrice.value !== String(min)) {
-                minPrice.value = min;
-                if (window._alpine_setMinPrice) window._alpine_setMinPrice(min);
-            }
-            if (maxPrice.value !== String(max)) {
-                maxPrice.value = max;
-                if (window._alpine_setMaxPrice) window._alpine_setMaxPrice(max);
-            }
-            
-            const percentMin = (min / 1000000) * 100;
-            const percentMax = (max / 1000000) * 100;
-            
-            if (priceRange) {
-                priceRange.style.left = percentMin + '%';
-                priceRange.style.width = (percentMax - percentMin) + '%';
-            }
-        }
-        
-        minSlider.addEventListener('input', function() {
-            let value = parseInt(this.value);
-            if (value > parseInt(maxSlider.value)) {
-                maxSlider.value = value;
-            }
-            updatePriceRange();
-        });
-        
-        maxSlider.addEventListener('input', function() {
-            let value = parseInt(this.value);
-            if (value < parseInt(minSlider.value)) {
-                minSlider.value = value;
-            }
-            updatePriceRange();
-        });
-        
-        minPrice.addEventListener('change', function() {
-            let value = parseInt(this.value) || 0;
-            if (value > parseInt(maxPrice.value)) {
-                maxPrice.value = value;
-            }
-            minSlider.value = Math.min(value, 1000000);
-            maxSlider.value = Math.max(parseInt(maxPrice.value), value);
-            updatePriceRange();
-        });
-        
-        maxPrice.addEventListener('change', function() {
-            let value = parseInt(this.value) || 1000000;
-            if (value < parseInt(minPrice.value)) {
-                minPrice.value = value;
-            }
-            maxSlider.value = Math.min(value, 1000000);
-            minSlider.value = Math.min(parseInt(minPrice.value), maxSlider.value);
-            updatePriceRange();
-        });
-        
-        updatePriceRange();
-    }
+    // Make sure window function doesn't crash if called
+    window._alpine_setMinPrice = window._alpine_setMinPrice || function(){};
+    window._alpine_setMaxPrice = window._alpine_setMaxPrice || function(){};
     
     // Reset Filters
     const resetBtn = document.getElementById('resetFiltersBtn');
@@ -2267,37 +2198,7 @@ function productFilter() {
         }
     });
 
-    // Sync offcanvas price sliders with the main sidebar sliders (if both exist)
-    const minSliderOC = document.getElementById('minSliderOffcanvas');
-    const maxSliderOC = document.getElementById('maxSliderOffcanvas');
-    const minPriceOC  = document.getElementById('minPriceOffcanvas');
-    const maxPriceOC  = document.getElementById('maxPriceOffcanvas');
-
-    if (minSliderOC && maxSliderOC) {
-        function updatePriceRangeOC() {
-            let min = parseInt(minSliderOC.value);
-            let max = parseInt(maxSliderOC.value);
-            if (min > max) { [min, max] = [max, min]; }
-            
-            if (minPriceOC && minPriceOC.value !== String(min)) {
-                minPriceOC.value = min;
-                if (window._alpine_setMinPrice) window._alpine_setMinPrice(min);
-            }
-            if (maxPriceOC && maxPriceOC.value !== String(max)) {
-                maxPriceOC.value = max;
-                if (window._alpine_setMaxPrice) window._alpine_setMaxPrice(max);
-            }
-        }
-        minSliderOC.addEventListener('input', function() {
-            if (parseInt(this.value) > parseInt(maxSliderOC.value)) maxSliderOC.value = this.value;
-            updatePriceRangeOC();
-        });
-        maxSliderOC.addEventListener('input', function() {
-            if (parseInt(this.value) < parseInt(minSliderOC.value)) minSliderOC.value = this.value;
-            updatePriceRangeOC();
-        });
-        updatePriceRangeOC();
-    }
+    // Removed offcanvas vanilla JS Price Range Slider logic because Alpine.js handles it via x-model
 })();
 </script>
 @endsection
