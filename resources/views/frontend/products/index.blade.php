@@ -27,10 +27,10 @@
             <div class="offcanvas-body" style="padding: 1.25rem;">
                 <div class="filter-sidebar" style="box-shadow:none; padding:0; border-radius:0; position:static;">
                     <div class="filter-header" style="margin-bottom:1rem;">
-                        <button class="filter-reset" id="resetFiltersOffcanvasBtn">
+                        <a href="{{ route('products.index') }}" class="filter-reset text-decoration-none" id="resetFiltersOffcanvasBtn">
                             <i data-lucide="rotate-ccw"></i>
                             <span>Reset All</span>
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Filter Kategori -->
@@ -182,10 +182,10 @@
                 <div class="filter-sidebar">
                     <div class="filter-header">
                         <h3 class="filter-title">Filters</h3>
-                        <button class="filter-reset" id="resetFiltersBtn">
+                        <a href="{{ route('products.index') }}" class="filter-reset text-decoration-none" id="resetFiltersBtn">
                             <i data-lucide="rotate-ccw"></i>
                             <span>Reset All</span>
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Filter Kategori -->
@@ -1864,18 +1864,6 @@ function productFilter() {
     // Make sure window function doesn't crash if called
     window._alpine_setMinPrice = window._alpine_setMinPrice || function(){};
     window._alpine_setMaxPrice = window._alpine_setMaxPrice || function(){};
-    
-    // Reset Filters
-    const resetBtn = document.getElementById('resetFiltersBtn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', function() {
-            if (window._clearProductFilters) {
-                window._clearProductFilters();
-            } else {
-                window.location.href = '{{ route("products.index") }}';
-            }
-        });
-    }
     
     // Promo Countdown Timer (24 hours)
     function startPromoTimer() {
