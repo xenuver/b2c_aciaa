@@ -143,11 +143,7 @@
                             }
                         })
                         .catch(err => {
-                            if (err.response && err.response.status === 401) {
-                                window.location.href = '/login';
-                            } else {
-                                window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: 'Gagal memperbarui wishlist' } }));
-                            }
+                            window.dispatchEvent(new CustomEvent('toast', { detail: { type: 'error', message: 'Gagal memperbarui wishlist' } }));
                         })
                         .finally(() => {
                             this.isProcessing = false;

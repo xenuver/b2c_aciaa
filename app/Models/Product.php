@@ -60,7 +60,9 @@ public function wishlists()
 
 public function isInWishlist()
 {
-    if (!auth()->check()) return false;
+    if (!auth()->check()) {
+        return in_array($this->id, session('guest_wishlist', []));
+    }
     return $this->wishlists()->where('user_id', auth()->id())->exists();
 }
 

@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Login;
+use App\Listeners\MergeGuestDataOnLogin;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') !== 'local') {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+        
+        Event::listen(Login::class, [MergeGuestDataOnLogin::class, 'handle']);
+
         \Illuminate\Support\Facades\View::composer('layouts.navigation', function ($view) {
             $unreadCount = 0;
             if (\Illuminate\Support\Facades\Auth::check()) {
@@ -34,3 +40,4 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
+

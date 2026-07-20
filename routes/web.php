@@ -32,7 +32,7 @@ Route::prefix('products')->group(function () {
 });
 
 // Cart (Keranjang Belanja)
-Route::middleware(['auth'])->prefix('cart')->group(function () {
+Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add', [CartController::class, 'add'])->name('cart.add');
     Route::put('/{id}', [CartController::class, 'update'])->name('cart.update');
@@ -40,8 +40,8 @@ Route::middleware(['auth'])->prefix('cart')->group(function () {
     Route::get('/count', [CartController::class, 'getCount'])->name('cart.count'); // Added for navbar badge
     
     // AJAX routes
-    Route::put('/{cartItem}/ajax', [CartController::class, 'ajaxUpdate'])->name('cart.ajax.update');
-    Route::delete('/{cartItem}/ajax', [CartController::class, 'ajaxRemove'])->name('cart.ajax.remove');
+    Route::put('/{id}/ajax', [CartController::class, 'ajaxUpdate'])->name('cart.ajax.update');
+    Route::delete('/{id}/ajax', [CartController::class, 'ajaxRemove'])->name('cart.ajax.remove');
 });
 
 // Direct Checkout (Beli Langsung dari Detail Produk)
@@ -115,8 +115,8 @@ Route::middleware(['auth'])->prefix('returs')->group(function () {
     Route::get('/transaction/{id}/items', [ReturController::class, 'getTransactionItems'])->name('returs.items');
 });
 
-// Wishlist
-Route::middleware(['auth'])->prefix('wishlist')->group(function () {
+// Wishlist (Tanpa auth middleware)
+Route::prefix('wishlist')->group(function () {
     Route::get('/', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/toggle/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
     Route::delete('/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');

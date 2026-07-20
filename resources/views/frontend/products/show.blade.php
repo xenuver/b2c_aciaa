@@ -1015,7 +1015,6 @@
                     <div class="d-flex gap-3 flex-wrap align-items-center mt-3 pt-3 border-top">
                         @if($product->stock > 0)
                             <!-- Form Tambah Keranjang -->
-                            @auth
                             <form @submit.prevent="addToCart" class="m-0 flex-grow-1 flex-md-grow-0">
                                 <button type="submit" class="btn btn-pd-cart btn-lg w-100 py-3 px-4" :disabled="loadingCart">
                                     <i class="fas fa-shopping-cart" x-show="!loadingCart"></i>
@@ -1023,12 +1022,6 @@
                                     <span x-text="loadingCart ? 'Menambahkan...' : 'Tambah Keranjang'">Tambah Keranjang</span>
                                 </button>
                             </form>
-                            @else
-                            <button type="button" onclick="showPdLoginModal('Keranjang')" class="btn btn-pd-cart btn-lg w-100 py-3 px-4 m-0 flex-grow-1 flex-md-grow-0 text-decoration-none">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span>Tambah Keranjang</span>
-                            </button>
-                            @endauth
                             
                             <!-- Form Beli Langsung -->
                             @auth
@@ -1049,7 +1042,6 @@
                             @endauth
                             
                             <!-- Wishlist Toggle (AJAX) -->
-                            @auth
                             <button type="button" class="btn btn-pd-wish btn-lg" 
                                     x-data="wishlistToggle({{ $product->isInWishlist() ? 'true' : 'false' }})"
                                     :class="{ 'active': inWishlist }"
@@ -1058,11 +1050,6 @@
                                     :title="inWishlist ? 'Hapus dari Wishlist' : 'Tambah ke Wishlist'">
                                 <i :class="inWishlist ? 'fas text-danger' : 'far'" class="fa-heart fa-lg"></i>
                             </button>
-                            @else
-                            <a href="{{ route('login') }}" class="btn btn-pd-wish btn-lg text-decoration-none" title="Tambah ke Wishlist">
-                                <i class="far fa-heart fa-lg"></i>
-                            </a>
-                            @endauth
                             
                             <!-- Share Button -->
                             <button type="button" class="btn btn-pd-share btn-lg" id="btnShareProduct" title="Bagikan Produk" aria-label="Bagikan produk {{ $product->name }}">
